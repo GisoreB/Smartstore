@@ -1,0 +1,17 @@
+﻿@model PublicPaymentMethodModel
+
+<!-- Set up a container element for the paypal button -->
+<div id="paypal-button-container"
+     class="paypal-button-container"
+     data-init-transaction-url="@Url.Action("InitTransaction", "PayPal")"
+     data-create-order-url="@Url.Action("CreateOrder", "PayPal")"
+     data-forward-url="@Url.Action("BillingAddress", "Checkout")"
+     data-shape="@Model.ButtonShape"
+     data-color="@Model.ButtonColor"></div>
+
+@*INFO: No target zone here as can also be rendered via AJAX*@
+<script data-origin="paypal-standard-button">
+    $(function () {
+        const ppButton = new PayPalButton("#paypal-button-container", "paypal");
+    });
+</script>

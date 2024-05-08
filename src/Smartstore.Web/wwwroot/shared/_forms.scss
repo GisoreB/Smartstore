@@ -1,0 +1,294 @@
+/// <reference path="references.scss" />
+
+// Forms
+// ------------------------------------------------------
+
+input, 
+textarea, 
+select {
+    // Overwrite UserAgent stylesheet (400)
+    font-weight: $font-weight-normal;
+}
+
+select.noskin option:disabled {
+    color: $text-muted;
+}
+
+fieldset.content-group {
+    margin-bottom: 2rem;
+
+    > legend {
+        position: relative;
+        font-size: $h5-font-size;
+        font-weight: $font-weight-normal;
+        color: $gray-500;
+        text-transform: uppercase;
+        margin-bottom: 1.2rem;
+
+        &:before {
+            position: absolute;
+            content: ' ';
+            width: 100%;
+            left: 0;
+            top: 50%;
+            height: 1px;
+            background: rgba(0,0,0, 0.12);
+            z-index: 0;
+        }
+
+        > span {
+            position: relative;
+            display: inline-block;
+
+            @if alpha($body-bg) == 0 {
+                background: $site-bg;
+            }
+            @else {
+                background: $body-bg;
+            }
+
+            padding-right: 1rem;
+            z-index: 1;
+        }
+    }
+}
+
+.form-group label:not(.form-check-label) {
+	font-weight: $font-weight-medium;
+}
+
+.required > label:after {
+    content: ' *';
+}
+
+.form-text {
+    line-height: 1.3;
+}
+
+
+// .form-check color variants
+// ------------------------------------------------------
+
+@each $color, $value in $theme-colors {
+    @if $color != 'secondary' and $color != 'light' {
+        .form-check-#{$color} > .form-check-input {
+            --form-check-checked-bg-rgb: #{to-rgb($value)};
+        }
+    }
+}
+
+
+// .form-check solo
+// Solo check input without label,
+// placed like a regular form-control
+// ------------------------------------------------------
+
+.form-check-solo {
+    display: inline-flex;
+    padding-inline: 0;
+    padding-block: add($input-padding-y-sm, $input-border-width);
+    margin-block: 0;
+
+    .form-check-input {
+        margin-inline: 0;
+        margin-top: 0;
+    }
+}
+
+
+// .form-switch
+// ------------------------------------------------------
+
+.form-switch {
+    .form-check-input {
+        --form-check-bg: var(--gray-200);
+    }
+
+    &.form-check-solo {
+        // Align to common input sm sizing
+        --form-switch-width: #{$input-font-size-sm * $input-line-height-sm * 2};
+    }
+
+    &.form-switch-lg {
+        // Align to common input medium sizing
+        --form-switch-width: #{$input-font-size * $input-line-height * 2};
+
+        &.form-check-solo {
+            padding-block: add($input-padding-y, $input-border-width);
+        }
+    }
+}
+
+
+// Control with Icons
+// ------------------------------------------------------
+
+.has-icon {
+    --inline-icon-size: #{$input-height};
+    --inline-icon-font-size: inherit;
+    --inline-icon-offset: 0px;
+
+	position: relative;
+	display: flex;
+
+	.form-control {
+		position: relative;
+		z-index: 2;
+	}
+
+	.input-group-icon {
+		position: absolute;
+		z-index: 10;
+        height: 100%;
+		width: var(--inline-icon-size);
+        line-height: var(--inline-icon-size);
+        font-size: var(--inline-icon-font-size);
+        inset-inline-start: var(--inline-icon-offset);
+		text-align: center;
+		vertical-align: middle;
+        pointer-events: none;
+
+        :before {
+            font-size: cssmax(16px, var(--inline-icon-font-size));
+            position: absolute;
+            inset-inline-start: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+	}
+
+	&.has-icon-right .input-group-icon {
+		inset-inline-start: auto;
+		inset-inline-end: var(--inline-icon-offset);
+	}
+
+	&.input-group-lg {
+        --inline-icon-size: #{$input-height-lg};
+        --inline-icon-font-size: #{$font-size-lg};
+	}
+
+	&.input-group-sm {
+        --inline-icon-size: #{$input-height-sm};
+        --inline-icon-font-size: #{$font-size-sm};
+	}
+
+	&:not(.has-icon-right) .form-control {
+	    padding-inline-start: var(--inline-icon-size);
+	}
+
+	&.has-icon-right .form-control {
+	    padding-inline-end: var(--inline-icon-size);
+	}
+}
+
+
+// Input inline addon (button):
+// Absolutely positioned input inset button
+// ------------------------------------------------------
+
+.input-group-inline-addon {
+    @extend .input-group-text;
+
+    --addon-border-radius: var(--border-radius, #{$input-border-radius});
+    --addon-border-radius-inner: var(--border-radius-inner, calc(var(--addon-border-radius) - 1px));
+
+    align-items: stretch;
+    position: relative;
+    background-color: $input-bg;
+    border-inline-start-color: $input-bg !important;
+    padding: 0.25em !important;
+    z-index: 5;
+    border-radius: var(--addon-border-radius);
+
+    .form-control:focus ~ .input-group-append > & {
+        border-color: $input-focus-border-color;
+    }
+
+    > .btn {
+        // Some button fixes
+        --btn-padding-y: 0;
+        --btn-border-radius: var(--addon-border-radius-inner); // Inherit the parent's radius
+        --btn-font-size: #{$font-size-sm};
+    }
+}
+
+
+// Custom range
+// ------------------------------------------------------
+
+.custom-range {
+    // INFO: Autoprefixer does not run in debug mode
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    &::-webkit-slider-thumb { -webkit-appearance: none; }
+    &::-moz-range-thumb     { -moz-appearance: none; }
+}
+
+
+// Validation
+// ------------------------------------------------------
+
+.validation-summary-valid,
+.validation-summary-errors {
+    @extend .alert;
+}
+
+.validation-summary-valid {
+    display: none;
+    @extend .alert-success; 
+}
+
+.validation-summary-errors {
+    @extend .alert-danger;
+}
+
+.field-validation-error,
+.field-validation-valid {
+    display: block;
+    font-size: $font-size-sm;
+    width: 100%;
+
+    &:not(:empty) {
+        margin-top: 0.25rem;
+    }
+}
+
+.field-validation-error {
+	color: $form-feedback-invalid-color;
+}
+
+.field-validation-valid {
+	color: $form-feedback-valid-color;
+}
+
+.is-valid,
+.is-invalid {
+	&:focus {
+		box-shadow: none !important;
+	}
+}
+
+
+//
+// Honeypot
+// ------------------------------------------------------
+
+.required-text-input {
+	display: none;
+}
+
+
+//
+// Link Builder (maybe move to custom file later)
+// ------------------------------------------------------
+
+.link-control > .form-control,
+.link-control > .select2 {
+	border-color: $input-border-color !important;
+}
+
+.link-control > .form-control:focus {
+	outline: 1px solid $input-focus-border-color;
+	outline-offset: -2px;
+}

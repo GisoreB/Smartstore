@@ -1,0 +1,39 @@
+/// <reference path="references.scss" />
+
+// Cards
+// ==============================================================
+
+.card-grid {
+    .card {
+        height: 100%;
+    }
+}
+
+.card-deck {
+    .card {
+        margin-bottom: $card-deck-margin * 2;
+    }
+}
+
+.card-shadow {
+    // shim for .shadow-sm
+	box-shadow: $box-shadow-sm;
+}
+
+.card-body > p:last-child {
+    margin-bottom:  0;
+}
+
+.card-body > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+.card-body.disabled { 
+    opacity: .5;
+}
+
+@include media-breakpoint-down(sm) {
+    .card-header:first-child.collapsed {
+        @include border-bottom-radius($card-inner-border-radius);
+    }
+}

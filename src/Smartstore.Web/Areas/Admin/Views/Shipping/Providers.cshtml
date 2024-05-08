@@ -1,0 +1,22 @@
+﻿@using Smartstore.Admin.Models.Shipping
+
+@model IEnumerable<ShippingRateComputationMethodModel>
+
+@{
+    ViewBag.Title = T("Admin.Configuration.Shipping.Providers").Value;
+}
+
+<div class="section-header">
+    <div class="title">
+        <i class="fa fa-truck"></i>
+        @T("Admin.Configuration.Shipping.Providers")
+    </div>
+    <div class="options">
+        <zone name="admin_button_toolbar_before" />
+        <zone name="admin_button_toolbar_after" />
+    </div>
+</div>
+
+<div class="provider-list">
+    @(await Html.ProviderList(Model))
+</div>

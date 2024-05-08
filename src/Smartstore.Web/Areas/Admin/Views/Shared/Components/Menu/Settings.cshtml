@@ -1,0 +1,85 @@
+﻿@using Smartstore.Web.Rendering.Menus
+@using Smartstore.Collections
+@using Smartstore.Core.Content.Menus
+
+@model MenuModel
+
+@{
+    var root = Model.Root;
+    if (root == null)
+    {
+        return;
+    }
+
+    var iconColors = new[] { "green", "blue", "orange", "indigo", "red", "teal", "gray", "cyan", "pink", "dark" };
+}
+
+@functions {
+    public string GetNodeLink(TreeNode<MenuItem> node)
+    {
+        if (node.HasChildren)
+        {
+            return "javascript:void(0)";
+        }
+
+        return node.Value.GenerateUrl(this.ViewContext);
+    }
+}
+
+<div class="settings-menu list-group list-group-flush has-icons m-md-2 mr-md-0" data-menu-name="settings">
+    @{
+        var isCurrent = false;
+        var colorIndex = 0;
+
+        foreach (var node in Model.Root.Children)
+        {
+            var item = node.Value;
+            var isSelected = false;
+
+            if (!item.Visible)
+            {
+                continue;
+            }
+
+            if (!isCurrent)
+            {
+                // No need to check further if selected node is found once.
+                isCurrent = item.IsCurrent(ViewContext);
+                isSelected = isCurrent;
+            }
+
+            var itemText = node.GetItemText(T);
+            var itemUrl = GetNodeLink(node);
+            var icon = item.Icon.NullEmpty() ?? "fas fa-fw";
+
+            if (node.Next == null)
+            {
+                <hr class="my-2 ml-md-n2" />
+            }
+
+            <a class="list-group-item list-group-item-action rounded-pill" attr-class='(isSelected, "active")' href="@itemUrl">
+                <span class="list-group-item-icon">
+                    @if (item.IconLibrary == "bi")
+                    {
+                        if (colorIndex >= iconColors.Length)
+                        {
+                            colorIndex = 0;
+                        }
+
+                        <bootstrap-iconstack>
+                            <bootstrap-icon name="circle-fill" class="bi-circle" scale="2" fill="@(isSelected ? $"var(--{iconColors[colorIndex]})" : "var(--gray-300)")" />
+                            <bootstrap-icon name="@icon" attr-class='@(item.IconClass.HasValue(), item.IconClass)' fill="@(isSelected ? "#fff" : "currentcolor")" />
+                        </bootstrap-iconstack>
+
+                        colorIndex++;
+                    }
+                    else
+                    {
+                        <i class="@icon" attr-class='@(item.IconClass.HasValue(), item.IconClass)'></i>
+                    }
+                </span>
+                <span class="fwm">@itemText</span>
+            </a>
+        }
+    }
+</div>

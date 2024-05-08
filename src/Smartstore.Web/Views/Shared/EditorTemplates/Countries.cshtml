@@ -1,0 +1,120 @@
+﻿@using System.Globalization
+@using Microsoft.EntityFrameworkCore
+@using Smartstore.Utilities
+
+@removeTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@functions
+{
+    private object SelectedKeys
+    {
+        get
+        {
+            var model = GetMetadata<object>("model") ?? ViewData.Model;
+
+            if (model is int[] ids)
+            {
+                return ids;
+            }
+            else if (model is string[] codes)
+            {
+                return codes;
+            }
+            else if (model != null)
+            {
+                if (ConvertUtility.TryConvert<string>(model, CultureInfo.InvariantCulture, out string str) && str.HasValue())
+                {
+                    if (char.IsNumber(str[0]))
+                    {
+                        return str.ToIntArray();
+                    }
+                    else
+                    {
+                        return str.Convert<string[]>(Array.Empty<string>()).Select(x => x.Trim()).ToArray();
+                    }
+                }
+            }
+
+            return Array.Empty<int>();
+        }
+    }
+
+    private bool IsNullable
+    {
+        get => TryGetMetadata<bool>("nullable", out var nullable) && nullable == true;
+    }
+
+    private bool IncludeHidden
+    {
+        get => !TryGetMetadata<bool>("includeHidden", out var includeHidden) || includeHidden == true;
+    }
+
+    private bool ShippingCountriesOnly
+    {
+        get => TryGetMetadata<bool>("shippingCountriesOnly", out var shippingCountriesOnly) && shippingCountriesOnly == true;
+    }
+
+    private int StoreId
+    {
+        get => GetMetadata<int>("storeId");
+    }
+
+    private string Placeholder
+    {
+        get => GetMetadata<string>("placeholder");
+    }
+}
+
+@{
+    var items = GetMetadata<IList<CountrySelectListItem>>("items");
+    if (items == null)
+    {
+        var query = CommonServices.DbContext.Countries
+            .AsNoTracking()
+            .ApplyStandardFilter(IncludeHidden, StoreId, false);
+
+        if (ShippingCountriesOnly)
+        {
+            query = query.Where(x => x.AllowsShipping);
+        }
+
+        var countries = await query.ToListAsync();
+
+        var keys = SelectedKeys;
+        items = (keys is int[] ids ? countries.ToSelectListItems(ids) : countries.ToSelectListItems((string[])keys));
+    }
+
+    var modelType = ViewData.ModelMetadata.ModelType;
+    var flagsPath = Url.Content("~/images/flags/");
+    var attributes = new AttributeDictionary().Merge(ConvertUtility.ObjectToDictionary(ViewData["htmlAttributes"] ?? new object()));
+    var placeholder = Placeholder;
+
+    if (!attributes.ContainsKey("multiple"))
+    {
+        if (!TryGetMetadata<bool>("multiple", out var multiple))
+        {
+            multiple = modelType.IsSequenceType();
+        }
+        if (multiple)
+        {
+            attributes["multiple"] = "multiple";
+        }
+    }
+}
+<select asp-for="@Model"
+        attrs="attributes"
+        data-placeholder="@T("Address.SelectCountry").Value"
+        class="edit-control"
+        data-editor="select">
+
+    <option sm-if="IsNullable || modelType == typeof(int?) || placeholder.HasValue()" value="">@(placeholder ?? T("Common.Unspecified").Value)</option>
+    
+    @foreach (var item in items)
+    {
+        <option value="@item.Value"
+                attr-selected='(item.Selected, "selected")'
+                data-imageurl="@Url.Content(flagsPath + item.TwoLetterIsoCode.ToLower() + ".png")">
+            @item.Text
+        </option>
+    }
+</select>

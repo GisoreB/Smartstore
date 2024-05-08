@@ -1,0 +1,424 @@
+﻿@model InstallationModel
+
+@inject IInstallationService InstallService
+
+@{
+    Layout = null;
+    var availableLanguages = ViewBag.AvailableInstallationLanguages as IList<SelectListItem>;
+}
+
+@functions {
+    private string T(string key)
+    {
+        return InstallService.GetResource(key);
+    }
+}
+
+<header id="header">
+    <nav id="navbar" class="navbar navbar-dark navbar-expand-sm content p-0">
+        <a class="navbar-brand mx-0 mr-3" href="https://www.smartstore.com">
+            <img class="navbar-img" src="~/images/smartstore.svg" alt="Smartstore" />
+        </a>
+        <div class="navbar-text h5 p-0 m-0 pl-1" style="height: 20px; vertical-align: bottom">
+            @T("Title")
+        </div>
+
+        <div class="collapse navbar-collapse ml-auto">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle navbar-tool" href="javascript:void(0)" title="Deutsch" data-toggle="dropdown" style="max-width: none">
+                        <i class="icm icm-earth navbar-icon pr-1"></i>
+                        <span style="text-transform: uppercase">@availableLanguages.First(x => x.Selected).Text</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        @foreach (var lang in availableLanguages)
+                        {
+                            <a class="dropdown-item" href="@lang.Value">
+                                <i class="icm icm-check@(!lang.Selected ? " invisible" : "")"></i>
+                                <span>@lang.Text</span>
+                            </a>
+                        }
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a id="restart-install" class="nav-link navbar-tool" href="javascript:;" title="@T("RestartInstallation")" rel="nofollow">
+                        <i class="icm icm-refresh navbar-icon"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div id="content" class="content" style="padding: 3rem !important">
+    <div class="cph">
+        <form asp-action="Install" method="post" class="form-horizontal" autocomplete="on" id="install-form" sm-ajax
+              sm-confirm="@T("ConfirmInstall")"
+              sm-onbegin="Installation.onStart"
+              sm-oncomplete="Installation.onComplete"
+              sm-onfailure="Installation.onFailure"
+              sm-onsuccess="Installation.onSuccess">
+
+            <div class="install-panel">
+                <div class="install-content">
+                    @if (Model.IsAutoInstall && !ViewData.ModelState.IsValid)
+                    {
+                        <div asp-validation-summary="All"></div>
+                    }
+
+                    <p class="fs-h6 text-muted">
+                        @T("Tooltip1").
+                    </p>
+                    <p class="fs-h6 text-muted mb-5">
+                        @T("Tooltip2").
+                    </p>
+
+                    <!-- GENERAL -->
+                    <fieldset class="mb-5">
+                        <div class="heading mb-3">
+                            <h2 class="heading-title text-muted">@T("StoreInformation")</h2>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" asp-for="AdminEmail">@T("AdminEmail")</label>
+                            <div class="col-md-9">
+                                <input asp-for="AdminEmail" class="form-control remember" />
+                                <span asp-validation-for="AdminEmail"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" asp-for="AdminPassword">@T("AdminPassword")</label>
+                            <div class="col-md-9">
+                                <input asp-for="AdminPassword" class="form-control" />
+                                <span asp-validation-for="AdminPassword"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" asp-for="ConfirmPassword">@T("ConfirmPassword")</label>
+                            <div class="col-md-9">
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- DATABASE -->
+                    <fieldset class="mb-5">
+                        <div class="heading mb-3">
+                            <h2 class="heading-title text-muted">@T("DatabaseInformation")</h2>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" asp-for="DataProvider">@T("DbSystem")</label>
+                            <div class="col-md-9">
+                                <select asp-for="DataProvider" asp-items="ViewBag.AvailableDataProviders" class="form-control remember"></select>
+                                <span asp-validation-for="DataProvider"></span>
+                            </div>
+                        </div>
+
+                        <!-- Connection root -->
+                        <div id="ConnectionGroup">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" asp-for="UseRawConnectionString">@T("Connection")</label>
+                                <div class="col-md-9">
+                                    <select asp-for="UseRawConnectionString" class="form-control remember">
+                                        <option value="False">@T("ConnectionStringValues")</option>
+                                        <option value="True">@T("RawConnectionString")</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Structural connection info -->
+                            <div id="ConnectionInfoPanel">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" asp-for="DbServer">@T("Server")</label>
+                                    <div class="col-md-9">
+                                        <div class="form-row">
+                                            <div id="DbServerCol" class="col">
+                                                <div class="has-icon">
+                                                    <input asp-for="DbServer" class="form-control remember" placeholder="@T("DbServer")" />
+                                                    <span class="input-group-icon text-muted"><i class="icm icm-server" style="line-height: inherit"></i></span>
+                                                </div>
+                                                <span asp-validation-for="DbServer"></span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="has-icon">
+                                                    <input asp-for="DbName" class="form-control remember" placeholder="@T("DbName")" />
+                                                    <span class="input-group-icon text-muted"><i class="icm icm-database" style="line-height: inherit"></i></span>
+                                                </div>
+                                                <span asp-validation-for="DbName"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="AuthGroup">
+                                    <div id="AuthTypeCol" class="form-group row">
+                                        <label class="col-md-3 col-form-label">@T("Authentication")</label>
+                                        <div class="col-md-9">
+                                            <select asp-for="DbAuthType" class="form-control remember">
+                                                <option value="sqlserver">@T("SqlAuthentication")</option>
+                                                <option value="windows">@T("WindowsAuthentication")</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-9 offset-md-3">
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="has-icon">
+                                                        <input asp-for="DbUserId" class="form-control remember" placeholder="@T("DbUserId")" />
+                                                        <span class="input-group-icon text-muted"><i class="icm icm-user" style="line-height: inherit"></i></span>
+                                                    </div>
+                                                    <span asp-validation-for="DbUserId"></span>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="has-icon">
+                                                        <input asp-for="DbPassword" class="form-control remember" placeholder="@T("DbPassword")" />
+                                                        <span class="input-group-icon text-muted"><i class="icm icm-shield" style="line-height: inherit"></i></span>
+                                                    </div>
+                                                    <span asp-validation-for="DbPassword"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Raw connection string -->
+                            <div id="RawConnectionStringPanel" style="display: none">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" asp-for="DbRawConnectionString">@T("DbRawConnectionString")</label>
+                                    <div class="col-md-9">
+                                        <textarea asp-for="DbRawConnectionString" rows="3" class="form-control remember"></textarea>
+                                        <small id="RawConnectionStringHelp" class="form-text text-muted mt-2">
+                                            @T("Example"):
+                                            <span data-for-provider="sqlserver">
+                                                Data Source=MyServerName; Initial Catalog=MyDatabaseName; Persist Security Info=True; User Id=MyUserName; Password=MyPassword
+                                            </span>
+                                            <span data-for-provider="mysql" style="display: none">
+                                                Server=localhost; Database=MyDatabaseName; Uid=root; Pwd=MyPassword
+                                            </span>
+                                            <span data-for-provider="postgresql" style="display: none">
+                                                Host=localhost; Database=MyDatabaseName; Username=postgres; Password=MyPassword
+                                            </span>
+                                            <span data-for-provider="sqlite" style="display: none">
+                                                Data Source=./App_Data/Tenants/Default/mydb.db; Cache=Shared;
+                                            </span>
+                                            <br />
+                                            Find more info <a href="http://www.connectionstrings.com/" rel="nofollow" target="_blank">here</a>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Collation -->
+                            <div id="CollationPanel">
+                                <div class="form-group row">
+                                    <div class="col-md-9 offset-md-3">
+                                        <div class="form-check mb-2">
+                                            <input type="checkbox" asp-for="UseCustomCollation" class="form-check-input remember" />
+                                            <label class="form-check-label" asp-for="UseCustomCollation">@T("CustomCollation")</label>
+                                        </div>
+                                        <div id="CollationInnerPanel" style="display: none">
+                                            <input asp-for="Collation" class="form-control remember" />
+                                            <span asp-validation-for="Collation"></span>
+                                            <small class="form-text text-muted mt-2">
+                                                @Html.Raw(T("CustomCollation.Hint"))
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- OPTIONS -->
+                    <fieldset class="mb-5">
+                        <div class="heading mb-3">
+                            <h2 class="heading-title text-muted">@T("InstallOptions")</h2>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" asp-for="PrimaryLanguage">@T("PrimaryLanguage")</label>
+                            <div class="col-md-9">
+                                <select asp-for="PrimaryLanguage" asp-items="ViewBag.AvailableAppLanguages" class="form-control remember"></select>
+                                <span asp-validation-for="PrimaryLanguage"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" asp-for="MediaStorage">@T("MediaStorage.Label")</label>
+                            <div class="col-md-9">
+                                <select asp-for="MediaStorage" asp-items="ViewBag.AvailableMediaStorages" class="form-control remember"></select>
+                                <span asp-validation-for="MediaStorage"></span>
+                                <small class="form-text text-muted mt-2">
+                                    @T("MediaStorage.Hint")
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-9 offset-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" asp-for="InstallSampleData" class="form-check-input remember" />
+                                    <label class="form-check-label" asp-for="InstallSampleData">@T("CreateSampleData")</label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="form-group row">
+                        <div class="col-md-9 offset-md-3">
+                            <div id="messages" class="alert alert-danger hide">
+                                <ul>
+                                    <!-- AJAX -->
+                                </ul>
+                            </div>
+                            <button type="submit" id="install-button" class="btn btn-primary btn-lg btn-block btn-install fs-h4 font-weight-normal">
+                                <i class="icm icm-download2"></i>
+                                <span>@T("Install")</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<widget target-zone="scripts" prepend="true">
+    <script src="~/lib/jquery/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.custom.js"></script>
+    <script src="~/js/smartstore.dialogs.js"></script>
+</widget>
+
+<widget target-zone="scripts" prepend="false">
+    <script src="~/lib/jquery/jquery.addeasing.js"></script>
+    <script src="~/lib/jquery/jquery.scrollTo.js"></script>
+</widget>
+
+<script sm-target-zone="scripts" data-origin="install-form">
+    $(function () {
+        var dataProvider = $('#DataProvider');
+        var useRawConString = $('#UseRawConnectionString');
+        var connectionInfo = $('#ConnectionInfoPanel');
+        var rawConString = $('#RawConnectionStringPanel');
+        var rawConStringHelp = $('#RawConnectionStringHelp');
+        var authGroup = $('#AuthGroup');
+        var dbServerCol = $('#DbServerCol');
+        var authTypeCol = $('#AuthTypeCol');
+        var authType = $('#DbAuthType');
+        var userId = $('#DbUserId');
+        var password = $('#DbPassword');
+        var useCustomCollation = $('#UseCustomCollation');
+        var collationPanel = $('#CollationPanel');
+        var collationInnerPanel = $('#CollationInnerPanel');
+
+        function hide(el, thenShow, callback) {
+            $(el).slideUp(300, "ease-in-out", function () {
+                if (thenShow) {
+                    show($(thenShow), callback);
+                }
+                else if (callback) {
+                    callback();
+                }
+            });
+        }
+
+        function show(el, callback) {
+            $(el).slideDown(300, "ease-in-out", callback);
+        }
+
+        function toggleDataProvider() {
+            let selectedProvider = dataProvider.val();
+            let isSqlite = selectedProvider === 'sqlite';
+            let isSqlServer = selectedProvider === 'sqlserver';
+
+            authGroup.toggle(!isSqlite);
+            dbServerCol.toggle(!isSqlite);
+            collationPanel.toggle(!isSqlite);
+            authTypeCol.toggle(isSqlServer);
+
+            if (isSqlServer) {
+                authType.removeAttr("disabled");
+                toggleAuthType.apply(authType.get(0), arguments);
+            }
+            else {
+                authType.attr("disabled", "disabled");
+                userId.removeAttr("disabled");
+                password.removeAttr("disabled");
+            }
+
+            if (isSqlite) {
+                useCustomCollation.prop("checked", false);
+                $('#Collation').val(null);
+            }
+
+            $('#CollationInfoLink').attr("href", getCollationInfoUrl(selectedProvider));
+
+            rawConStringHelp.find('> [data-for-provider]').each(function () {
+                let helpFor = $(this).data('for-provider');
+                $(this).toggle(helpFor == selectedProvider);
+            });
+        }
+
+        function toggleConnectionInfo() {
+            var useRaw = $(this).val() === 'True';
+            if (useRaw) {
+                hide(connectionInfo, rawConString);
+            }
+            else {
+                hide(rawConString, connectionInfo);
+            }
+        }
+
+        function toggleAuthType() {
+            var selectedType = $(this).val();
+            if (selectedType == 'sqlserver') {
+                userId.removeAttr("disabled");
+                password.removeAttr("disabled");
+            }
+            else if (selectedType == 'windows') {
+                userId.attr("disabled", "disabled");
+                password.attr("disabled", "disabled");
+            }
+        }
+
+        function toggleCollation() {
+            collationInnerPanel.toggle(useCustomCollation.is(':checked'));
+        }
+
+        function getCollationInfoUrl(provider) {
+            switch (provider) {
+                case 'mysql':
+                    return 'https://dev.mysql.com/doc/refman/8.0/en/charset-general.html';
+                case 'sqlserver':
+                    return 'https://learn.microsoft.com/en-us/sql/relational-databases/collations/collation-and-unicode-support';
+                case 'postgresql':
+                    return 'https://www.postgresql.org/docs/current/collation.html';
+                case 'sqlite':
+                    return 'https://www.sqlite.org/datatype3.html#collation';
+                default:
+                    return '#';
+            }
+        }
+
+        dataProvider.on('change', toggleDataProvider).trigger('change');
+        useRawConString.on('change', toggleConnectionInfo).trigger('change');
+        authType.on('change', toggleAuthType).trigger('change');
+        useCustomCollation.on('change', toggleCollation).trigger('change');
+
+        $('#restart-install').on('click', function (e) { 
+            e.preventDefault();
+            
+            if (confirm(Res['AreYouSure'])) {
+                Installation.restart();
+            }
+            
+            return false;
+        });
+
+        setRememberedFormFields("installPrefs");
+    });
+</script>

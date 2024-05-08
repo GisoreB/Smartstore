@@ -1,0 +1,120 @@
+﻿@using Smartstore.Core.Checkout.Cart;
+@using Smartstore.Web.Models.Catalog;
+
+@model ProductSummaryItemModel
+
+@{
+    var list = Model.Parent;
+    var price = Model.Price;
+    var isLinesMode = list.ViewMode == ProductSummaryViewMode.List;
+    string artDetailUrl = ViewBag.ArtDetailUrl;
+
+    void RenderBuyButton(bool blockStyle)
+    {
+        var cssClasses = blockStyle ? "btn-block d-none d-md-block" : "btn-lg art-btn col";
+        if (!blockStyle && isLinesMode)
+        {
+            cssClasses += " d-md-none";
+        }
+        if (!Model.Price.CallForPrice)
+        {
+            var addToCartUrl = Url.Action("AddProductSimple", "ShoppingCart", new { productId = Model.Id, forceredirection = Model.Parent.ForceRedirectionAfterAddingToCart, area = "" });
+            var title = (Model.Price.AvailableForPreOrder ? T("ShoppingCart.PreOrder") : T("ShoppingCart.AddToCart"));
+
+            <a data-href='@addToCartUrl'
+               href="#"
+               class="btn btn-primary ajax-cart-link px-sm-2 @cssClasses add-to-cart-button"
+               title="@title"
+               data-toggle='@(!blockStyle ? "tooltip" : "")' data-placement="bottom"
+               rel="nofollow"
+               data-type="cart"
+               data-action="add">
+                <i class="fa fa-cart-arrow-down"></i>
+                @if (blockStyle)
+                {
+                    <span>@title</span>
+                }
+                else if (isLinesMode)
+                {
+                    <span class="d-none d-sm-inline">@title</span>
+                }
+            </a>
+        }
+        else
+        {
+            <a href="@Url.Action("AskQuestion", "Product", new { id = Model.Id, area = "" })"
+               class="btn @(blockStyle ? "btn-light" : "btn-gray") @cssClasses"
+               data-toggle='@(!blockStyle ? "tooltip" : "")' data-placement="bottom"
+               rel="nofollow"
+               title="@T("Products.CallForPrice.GoToForm")">
+                <i class="fa fa-question"></i>
+                @if (blockStyle)
+                {
+                    <span>@T("Products.CallForPrice.GoToForm")</span>
+                }
+                else if (isLinesMode)
+                {
+                    @* Show "Call for price" label on sm-only (enough space!) *@
+                    <span class="d-none d-sm-inline">@T("Products.CallForPrice.GoToForm")</span>
+                }
+            </a>
+        }
+    }
+}
+
+@if (isLinesMode && !price.DisableBuyButton && list.BuyEnabled)
+{
+    <div class="mt-3">
+        @{ RenderBuyButton(true); }
+    </div>
+}
+
+<div class="row no-gutters art-btn-group" attr-class='(isLinesMode, "mt-3")'>
+    @if (!price.DisableBuyButton && list.BuyEnabled)
+    {
+        RenderBuyButton(false);
+    }
+
+    @if (!price.DisableWishlistButton && list.WishlistEnabled)
+    {
+        <a data-href='@Url.Action("AddProductSimple", "ShoppingCart", new { productId = Model.Id, shoppingCartTypeId = (int)ShoppingCartType.Wishlist , area = "" })'
+           href="#"
+           class="btn btn-secondary btn-lg art-btn col ajax-cart-link add-to-wishlist-button" 
+           title="@T("Categories.Wishlist")"
+           data-toggle="tooltip" data-placement="bottom"
+           rel="nofollow"
+           data-type="wishlist"
+           data-action="add">
+            <i class="fal fa-heart"></i>
+        </a>
+    }
+    else if (isLinesMode)
+    {
+        <span class="art-btn-spacer col"></span>
+    }
+
+    @if (list.CompareEnabled)
+    {
+        <a data-href="@Url.Action("AddProductToCompare", "Catalog", new { id = Model.Id, area = "" })"
+           href="#"
+           class="btn btn-secondary btn-lg art-btn col ajax-cart-link add-to-compare-list-button"
+           title="@T("Categories.Compare")"
+           data-toggle="tooltip" data-placement="bottom"
+           rel="nofollow"
+           data-type="compare"
+           data-action="add">
+            <i class="fa fa-retweet"></i>
+        </a>
+    }
+    else if (isLinesMode)
+    {
+        <span class="art-btn-spacer col"></span>
+    }
+
+    <a href='@Model.DetailUrl'
+       class="btn btn-secondary btn-lg art-btn col product-details-button"
+       title="@T("Products.Details")"
+       data-toggle="tooltip" data-placement="bottom">
+        <i class="fa fa-info"></i>
+    </a>
+</div>

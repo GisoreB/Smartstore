@@ -1,0 +1,17 @@
+﻿@model PublicPaymentMethodModel
+
+<!-- Set up a container element for the paypal button -->
+<div id="paypal-paylater-button-container"
+     class="paypal-button-container"
+     data-init-transaction-url="@Url.Action("InitTransaction", "PayPal")"
+     data-create-order-url="@Url.Action("CreateOrder", "PayPal")"
+     data-forward-url="@Url.Action("BillingAddress", "Checkout")"
+     data-shape="@Model.ButtonShape"
+     data-color="@Model.ButtonColor"></div>
+
+@*INFO: No target zone here because this can also be rendered via AJAX (in OffCanvasCart)*@
+<script data-origin="paypal-paylater-button">
+    $(function () {
+        const ppPayLaterButton = new PayPalButton("#paypal-paylater-button-container", "paylater");
+    });
+</script>

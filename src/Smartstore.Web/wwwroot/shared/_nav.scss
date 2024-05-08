@@ -1,0 +1,444 @@
+/// <reference path="references.scss" />
+
+
+// General
+// ==============================================================
+
+.nav ~ .tab-content {
+    margin: 1rem 0;
+}
+
+.nav-link-summary {
+    display: none;
+}
+
+
+// 
+// Add icon support to nav tabs and pills (BS)
+// ==============================================================
+
+.nav {
+    --nav-link-icon-color: #{$gray-700};
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(100% + 1px);
+        // Spacer for icons
+        column-gap: 0.5em;
+
+        &.dropdown-toggle:after {
+            // Quick fix for chevron position
+            position: relative;
+            top: 2px;
+            margin-inline-start: 0;
+        }
+    }
+
+	.nav-link > img,
+	.nav-link > i,
+    .nav-link > svg {
+        position: relative;
+		font-size: inherit;
+		color: var(--nav-link-icon-color);
+	}
+
+	.nav-link:hover > i,
+    .nav-link:hover > svg,
+	.nav-link.active > i,
+    .nav-link.active > svg {
+		color: inherit;
+	}
+
+	.nav-link > .chevron {
+		margin-inline-start: 3px;
+	}
+
+    .tab-caption {
+        padding-inline: 0 !important;
+    }
+}
+
+.touchevents .nav {
+    // Don't wrap horizontal tabs on touch devices
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    .nav-link {
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+}
+
+
+// 
+// Segmented nav
+// ==============================================================
+
+.nav-segmented {
+    --nav-segmented-bg: var(--secondary);
+    --nav-segmented-border-radius: 50rem;
+    --nav-segmented-padding: 4px;
+    --nav-link-color: inherit;
+    --nav-link-padding-y: 0.4rem;
+    --nav-link-font-weight: #{$font-weight-normal};
+    --nav-segmented-link-hover-bg: #{rgba($black, 0.05)};
+    --nav-segmented-link-active-border-color: #{rgba($black, 0.15)};
+    --nav-segmented-link-active-bg: #fff;
+    --nav-segmented-link-active-shadow: #{0 1px 2px rgba($black, 0.08)};
+    --nav-segmented-link-border-radius: var(--nav-segmented-border-radius);
+
+    background-color: var(--nav-segmented-bg);
+    border-radius: var(--nav-segmented-border-radius);
+    padding: var(--nav-segmented-padding);
+    gap: 4px;
+
+    .nav-link {
+        transition: none;
+        border: 1px solid transparent;
+        @include border-radius(var(--nav-segmented-link-border-radius));
+
+        &:hover,
+        &:focus {
+            background-color: var(--nav-segmented-link-hover-bg);
+        }
+    }
+
+    .nav-link.active,
+    .show > .nav-link {
+        font-weight: $font-weight-medium;
+        background-color: var(--nav-segmented-link-active-bg);
+        border-color: var(--nav-segmented-link-active-border-color);
+        box-shadow: var(--nav-segmented-link-active-shadow);
+    }
+}
+
+
+// Material Tabs
+// ==============================================================
+
+.nav-tabs-line {
+    --nav-link-padding-x: 1rem;
+    --nav-link-padding-y: 0.825rem;
+    --nav-link-color: #{$mtab-color};
+    --nav-link-font-weight: #{$mtab-font-weight};
+    --nav-link-transition: color 0.05s ease-in-out, background-color 0.05s ease-in-out;
+    --nav-link-hover-color: #{$mtab-active-color};
+    @include rfs($mtab-font-size, --nav-link-font-size);
+
+    --nav-tabs-border-radius: 0;
+    --nav-tabs-border-width: 0;
+    --nav-tabs-link-active-color: var(--nav-link-hover-color);
+    --nav-tabs-link-active-bg: transparent;
+
+    --nav-underline-width: 2px;
+    --nav-underline-color: #{rgba($black, 0.2)};
+    --nav-underline-active-color: #{theme-color("warning")};
+
+	position: relative;
+    border-bottom-width: 1px;
+
+	.nav-item {
+		position: relative;
+	}
+
+	.nav-link {
+		text-transform: $mtab-text-transform;
+		text-align: center;
+		position: relative;
+
+		&.disabled {
+			opacity: 0.4;
+		}
+
+		> i,
+        > svg,
+        > img {
+			display: none;
+		}
+
+        .badge {
+			vertical-align: text-top;
+        }
+
+		@include media-breakpoint-up(lg) {
+			> i,
+            > svg,
+            > img {
+				display: inline-block;
+			}
+		}
+	}
+
+    &.nav-tabs-line-dense {
+        border-block-width: 0;
+
+        &:not(.nav-stacked) {
+            --nav-link-padding-x: 0;
+            --nav-link-padding-y: 0.825rem;
+
+            margin-inline-start: -0.75rem;
+
+            .nav-link {
+                margin: 0 0.75rem;
+            }
+        }
+    }
+
+    &.nav-inverse {
+        --nav-link-color: #{rgba($yiq-text-light, 0.4)};
+        --nav-link-hover-color: #{$nav-link-hover-color};
+        --nav-tabs-link-active-color: #{$yiq-text-light};
+        --nav-tabs-link-active-bg: transparent;
+        --nav-underline-color: #{rgba(#fff, 0.4)};
+
+        .nav-link {
+		    &:hover {
+			    color: rgba($yiq-text-light, 0.75);
+		    }
+
+		    &:active:not(.active) {
+                color: $yiq-text-light;
+		    }
+        }
+    }
+
+	.nav-link:not(.disabled):before {
+		position: absolute;
+		content: '';
+		bottom: 0;
+		left: 50%;
+		right: 50%;
+		height: var(--nav-underline-width);
+		background-color: var(--nav-underline-color);
+		transition: all 0.12s ease-out;
+	}
+
+	.nav-link:hover:before {
+		left: 0;
+		right: 0;
+	}
+
+	.nav-link.active:before,
+	.nav-link.active:focus:before,
+	.nav-item.open .nav-link:before,
+	.nav-item.open .nav-link:focus:before {
+		left: 0;
+		right: 0;
+		background-color: var(--nav-underline-active-color);
+	}
+}
+
+
+// Stacked Material tabs (strip on the sides)
+// ==============================================================
+
+@include media-breakpoint-up(lg) {
+    // The main layout grid: Nav + Content
+    .tabs-stacked {
+        display: grid;
+        grid-gap: 30px;
+        flex-wrap: nowrap;
+
+        &.tabs-left {
+            grid-template-columns: auto minmax(0, 1fr);
+        }
+
+        &.tabs-right {
+            grid-template-columns: minmax(0, 1fr) auto;
+            grid-auto-flow: dense;
+
+            > .nav-aside {
+                grid-column: 2;
+            }
+
+            > .nav-content {
+                grid-column: 1;
+            }
+        }
+    }
+
+    .nav-stacked {
+        --nav-link-padding-x: 1.25rem;
+        --nav-link-padding-y: 0.625rem;
+        --nav-link-color: #{$gray-700};
+        @include rfs($font-size-sm, --nav-link-font-size);
+
+        max-width: 250px;
+        min-height: 100%;
+
+	    .nav-link > img,
+	    .nav-link > i,
+        .nav-link > svg {
+            // Move icon slightly away from label if tabs are placed on left or right
+            //inset-inline-start: -0.25em;
+            margin-inline: 0.25em;
+	    }
+
+        &.nav-tabs {
+            border-bottom-width: 0;
+
+            .nav-link {
+                margin-bottom: 0;
+            }
+
+            &.nav-left {
+                --nav-tabs-link-hover-border-color: #{$gray-200 $nav-tabs-border-color $gray-200 $gray-200};
+                --nav-tabs-link-active-border-color: #{$gray-200 $nav-tabs-link-active-bg $gray-300 $gray-300};
+                border-inline-end: 1px solid var(--nav-tabs-border-color);
+            }
+            
+            &.nav-right {
+                --nav-tabs-link-hover-border-color: #{$gray-200 $gray-200 $gray-200 $nav-tabs-border-color};
+                --nav-tabs-link-active-border-color: #{$gray-200 $gray-300 $gray-300 $nav-tabs-link-active-bg};
+                border-inline-start: 1px solid var(--nav-tabs-border-color);
+            }
+
+            &:not(.nav-tabs-line) {
+                &.nav-left .nav-link {
+                    margin-inline-end: calc(-1 * var(--nav-tabs-border-width));
+                    @include border-left-radius(var(--nav-tabs-border-radius));
+                    @include border-right-radius(0);
+                }
+
+                &.nav-right .nav-link {
+                    margin-inline-start: calc(-1 * var(--nav-tabs-border-width));
+                    @include border-right-radius(var(--nav-tabs-border-radius));
+                    @include border-left-radius(0);
+                }
+            }
+        }
+
+        &.nav-tabs-line {
+            .nav-item {
+                margin: 0;
+            }
+
+            .nav-link {
+                text-align: start;
+                background-color: transparent;
+                justify-content: start;
+                column-gap: 0.75em;
+
+                .tab-caption {
+                    transition: all ease 0.15s;
+                }
+
+                &:not(.active) > i,
+                &:not(.active) > svg {
+                    color: $dropdown-icon-color;
+                    transition: transform ease 0.15s;
+                }
+
+                &:hover,
+                &.active {
+                    color: var(--nav-link-hover-color);
+                }
+
+                &:hover:not(.active) {
+                    border-color: var(--nav-underline-color) !important;
+
+                    .tab-caption {
+                        transform: translateX(2px);
+                    }
+
+                    > i,
+                    > svg {
+                        color: $gray-700;
+                        transform: scale(1.2);
+                    }
+                }
+
+                &:not(.disabled):before {
+                    // disable selection animations
+                    display: none;
+                }
+            }
+
+            &.nav-left {
+                .nav-item {
+                    margin-inline-end: -1px;
+                }
+
+                .nav-link {
+                    padding-inline-end: 1.25rem;
+                    padding-inline-start: 0;
+                    border-inline-end: 3px solid transparent;
+                }
+
+                .nav-link.active,
+                .nav-link.active:focus,
+                .nav-item.open > .nav-link,
+                .nav-item.open > .nav-link:focus {
+                    border-inline-end-color: var(--nav-underline-active-color);
+                }
+            }
+
+            &.nav-right {
+                .nav-item {
+                    margin-inline-start: -1px;
+                }
+
+                .nav-link {
+                    padding-inline-start: 1.25rem;
+                    padding-inline-end: 1.25rem;
+                    border-inline-start: 3px solid transparent;
+                }
+
+                .nav-link.active,
+                .nav-link.active:focus,
+                .nav-item.open > .nav-link,
+                .nav-item.open > .nav-link:focus {
+                    border-color: var(--nav-underline-active-color);
+                }
+            }
+        }
+    }
+}
+
+
+// Responsive Tabs:
+// Transform to "Collapsible" on screens < md
+// ==============================================================
+
+.nav-responsive {
+    .nav-tabs {
+        display: none;
+    }
+
+    .nav-toggler {
+        display: none;
+        padding-inline: 0 !important;
+
+        &:after {
+            inset-inline-end: 0.5rem !important;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        .nav-toggler {
+            display: block;
+        }
+
+        .tab-pane {
+            display: block !important;
+            opacity: 1;
+        }
+
+        .nav-collapse {
+            padding-inline: 0 !important;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        .nav-tabs {
+            display: flex;
+        }
+
+        .nav-collapse.collapse {
+            display: block;
+        }
+    }
+}

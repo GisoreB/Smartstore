@@ -1,0 +1,92 @@
+﻿@using Newtonsoft.Json.Linq;
+
+@model IRuleExpression
+
+@{
+    var id = "rule-value-" + Model.Id;
+    string fromStr = T("Common.From");
+    string toStr = T("Common.To");
+    string entityId = null;
+    string minQuantity = null;
+    string maxQuantity = null;
+    RuleValueSelectListOption selectedEntity = null;
+    var childDescriptor = Model.Descriptor.Metadata.Get("ChildRuleDescriptor") as RuleDescriptor;
+
+    try
+    {
+        if (Model.RawValue.HasValue())
+        {
+            dynamic json = JObject.Parse(Model.RawValue);
+            // INFO: 'ProductId' has been replaced by 'EntityId'.
+            entityId = ((string)json.ProductId).NullEmpty() ?? (string)json.EntityId;
+            minQuantity = (string)json.MinQuantity;
+            maxQuantity = (string)json.MaxQuantity;
+        }
+    }
+    catch
+    {
+    }
+
+    var remoteUrl = Url.Action("RuleOptions", "Rule", new
+    {
+        reason = RuleOptionsRequestReason.SelectListOptions,
+        ruleId = Model.Id,
+        rootRuleSetId = (int)ViewBag.RootRuleSetId,
+        descriptorMetadataKey = "ChildRuleDescriptor",
+        rawValue = entityId
+    });
+
+    if (entityId.HasValue() && childDescriptor.SelectList is RemoteRuleValueSelectList list)
+    {
+        var ruleOptionsProviders = Resolve<IEnumerable<IRuleOptionsProvider>>();
+        var optionsProvider = ruleOptionsProviders.FirstOrDefault(x => x.Matches(list.DataSource));
+        if (optionsProvider != null)
+        {
+            var options = await optionsProvider.GetOptionsAsync(new RuleOptionsContext(RuleOptionsRequestReason.SelectedDisplayNames, childDescriptor)
+            {
+                Value = entityId,
+                PageSize = int.MaxValue,
+                Language = WorkContext.WorkingLanguage
+            });
+            selectedEntity = options.Options.FirstOrDefault(x => x.Value.EqualsNoCase(entityId));
+        }
+    }
+}
+
+<div class="row g-2 flex-nowrap">
+    <div class="col">
+        <select id="@(id)-EntityId" name="@(id)-EntityId" data-placeholder="@T("Common.Unspecified")" data-remote-url="@remoteUrl">
+            @if (selectedEntity != null)
+            {
+                <option value="@selectedEntity.Value" selected="selected" attr-data-hint='(selectedEntity.Hint?.HasValue() ?? false, selectedEntity.Hint)'>
+                    @(selectedEntity.Text.NullEmpty() ?? selectedEntity.Value)
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-auto" style="width: clamp(80px, 20%, 100px);">
+        @*INFO: onRuleValueChanged (enables save button) called by handler in smartstore.rules.js.*@
+        <input type="number"
+                id="@(id)-MinQuantity"
+                name="@(id)-MinQuantity"
+                attr-value='(minQuantity.HasValue(), minQuantity)'
+                title="@fromStr"
+                placeholder="@fromStr"
+                min="0"
+                step="1"
+                sm-numberinput-group-class="numberinput-addon-sm"
+                class="form-control" />
+    </div>
+    <div class="col-auto" style="width: clamp(80px, 20%, 100px);">
+        <input type="number"
+                id="@(id)-MaxQuantity"
+                name="@(id)-MaxQuantity"
+                attr-value='(maxQuantity.HasValue(), maxQuantity)'
+                title="@toStr"
+                placeholder="@toStr"
+                min="0"
+                step="1"
+                sm-numberinput-group-class="numberinput-addon-sm"
+                class="form-control" />
+    </div>
+</div>

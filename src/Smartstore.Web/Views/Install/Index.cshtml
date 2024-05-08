@@ -1,0 +1,268 @@
+﻿@model InstallationModel
+
+@inject IInstallationService InstallService
+
+@{
+    Layout = null;
+
+    var installResult = ViewBag.InstallResult as InstallationResult;
+    var wasRunning = installResult != null;
+}
+
+@functions {
+    private string T(string key)
+    {
+        return InstallService.GetResource(key);
+    }
+}
+
+<!DOCTYPE html>
+<html lang="@InstallService.GetCurrentLanguage().Code">
+<head>
+    <meta charset="utf-8">
+    <title>@T("Title")</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
+    <meta property="sm:root" content="@Url.Content("~/")" />
+
+    <script>
+        window.Res = {
+            "Common.Notification": "@T("Common.Notification")",
+            "Common.StartShop": "@T("Common.StartShop")",
+            "Installing": "@T("Installing")",
+            "RestartInstallation": "@T("RestartInstallation")",
+            "ConfirmInstall": "@T("ConfirmInstall")",
+            "Progress.Redirect": "@T("Progress.Redirect")",
+            "AreYouSure": "@T("AreYouSure")"
+        }
+    </script>
+
+    <link rel="stylesheet" href="~/lib/fontastic/fontastic.css" />
+    <link rel="stylesheet" href="~/lib/fa6/css/all.min.css" />
+    <link rel="stylesheet" href="~/bundle/css/admin-theme.css" />
+
+    <script src="~/lib/modernizr/modernizr.js"></script>
+    <script src="~/lib/jquery/jquery-3.7.1.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        .content {
+            max-width: 990px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        .redirect-info > a {
+            color: #fff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body data-url-install="@Url.Action("Install", "Install")"
+      data-url-progress="@Url.Action("Progress", "Install")"
+      data-url-finalize="@Url.Action("Finalize", "Install")"
+      data-url-checkalive="@Url.Content("~/taskscheduler/noop")"
+      data-url-home="@Url.Action("Index", "Home")">
+
+    <div id="page">
+        <div class="page-main">
+            <partial name="_InstallForm" model="Model" />
+        </div>
+    </div>
+
+    <zone name="scripts">
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/js/smartstore.system.js"></script>
+        <script src="~/js/smartstore.viewport.js"></script>
+        <script src="~/js/smartstore.common.js"></script>
+        <script src="~/lib/underscore/underscore.min.js"></script>
+        <script src="~/js/underscore.mixins.js"></script>
+        <script src="~/js/smartstore.throbber.js"></script>
+        <script src="~/js/public.common.js"></script>
+    </zone>
+
+    <script>
+        let isAutoInstall = @(Model.IsAutoInstall.ToString().ToLower());
+        let wasRunning = @(wasRunning.ToString().ToLower());
+
+        var Installation = (function () {
+            let urlInstall = "@Url.Action("Install", "Install")";
+            let urlProgress = "@Url.Action("Progress", "Install")";
+            let urlFinalize = "@Url.Action("Finalize", "Install")";
+            let urlRestart = "@Url.Action("RestartInstall", "Install")";
+            let urlCheckAlive = "@Url.Action("CheckAlive", "Install")";
+            let urlAppCheckAlive = "@Url.Content("~/taskscheduler/noop")";
+            let urlHome = "@Url.Action("Index", "Home")";
+            let progressMessage = "@(wasRunning ? Html.Raw(installResult.ProgressMessage) : string.Empty)";
+
+            var checkAliveInterval, progressInterval;
+
+            return {
+
+                showThrobber: function (message = null) {
+                    $.throbber.show({
+                        message: `
+                            <div id="install-message">${message || Res['Installing']}</div>
+                            <div id="install-progress" style="font-size: 16px; font-weight: 400; margin: 10px 0 30px 0">${progressMessage}</div>`
+                    });
+                },
+
+                startCheckAlive: function (redirectUrl, checkUrl = null) {
+                    checkAliveInterval = setInterval(function () {
+                        Installation.checkAlive(redirectUrl, checkUrl);
+                    }, 1000);
+                },
+
+                checkAlive: function (redirectUrl, checkUrl = null) {
+                    $.ajax({
+                        type: "GET",
+                        cache: false,
+                        url: checkUrl || urlAppCheckAlive,
+                        global: false,
+                        success: function () {
+                            clearInterval(checkAliveInterval);
+
+                            // Redirection sometimes fails in Chrome. Therefore we we delay and repeat the call until it succeeds.
+                            setTimeout(() => {
+                                setInterval(() => {
+                                    location.replace(redirectUrl);
+                                }, 1000);
+                            }, 1000);
+                        }
+                    });
+                },
+
+                checkProgress: function () {
+                    $.ajax({
+                        url: urlProgress,
+                        dataType: "json",
+                        async: true,
+                        type: "POST",
+                        cache: false,
+                        success: function (data, status) {
+                            console.log(data);
+
+                            if (!data.Completed) {
+						        if (data.ProgressMessage !== undefined && _.isString(data.ProgressMessage) && data.ProgressMessage) {
+							        console.log(data.ProgressMessage);
+                        	        $("#install-progress").html(data.ProgressMessage);
+                                }
+                            }
+                            else {
+                                if (!wasRunning) {
+                                    $("#install-progress").html("");
+                                }
+                                else {
+                                    Installation.onComplete();
+                                    Installation.onSuccess(data);
+                                }
+                            }
+                        },
+                        error: function () {
+                            if (wasRunning) {
+                                Installation.onComplete();
+                            }
+
+                            console.log("ERROR");
+                            Installation.handleError(arguments[0].responseText);
+                        }
+                    });
+                },
+
+                finalize: function (success) {
+                    $.ajax({
+                        url: urlFinalize,
+                        data: { restart: success },
+                        dataType: "json",
+                        async: false,
+                        global: false,
+                        type: "POST"
+                    });
+                },
+
+                restart: function () {
+                    $.ajax({
+                        type: "GET",
+                        cache: false,
+                        url: urlRestart,
+                        global: false
+                    });
+
+                    progressMessage = '';
+                    Installation.showThrobber(Res['RestartInstallation']);
+
+                    setTimeout(() => {
+                        Installation.startCheckAlive(urlInstall, urlCheckAlive);
+                    }, 500);
+                },
+
+                handleError: function (errors) {
+                    let validationSummary = $("#messages");
+                    let ul = validationSummary.find("ul");
+                    ul.html("");
+
+                    if ($.isArray(errors)) {
+                        for (i = 0; i < errors.length; i++) {
+                            ul.append("<li class='last-mb-0'>" + errors[i] + "</li>");
+                        }
+                    }
+                    else {
+                        ul.append("<li class='last-mb-0'>" + errors + "</li>");
+                    }
+
+                    validationSummary.removeClass("hide");
+                    $.scrollTo(validationSummary, 400, { offset: -10 });
+                    $("#install-button").removeAttr("disabled");
+
+                    $("#install-progress").html("");
+                },
+
+                // AJAX form callbacks
+                onStart: function (context) {
+                    rememberFormFields("install-form", "installPrefs");
+
+                    Installation.showThrobber();
+
+                    // start the checkprogress interval
+                    progressInterval = window.setInterval(Installation.checkProgress, 1500);
+
+                    $("#install-button").attr("disabled", "disabled");
+                },
+
+                onSuccess: function (data) {
+                    Installation.finalize(data.Success);
+
+                    if (data.Success) {
+                        let message = htmlDecode(Res["Progress.Redirect"]).format(urlHome);
+                        $("#install-message").html(Res["Common.StartShop"]);
+                        $("#install-progress").html('<span class="redirect-info">' + message + '</span>');
+
+                        Installation.startCheckAlive(data.RedirectUrl);
+                    }
+                    else {
+                        $.throbber.hide();
+                        if (data.HasErrors) {
+                            Installation.handleError(data.Errors);
+                        }
+                    }
+                },
+
+                onFailure: function (context) {
+                    Installation.handleError(context);
+                },
+
+                onComplete: function () {
+                    window.clearInterval(progressInterval);
+                    $("#install-button").removeAttr("disabled");
+                }
+            };
+        })();
+
+        $(function () {
+            if (wasRunning) {
+                Installation.onStart();
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+//
+// Theme: Smartstore Admin
+// ========================================
+
+
+//
+// Head
+// --------------------------------------------------
+
+// Bootstrap functions
+@import "../lib/bootstrap/scss/functions";
+
+// Shared Smartstore functions 
+@import '../shared/functions';
+
+// Shared Bootstrap variables
+@import '../shared/variables-shared-bootstrap';
+
+// Admin theme variables and overrides
+@import "variables";
+
+// Bootstrap head: vars, mixins, maps etc.
+@import "../lib/bootstrap/scss/bootstrap-head";
+
+// Shared Smartstore variables, mixins and :root
+@import '../shared/variables-shared';
+@import '../shared/mixins';
+@import '../shared/root';
+
+// Bootstrap main
+@import "../lib/bootstrap/scss/bootstrap-main";
+
+
+
+//
+// Vendors
+// --------------------------------------------------
+
+@import "../lib/bootstrap/scss/vendor/rfs";
+@import "../lib/select2/scss/core";
+@import "../lib/colorpicker/scss/colorpicker";
+@import "../lib/datetimepicker/scss/tempusdominus";
+@import "../lib/editors/summernote/scss/summernote";
+
+
+//
+// Global / Shared
+// --------------------------------------------------
+
+@import '../shared/spacing';
+@import '../shared/fa';
+@import '../shared/bootstrap-icons';
+@import '../shared/typo';
+@import '../shared/alert';
+@import '../shared/badge';
+@import '../shared/buttons';
+@import '../shared/card';
+@import '../shared/forms';
+@import '../shared/numberinput';
+@import '../shared/pagination';
+@import '../shared/nav';
+@import '../shared/nav-collapsible';
+@import "../shared/modal";
+@import '../shared/dropdown';
+@import "../shared/throbber";
+@import "../shared/spinner";
+@import "../shared/sortable-grip";
+@import "../shared/entity-picker";
+@import "../shared/tree";
+@import '../shared/choice';
+//@import '/shared/switch'; // Deprecated
+@import '../shared/rangeslider';
+@import '../shared/bg';
+@import '../shared/custom-scrollbar';
+@import "../shared/utils";
+@import "../shared/media";
+@import "../shared/text-expander";
+
+//
+// Skinning
+// --------------------------------------------------
+
+@import "../skinning/select2";
+@import "../skinning/pnotify";
+@import "../skinning/fileupload";
+@import "../skinning/summernote";
+
+
+//
+// Main styles
+// --------------------------------------------------
+
+@import "admin";
+@import "dashboard";
+@import "../components/datagrid/datagrid";
+
+
+
+//
+// Custom imports from modules
+// --------------------------------------------------
+
+@import '/.app/moduleimports.scss';

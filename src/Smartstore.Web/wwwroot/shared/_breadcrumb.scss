@@ -1,0 +1,31 @@
+/// <reference path="references.scss" />
+
+.breadcrumb-container,
+.breadcrumb {
+    font-size: $font-size-sm;
+}
+
+.breadcrumb-item {
+    display: inline-flex;
+    padding: 0 !important;
+}
+
+.breadcrumb-item:before {
+    display: none !important;
+}
+
+.breadcrumb-item:after {
+    display: inline-block; // Suppress underlining of the separator in modern browsers
+    padding: 0 $breadcrumb-item-padding;
+    color: $breadcrumb-divider-color;
+    content: $breadcrumb-divider;
+}
+
+div.breadcrumb-item:after {
+    display: none;
+}
+
+.breadcrumb-item > a {
+    @extend .link-body;
+    @extend .link-dnu;
+}

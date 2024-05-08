@@ -1,0 +1,34 @@
+﻿@using Smartstore.Core.Catalog.Attributes
+
+@model ProductVariantAttributeCombinationModel
+
+<h6>@T("Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.SelectAttributes")</h6>
+
+<div class="adminContent mb-n3">
+    @foreach (var attribute in Model.ProductVariantAttributes)
+    {
+        var controlId = attribute.GetControlId(Model.ProductId, 0);
+        var multiple = attribute.AttributeControlType == AttributeControlType.Checkboxes;
+
+        <div class="adminRow">
+            <div class="adminTitle" attr-class='(attribute.IsRequired, "required")'>
+                <div class="ctl-label">
+                    <label for="@controlId">
+                        @(attribute.TextPrompt.NullEmpty() ?? attribute.Name)
+                    </label>
+                </div>
+            </div>
+            <div class="adminData">
+                <div class="controls">
+                    <select name="@controlId" id="@controlId" class="form-control" attr-multiple='(multiple, "multiple")'>
+                        <option sm-if="!attribute.IsRequired && !multiple" value="0">---</option>
+                        @foreach (var pvaValue in attribute.Values)
+                        {
+                            <option attr-selected='(pvaValue.IsPreSelected, "selected")' value="@pvaValue.Id">@pvaValue.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,13 @@
+﻿@model ChoiceModel
+
+@{
+    var controlId = Model.BuildControlId();
+    var placeholder = Model.Description.RemoveHtml().TrimSafe();
+}
+
+<input name="@(controlId)-text" id="@(controlId)" 
+       type="text" 
+       class="form-control skip-pd-ajax-update"
+       placeholder="@placeholder" 
+       value="@Model.TextValue" 
+       attr-disabled='(Model.IsDisabled, "disabled")' />

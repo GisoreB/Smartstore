@@ -1,0 +1,21 @@
+﻿@using Smartstore.Web.Models.Catalog
+
+@model ProductDetailsModel
+
+@{ 
+    var id = $"{Html.IdForModel()}{Html.IdAttributeDotReplacement}{nameof(Model.AddToCart.CustomerEnteredPrice)}";
+    var name = $"{Html.IdForModel()}.{nameof(Model.AddToCart.CustomerEnteredPrice)}";
+}
+
+<div class="form-group">
+    <label for="@id">
+        @Html.DisplayNameFor(x => x.AddToCart.CustomerEnteredPrice)
+    </label>
+    <input type="number" 
+           sm-postfix="@WorkContext.WorkingCurrency.CurrencyCode"
+           sm-decimals="2"
+           id="@id" 
+           name="@name" 
+           class="form-control" 
+           value="@Convert.ToInt32(Math.Ceiling(Model.AddToCart.CustomerEnteredPrice))" />
+</div>

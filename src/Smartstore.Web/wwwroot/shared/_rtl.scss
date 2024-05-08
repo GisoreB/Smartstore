@@ -1,0 +1,226 @@
+/// <reference path="references.scss" />
+
+// RTL overrides for shared styles
+// TODO: .btn-labeled, .sortable-grip, .switch
+// ==============================================================
+
+
+[dir=rtl] {
+
+	// Common
+	// ------------------------------
+
+	.lrm:after {
+		content: '\200E';
+	}
+
+	.bidi-embed {
+		unicode-bidi: embed; 
+	}
+
+	.bidi-isolate {
+		unicode-bidi: isolate; 
+	}
+	
+	// Tables
+	// ------------------------------
+
+	td[align="right"],
+	th[align="right"] {
+		text-align: start;
+	}
+
+	td[align="left"],
+	th[align="left"] {
+		text-align: end;
+	}
+
+
+	// Forms
+	// ------------------------------
+
+	fieldset.content-group > legend > span {
+		padding-right: initial;
+		padding-left: 1rem;
+	}
+
+	// Nav collapsible
+	// ---
+	@include media-breakpoint-down(sm) {
+		.nav-collapsible {
+            .nav-toggler {
+                &:after {
+                    content: "\f053"; // chevron-left
+                    transform: translateY(-50%) rotate(-90deg);
+                }
+                &.collapsed:after {
+                    transform: translateY(-50%) rotate(0deg);
+                }
+            }
+		}
+	}
+
+	// Pagination
+	// -----------
+
+	.pagination .page-nav {
+		&:first-of-type { margin-left: 0.25rem; margin-right: initial; }
+        &:last-of-type { margin-right: 0.25rem; margin-left: initial; }
+	}
+
+
+	// Star rating
+	// ----
+
+	.star-rating:not(:checked) > label {
+		float: left;
+	}
+
+
+	// Typo
+	// ----
+
+	.heading {
+		&:before {
+			background: radial-gradient(ellipse at right, $body-bg 25%, rgba(#000, 0.25) 100%);
+		}
+
+		.heading-title {
+			padding-right: 0;
+			padding-left: 1rem;
+		}
+	}
+
+	.heading-center {
+		.heading-title {
+			padding-right: 0;
+			padding-left: 1rem;
+		}
+	}
+
+
+	// Utils
+	// ------------------------------
+
+	.has-count[data-count]:after {
+		padding-left: 0;
+		padding-right: 0.2rem;
+	}
+
+	.list-group {
+		.list-group-item.active {
+			&:before {
+				right: -1px;
+				left: auto;
+			}
+		}
+
+		&.has-icons {
+			.list-group-item-icon {
+				margin-left: 0.75rem;
+				margin-right: initial;
+			}
+		}
+	}
+
+
+	// Flip all .fa directional icons
+	// ------------------------------
+
+	.fa-angle-double-left:before {
+		content: "\f101";
+	}
+
+	.fa-angle-double-right:before {
+		content: "\f100";
+	}
+
+	.fa-angle-left:before {
+		content: "\f105";
+	}
+
+	.fa-angle-right:before {
+		content: "\f104";
+	}
+
+	.fa-arrow-circle-left:before {
+		content: "\f0a9";
+	}
+
+	.fa-arrow-circle-right:before {
+		content: "\f0a8";
+	}
+
+	.fa-arrow-circle-o-left:before {
+		content: "\f18e";
+	}
+
+	.fa-arrow-circle-o-right:before {
+		content: "\f190";
+	}
+
+	.fa-arrow-left:before {
+		content: "\f061";
+	}
+
+	.fa-arrow-right:before {
+		content: "\f060";
+	}
+
+	.fa-caret-left:before {
+		content: "\f0da";
+	}
+
+	.fa-caret-right:before {
+		content: "\f0d9";
+	}
+
+	.fa-caret-square-o-left:before {
+		content: "\f152";
+	}
+
+	.fa-caret-square-o-right:before {
+		content: "\f191";
+	}
+
+	.fa-chevron-circle-left:before {
+		content: "\f138";
+	}
+
+	.fa-chevron-circle-right:before {
+		content: "\f137";
+	}
+
+	.fa-chevron-left:before {
+		content: "\f054";
+	}
+
+	.fa-chevron-right:before {
+		content: "\f053";
+	}
+
+	.fa-hand-o-left:before {
+		content: "\f0a4";
+	}
+
+	.fa-hand-o-right:before {
+		content: "\f0a5";
+	}
+
+	.fa-long-arrow-left:before {
+		content: "\f178";
+	}
+
+	.fa-long-arrow-right:before {
+		content: "\f177";
+	}
+
+	.fa-toggle-left:before {
+		content: "\f152";
+	}
+
+	.fa-toggle-right:before {
+		content: "\f191";
+	}
+
+}

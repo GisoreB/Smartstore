@@ -1,0 +1,792 @@
+/// <reference path="references.scss" />
+
+//
+// CSS variables
+// --------------------------------------------------
+
+.artlist {
+    --art-padding: #{$grid-gutter-width / 2};
+    --art-gutter: #{$grid-gutter-width / 2};
+    --art-line-height: 1.3;
+    --art-font-size: #{$font-size-sm};
+    --art-font-size-sm: #{$font-size-xs};
+    --art-font-size-xs: 0.75rem;
+    --art-finalprice-font-size: 1rem;
+    --art-finalprice-color: #{$product-price-color};
+    --art-finalprice-offer-color: #{$product-price-color};
+    --art-muted-color: #{mix($body-color, $white, 67%)};
+    --art-muted-color-2: #{$text-muted};
+    --art-border-color: transparent;
+    --art-divider-color: #{$gray-300};
+    --art-border-radius: var(--border-radius-md);
+    --art-box-shadow: var(--box-shadow-sm);
+    --art-active-bg-color: #{$art-active-bg-color};
+    --art-active-border-color: #{$art-active-border-color};
+
+    &.artlist-lines {
+        --art-font-size: #{$font-size-base};
+        --art-font-size-sm: #{$font-size-sm};
+        --art-font-size-xs: #{$font-size-xs};
+        --art-finalprice-font-size: 1.25rem;
+    }
+}
+
+//
+// Article/Product list & item styles
+// --------------------------------------------------
+
+@mixin make-art-row() {
+  --gutter-x: 0;
+  --gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--gutter-y));
+  margin-right: calc(-.5 * var(--gutter-x));
+  margin-left: calc(-.5 * var(--gutter-x));
+}
+
+@mixin make-art-col-ready() {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%; // Prevent `.col-auto`, `.col` (& responsive variants) from breaking out the grid
+  margin-inline: calc(var(--gutter-x) * .5);
+  margin-top: var(--gutter-y);
+}
+
+@mixin make-art-col($cols) {
+    $w: divide(100%, $cols);
+
+    > .art {
+        flex: 0 0 auto;
+        width: $w;
+    }
+
+    &.artlist-boxed > .art {
+        width: calc(#{$w} - var(--art-gutter));
+    }
+}
+
+// Action Bar
+
+.artlist-actions {
+	display: flex;
+	flex-wrap: wrap;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+.artlist-action {
+    label {
+        font-size: $font-size-sm;
+        margin-bottom: 0.35rem;
+    }
+
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    .mf-dropdown {
+        display: block;
+    }
+}
+
+.artlist-action-group {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.artlist-action-group--filtersort {
+	flex-grow: 1;
+	max-width: 100%;
+}
+
+.artlist-action--filter {
+    width: 100%;
+}
+
+@include media-breakpoint-up(md) {
+    // Don't let filter button take up the whole space, looks ugly.
+    .artlist-action-group--filtersort {
+	    flex-grow: 0;
+    }
+
+    .artlist-action--filter {
+        min-width: 320px;
+    }
+}
+
+.artlist-actions--top {
+    border-bottom: 1px solid var(--light-border-subtle);
+}
+
+
+// List
+
+.artlist {
+    position: relative;
+    margin-bottom: 1.5rem;
+    z-index: 3;
+    border-collapse: collapse;
+    font-size: var(--art-font-size);
+    line-height: var(--art-line-height); 
+}
+
+.art {
+    position: relative;
+    min-height: 1px;
+
+    // Prevent columns from becoming too narrow when at smaller grid tiers by
+    // always setting `width: 100%;`. This works because we use `flex` values
+    // later on to override this initial width.
+    width: 100%;
+    @include make-col(12, $grid-columns);
+    
+    padding: var(--art-padding); 
+    
+    border: 1px solid transparent;
+    background: transparent;   
+
+    margin-top: -1px;
+    margin-inline-start: -1px;
+
+    border-collapse: collapse;
+
+    &.active {
+        background: var(--art-active-bg-color);
+        border-color: var(--art-active-border-color) !important;
+        box-shadow: var(--art-box-shadow);
+    }
+}
+
+.art-picture-block {
+    position: relative;
+    margin-bottom: 0.8rem;
+    overflow: hidden;
+}
+
+.art-picture.no-picture {
+    &:before {
+        display: block;
+        content: attr(data-content);
+        position: absolute;
+        z-index: 1;
+        inset-inline-start: 0;
+        top: 0rem;
+        width: 100%;
+        text-align: center;
+        color: $gray-500;
+    }
+}
+
+.art-picture.no-default-picture {
+    &:before {
+        top: 2rem;
+    }
+    img {
+		display: none;
+	}
+}
+
+.art-badges {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    bottom: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    z-index: 10;
+}
+
+.art-badge {
+    margin: 0;
+    margin-block-start: 3px;
+    margin-inline-end: 3px;
+}
+
+.art-data-block,
+.art-info-block {
+    position: relative;
+}
+
+.art-rating {
+    @include text-truncate();
+    margin-bottom: 0.25rem;
+}
+
+.art-brand {
+    color: var(--art-muted-color-2);
+    text-transform: uppercase;
+}
+
+.art-name {
+    box-sizing: content-box;
+    font-weight: $font-weight-medium;
+    margin-bottom: 0.25rem;
+    line-height: var(--art-line-height);
+}
+
+.art-genericname {
+    font-weight: $font-weight-medium;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.art-description {
+    color: var(--art-muted-color-2);
+    margin-bottom: 0.4rem;
+}
+
+.art-price-block {
+    position: relative;
+    margin-top: 0.5rem;
+}
+
+.art-price {
+    &.art-price-offer {
+        color: var(--art-finalprice-offer-color);
+    }
+    &.badge {
+        color: #fff;
+    }
+}
+
+.art-price-value {
+    font-weight: $font-weight-medium;
+    font-size: var(--art-finalprice-font-size);
+    color: var(--art-finalprice-color);
+    margin-inline-end: 0.4rem;
+
+    .art-price-call & {
+        font-size: var(--art-font-size-sm);
+        color: var(--art-muted-color-2);
+    }
+}
+
+.art-price-value,
+.art-compareprice-value {
+    white-space: nowrap;
+}
+
+.art-price,
+.art-finalprice,
+.art-compareprice {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.art-compareprice {
+    font-size: var(--art-font-size-sm);
+    color: var(--art-muted-color);
+}
+
+.art-compareprice-label {
+    margin-inline-end: 3px;
+}
+
+.art-compareprice-value {
+    display: inline-block;
+    text-decoration: line-through;
+}
+
+.art-pangv {
+    color: var(--art-muted-color-2);
+    padding-top: 0.25rem;
+}
+
+.art-shipsurcharge {
+    color: var(--art-muted-color);
+    @include text-truncate();
+}
+
+.art-legalinfo {
+    color: var(--art-muted-color-2);
+}
+
+.art-drop {
+    --shadow-yoffset: 1;
+    position: absolute;
+    inset-inline: -1px;
+    bottom: 0;
+    background: var(--art-active-bg-color);
+    box-shadow: var(--art-box-shadow);
+    padding-top: 1px;
+    clip-path: inset(0 -20px -20px -20px);
+    border-radius: 0 0 var(--art-border-radius) var(--art-border-radius);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    z-index: -1;
+
+    .art.active & { 
+        opacity: 1;
+        visibility: visible;
+        z-index: $zindex-popover - 1;
+    }
+}
+
+.art-btn-group {
+    margin: 0;
+
+    .art-btn {
+        display: block;
+        border: none;
+        outline: none;
+        transition: none;
+        padding: 0.65rem 0;
+        border-radius: 0;
+
+        &:focus:not(:active) {
+            box-shadow: none !important;
+        }
+
+        &.btn-secondary {
+            color: #666;
+        }
+    }
+}
+
+.art-variant-info {
+    margin-bottom: 0.75rem;
+}
+
+.art-color-opts {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    @include clearfix();
+}
+
+.art-color-opt {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    text-decoration: none;
+
+    &:hover {
+        outline: 1px solid rgba(#000, 0.3);
+    }
+}
+
+.art-more-opts {
+    color: var(--art-muted-color);
+}
+
+.art-variant-info > * + * {
+    margin-top: 0.4rem;
+}
+
+.art-attrs {
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+
+    td { padding: 1px 0; }
+    td:first-child { 
+        padding-inline-end: 0.75rem; 
+        font-weight: $font-weight-medium; 
+    }
+}
+
+// Font sizes
+// ---------------------------------------------
+
+.art-name,
+.art-genericname {
+    font-size: var(--art-font-size);
+    > a { 
+        color: $body-color; 
+    }
+
+    > a:not(:hover) {
+        text-decoration: none; 
+    }
+}
+
+.art-brand,
+.art-description,
+.art-more-opts, 
+.art-attrs, 
+.art-delivery-info {
+    font-size: var(--art-font-size-sm);
+}
+
+.art-pangv,
+.art-legalinfo,
+.art-shipsurcharge {
+    font-size: var(--art-font-size-xs);
+}
+
+
+// Line style (one item per row)
+// ---------------------------------------------
+
+.artlist-lines {
+    .art {
+        @include make-art-row();
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+        border-bottom-color: var(--art-divider-color);
+    }
+
+    .art-data-block {
+        @include make-art-row();
+        padding-inline-start: $grid-gutter-width / 1.5;
+        padding-inline-end: 0;
+        margin-inline-start: 0;
+        margin-inline-end: 0;
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+    }
+
+    .art-picture-block {
+        width: 200px;
+        max-width: 200px;
+    }
+
+    .art-badges {
+        top: 0;
+        bottom: auto;
+    }
+
+    .art-actions-block {
+        width: 220px;
+        padding-inline-start: $grid-gutter-width / 1.5;
+    }
+
+    .art-description {
+        margin-bottom: 1rem;
+    }
+
+    .art-info-block {
+        display: block;
+        position: relative;
+        min-height: 1px;
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+    }
+
+    .art-info-group {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .art-brand,
+    .art-rating {
+        font-size: var(--art-font-size-xs);
+        position: relative;
+        margin-bottom: 0;
+    }
+
+    .art-brand-picture {
+        display: inline-block;
+        max-width: 100%;
+        height: auto;
+        max-height: 24px;
+    }
+
+    .floating > .art-brand {
+        padding-inline-end: 90px; // ratings width + 10px
+        min-height: 20px; // Height of rating widget
+    }
+
+    .floating > .art-rating {
+        position: absolute;
+        top: 0;
+        inset-inline-end: 0;
+    }
+
+    .art-name {
+        margin-bottom: 0.5em;
+    }
+
+    .art-price,
+    .art-finalprice,
+    .art-compareprice-group,
+    .art-compareprice {
+        display: block;
+    }
+
+    .art-compareprice-group {
+        margin-bottom: 0.25rem;
+    }
+
+    .art-variant-info {
+        margin-bottom: 1rem;
+    }
+
+    @include media-breakpoint-down(lg) {
+        .art-picture-block { max-width: 180px; }
+    }
+
+    @include media-breakpoint-down(sm) {
+        .art-actions-block { 
+            // Put right hand action block below info block
+            display: block;
+            padding-inline-start: 0;
+            padding-top: 1rem;
+            width: 100%;
+        }
+
+        .art-info-block {
+            // Fix Android default browser layout glitch
+            flex-basis: initial;
+            flex-grow: initial;
+        }
+    }
+
+    @include media-breakpoint-down(xs) {
+        .art-picture-block { max-width: 30%; }
+    }
+
+    .delivery-time {
+        white-space: normal;
+    }
+
+    .delivery-time, 
+    .delivery-date-block {
+        vertical-align: initial;
+    }
+}
+
+
+// Grid styles (common)
+// ---------------------------------------------
+
+.artlist-boxed > .art,
+.artlist-grid > .art.active {
+    border-radius: var(--art-border-radius);
+}
+
+
+// Grid style
+// ---------------------------------------------
+
+.artlist-grid {
+    @include make-art-row();
+
+    &.artlist-boxed {
+        --gutter-x: var(--art-gutter);
+        --gutter-y: var(--art-gutter);
+    }
+
+    &:not(.artlist-boxed).artlist:after {
+        // Make continous line after last row
+        position: relative;
+        content: '';
+        width: 100%;
+        height: 1px;
+        background: var(--art-divider-color);
+        bottom: 1px;
+    }
+    
+    > .art {
+        @include make-art-col-ready();
+        border-bottom-color: var(--art-divider-color);
+        display: flex;
+        flex-flow: column;
+    }
+
+    // Grid has always 2 cols per row at least, even on xs
+    @include make-art-col(2);
+
+    // Ensure equal height for some elements in grid style lists
+    .art-name,
+    .art-description {
+        // At least 2 lines height for name & description
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .art-name {
+        // At least 2 lines height for name
+        height: calc(var(--art-font-size) * var(--art-line-height) * 2);
+    }
+
+    .art-description {
+        // At least 2 lines height for description
+        height: calc(var(--art-font-size-sm) * var(--art-line-height) * 2);
+    }
+    
+    &.artlist-boxed .art-price-block {
+        // At least 2 lines height for description
+        height: calc(var(--art-font-size-sm) * var(--art-line-height) * 2);
+    }
+
+    .art-brand,
+    .art-delivery-info,
+    .art-more-opts {
+        // Always 1 small line height, even if empty
+        box-sizing: content-box;
+        min-height: calc(var(--art-font-size-sm) * var(--art-line-height));
+        @include text-truncate();
+    }
+
+    .art-shipsurcharge,
+    .art-delivery-info,
+    .art-pangv {
+        // Always 1 line height, even if empty
+        box-sizing: content-box;
+        min-height: calc(var(--art-font-size-xs) * var(--art-line-height));
+        @include text-truncate();
+    }
+
+    .art-variant-info {
+        padding-inline: var(--art-padding);
+    }
+
+    @include media-breakpoint-up(xs) {
+        &.artlist-1-col .art {
+            flex-basis: 100% !important;
+            max-width: initial !important;
+        }
+    }
+
+    @include media-breakpoint-up(sm) {
+        &.artlist-4-cols,
+        &.artlist-5-cols,
+        &.artlist-6-cols {
+            @include make-art-col(3);
+        }
+        &.artlist-8-cols {
+            @include make-art-col(4);
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        &.artlist-5-cols {
+            @include make-art-col(3);
+        }
+        &.artlist-6-cols {
+            @include make-art-col(4);
+        }
+        &.artlist-8-cols {
+            @include make-art-col(5);
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+        &.artlist-3-cols,
+        &.artlist-4-cols {
+            @include make-art-col(3);
+        }
+        &.artlist-5-cols,
+        &.artlist-6-cols {
+            @include make-art-col(4);
+        }
+        &.artlist-8-cols {
+            @include make-art-col(6);
+        }
+    }
+
+    @include media-breakpoint-up(xl) {
+        &.artlist-4-cols {
+            @include make-art-col(4);
+        }
+        &.artlist-5-cols {
+            @include make-art-col(5);
+        }
+        &.artlist-6-cols {
+            @include make-art-col(6);
+        }
+        &.artlist-8-cols {
+            @include make-art-col(8);
+        }
+    }
+
+    &.artlist-boxed .art {
+        background: var(--art-active-bg-color);
+        border-color: var(--art-border-color);
+        box-shadow: var(--art-box-shadow);
+    }
+}
+
+
+// Carousel
+// ---------------------------------------------
+
+.artlist-carousel {
+    position: relative;
+    overflow: hidden;
+
+    .artlist-grid {
+        flex-wrap: nowrap;
+    }
+
+    .artlist {
+        margin-bottom: 0;
+    }
+
+    .art {
+        border-bottom: none;
+    }
+
+    .art-drop {
+        display: none;
+    }
+}
+
+.slick-slider {
+    &.artlist.slick-dotted .slick-dots {
+        // Move slightly up in boxes
+        transform: translateY(-25%);
+    }
+
+    &.artlist-grid {
+        display: block !important;
+    }
+
+    .art {
+        display: inline-block !important;
+        max-width: none !important;
+        //width: 180px; // avoids flickering during initial load
+    }
+}
+
+
+// Special overrides
+// ---------------------------------------------
+
+.artlist-no-separators .artlist-grid:not(.artlist-boxed) {
+    .art {
+        border-bottom-width: 0 !important;
+    }
+    &:after {
+        height: 0 !important;
+    }
+}
+
+
+// 'Show all' special item
+// ---------------------------------------------
+
+.art.show-all-items {
+    padding: 0 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+
+    .show-all-items-link {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-grow: 1;
+        text-align: center;
+        padding: 1rem;
+        text-decoration: none !important;
+        font-size: 1.25rem;
+        font-weight: $font-weight-normal;
+
+        color: inherit !important;
+        background: rgba(#000, 0.06);
+        opacity: 0.5;
+
+        &:hover { opacity: 0.75; }
+        &:active { opacity: 1; }
+    }
+}

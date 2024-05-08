@@ -1,0 +1,21 @@
+﻿@using Smartstore.Web.Models.Customers
+
+@model MyAccountHeaderModel
+
+<div class="myaccount-header row gx-2 gy-1">
+    <div class="col-auto d-flex align-self-center justify-content-center">
+        <partial name="Customer.Avatar" model="Model.Avatar" />
+    </div>
+    <div class="col align-self-center text-truncate pr-4 pr-md-1">
+        <div class="my-account-username fwm text-truncate">
+            @Model.CustomerName
+        </div>
+        <div class="my-account-info small hstack flex-wrap justify-content-start justify-content-md-center justify-content-xl-start" style="row-gap: 3px; column-gap: 6px">
+            <span class="text-muted">@T("Account.CustomerSince", Model.CustomerSince)</span>
+            <span sm-if="Model.RewardPoints > 0" class="badge badge-pill badge-success pl-1">
+                <i class="far fa-certificate"></i>
+                @T("ShoppingCart.Totals.RewardPoints", Model.RewardPoints)
+            </span>
+        </div>
+    </div>
+</div>

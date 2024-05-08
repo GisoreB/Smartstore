@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = T("Admin.Configuration.Currencies").Value;
+}
+
+<form asp-action="List" id="CurrencySettings">
+    <div class="section-header">
+        <div class="title">
+            <i class="far fa-money-bill-1"></i>
+            <span>@ViewBag.Title</span>
+        </div>
+    </div>
+
+    <tabstrip id="currency-edit" sm-nav-style="Material" sm-nav-position="Top">
+        <tab sm-title="@T("Admin.Configuration.Currencies")" sm-selected="true" sm-adaptive-height="true">
+            <partial name="_Grid.Currencies" model="null" />
+        </tab>
+        <tab sm-title="@T("Admin.Configuration.Currencies.LiveRates")" sm-adaptive-height="true">
+            <partial name="_Grid.LiveRates" model="null" />
+        </tab>
+    </tabstrip>
+</form>

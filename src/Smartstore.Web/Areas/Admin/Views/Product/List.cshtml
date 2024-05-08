@@ -1,0 +1,37 @@
+﻿@model ProductListModel
+
+@{
+    var allString = T("Admin.Common.All").Value;
+    ViewBag.Title = T("Admin.Catalog.Products.Manage").Value;
+
+    Assets.BodyAttributes.AppendCssClass("spa-layout");
+}
+
+<form method="post" asp-action="List">
+    <div class="section-header">
+        <div class="title">
+            <i class="fa fa-cube"></i>
+            @T("Admin.Catalog.Products.Manage")
+        </div>
+        <div class="options">
+            <zone name="admin_button_toolbar_before" />
+
+            <div class="input-group d-inline-flex" style="width: clamp(200px, 30vw, 350px)">
+                <input asp-for="ProductCode" placeholder="@T("Admin.Catalog.Products.List.GoDirectlyToSku")" />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-secondary" id="go-to-product" name="go-to-product" value="go-to-product" title="@T("Admin.Catalog.Products.List.GoDirectlyToSku.Hint")">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <zone name="admin_button_toolbar_after" />
+        </div>
+    </div>
+</form>
+
+@{
+    var gridViewData = new ViewDataDictionary(this.ViewData);
+    gridViewData["Parent"] = Model;
+}
+
+<partial name="Grids/_Grid.Products" model="null" view-data="gridViewData" />

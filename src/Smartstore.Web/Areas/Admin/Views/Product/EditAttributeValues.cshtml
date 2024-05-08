@@ -1,0 +1,23 @@
+﻿@model ProductModel.ProductVariantAttributeValueListModel
+
+@{
+    Assets.BodyAttributes.AppendCssClass("spa-layout");
+
+    ViewBag.Title = T("Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.EditAttributeDetails", Model.ProductVariantAttributeName, Model.ProductName);
+
+    var gridViewData = new ViewDataDictionary(this.ViewData);
+    gridViewData["Parent"] = Model;
+}
+
+<form asp-action="EditAttributeValues" id="productvariantattribute-form">
+    <div class="section-header">
+        <div class="title">
+            <a sm-backto asp-action="Edit" asp-controller="Product" asp-route-Id="@Model.ProductId" title="@T("Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.BackToProduct")"></a>
+            <span>@ViewBag.Title</span>
+        </div>
+        <div class="options">
+        </div>
+    </div>
+</form>
+
+<partial name="Grids/_Grid.AttributeValues" model="null" view-data="gridViewData" />

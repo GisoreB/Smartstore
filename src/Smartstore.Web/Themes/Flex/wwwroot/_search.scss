@@ -1,0 +1,520 @@
+/// <reference path="references.scss" />
+
+//
+// InstantSearch Box & Drop Styles
+// --------------------------------------------------
+
+$facet-selection-color: inherit;
+
+.instasearch-form {
+    position: relative;
+    --search-addon-size: 24px;
+    --search-addon-pos: 10px;
+    --search-padding-start: 1.25rem;
+    --search-padding-end: 40px;
+
+    @if ($searchbox-pill == true) {
+        --search-border-radius: 50rem;
+    }
+    @else {
+        --search-border-radius: #{$btn-border-radius};
+    }
+}
+
+.instasearch-term {
+    position: relative;
+    padding-inline-start: var(--search-padding-start);
+    padding-inline-end: var(--search-padding-end);
+    background-color: $searchbox-bg-1;
+    border-color: $searchbox-border-1;
+    color: $searchbox-color-1;
+    box-shadow: none;
+    transition-property: background-color, color, box-shadow, border;
+    transition-duration: 0.2s;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+
+    @if ($searchbox-shadow == true) {
+        &:hover, &:focus, &:active {
+            box-shadow: $box-shadow-sm;
+        }
+    }
+     &:focus, &:active {
+        background-color: $searchbox-bg-2;
+        border-color: $searchbox-border-2;
+        color: $searchbox-color-2;
+    }
+
+     &::placeholder {
+         color: $searchbox-color-1;
+         opacity: 0.6;
+     }
+     &:focus::placeholder {
+         color: $searchbox-color-2;
+     }
+     &:active::placeholder {
+         color: $searchbox-color-2;
+     }
+
+    @include media-breakpoint-down(md) {
+        background-color: $searchbox-bg-mobile;
+        border-color: $searchbox-border-mobile;
+    }
+}
+
+.instasearch-addon {
+    position: absolute;
+    z-index: 2;
+    width: auto; // var(--search-addon-size);
+    height: var(--search-addon-size);
+    margin-top: calc(var(--search-addon-size) / 2 * -1);
+    top: 50%;
+    inset-inline-end: var(--search-addon-pos);
+    pointer-events: none;
+
+    > * {
+        position: relative;
+        width: var(--search-addon-size);
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        line-height: var(--search-addon-size);
+    }
+}
+
+.instasearch-clear {
+    color: var(--gray-600);
+    display: none;
+    font-size: 14px;
+
+    .instasearch-term.active:not(.busy, :placeholder-shown) + .instasearch-addon > & {
+        display: block !important;
+        pointer-events: auto;
+    }
+}
+
+.instasearch-progress > svg {
+    vertical-align: sub;
+}
+
+.instasearch-icon {
+    opacity: 0.5;
+    font-size: 1rem;
+    color: $searchbox-color-1;
+    inset-inline-start: 4px !important;
+
+    .instasearch-term.active ~ & {
+        color: $searchbox-color-2;
+    }
+}
+
+.instasearch-form:not(.open) {
+    .instasearch-term {
+        border-radius: var(--search-border-radius);
+    }
+}
+
+.instasearch-form.open {
+    > .instasearch-term {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        background-color: $searchbox-bg-2 !important;
+    }
+}
+
+.instasearch-drop {
+    position: absolute;
+    display: none;
+    inset-inline: 0;
+    top: 100%;
+    margin-top: -1px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 50px;
+    border: 1px solid $searchbox-border-2;
+    box-shadow: $dropdown-box-shadow;
+    background-color: $dropdown-bg;
+    z-index: $zindex-dropdown + 100;
+    border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);   
+
+    &.open {
+        display: block;
+        clip-path: inset(0 -50px -50px -50px);
+    } 
+}
+
+.instasearch-drop-body {
+    margin-top: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.instasearch-match {
+    font-weight: $font-weight-bold;
+}
+
+.instasearch-group-header {
+    margin: 0 20px;
+    padding-bottom: 0.3rem;
+    font-size: 18px;
+    color: $info;
+    font-weight: $font-weight-medium;
+
+    ~ .instasearch-group-header {
+        margin-top: 1.2rem;
+    }
+}
+
+.instasearch-hits {
+    @include list-unstyled;
+    margin-inline: 10px;
+    margin-bottom: 1rem;
+
+    &:last-child { margin-bottom: 0; }
+    .instasearch-col:first-child &:last-child {
+        margin-bottom: 1rem;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+    .instasearch-col {
+        &:first-child { border-inline-end: 1px solid rgba($black, 0.1)  }
+    }
+}
+@include media-breakpoint-up(lg) {
+    .instasearch-drop {
+        max-width: none;
+        min-width: 850px;
+        inset-inline-end: auto;
+    }
+}
+.instasearch-hit, 
+.instasearch-no-hits {
+    position: relative;
+    width: 100%;
+    padding: 8px 10px;
+    clear: both;
+    white-space: normal;
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.instasearch-hit {
+    display: inline-block;
+    color: $body-color;
+    text-decoration: none;
+    border-radius: var(--border-radius-md);
+
+    &:focus, 
+    &:hover, 
+    &.active, 
+    &.key-hover {
+        color: $dropdown-link-hover-color;
+        text-decoration: none;
+        background-color: $dropdown-link-hover-bg;
+    }
+}
+
+.instasearch-no-hits {
+    color: $text-muted;
+}
+
+.instasearch-hit-tag {
+    color: $searchbox-hit-tag-color;
+    font-size: 13px;
+}
+
+.instasearch-hit-wrapper {
+    overflow: hidden;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.instasearch-hit-thumb {
+    width: 48px; 
+    min-width: 48px; 
+    max-height: 36px; 
+    padding-inline-end: 12px;
+}
+
+.instasearch-hit-label-secondary {
+    padding-top: 1px;
+    color: $text-muted;
+}
+
+//
+// Search Page Styles
+// --------------------------------------------------
+
+.search-term {
+    color: $danger;
+    padding: 0 0.4rem;
+}
+
+.search-hitcount {
+    color: $text-muted;
+}
+
+
+//
+// Facetes
+// --------------------------------------------------
+
+.facet-group {
+	position: relative;
+	border-bottom: 1px solid rgba($black, 0.12);
+}
+
+.facet-group-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 0.75rem 0;
+    padding-inline-end: 1rem;
+    font-weight: $font-weight-medium;
+    color: $body-color !important;
+    text-decoration: none !important;
+}
+
+.facet-toggle {
+    &:after {
+	    display: block;
+	    position: absolute;
+        @include fontawesome-font("\f077", light); // chevron-up
+	    font-size: $font-size-base;
+	    line-height: 1;
+        color: $body-color;
+        inset-inline-end: 0;
+	    top: 50%;
+	    margin-top: -7px;
+	    transition: transform 0.3s ease;
+    }
+
+    &.collapsed:after {
+	    transform: rotate(180deg);
+    }
+
+    &.has-selection {
+        color: $facet-selection-color !important;
+    }
+
+    .facet-selection {
+        position: relative;
+        margin-inline-start: auto;
+        inset-inline-end: 0.5rem;
+    }
+}
+
+.facet-body {
+    font-size: 14px;
+    padding-bottom: 1rem;
+
+    .numberinput-group {
+        // Make number-input steppers smaller
+        --ni-addon-width: 1.5rem;
+    }
+}
+
+.facet-body-inner {
+	line-height: 1.3;
+    padding: 4px 0; // padding ensures that check/radio animations do not get cropped
+
+    &.scrollable {
+	    max-height: 215px;
+	    overflow-y: auto;
+    }
+}
+
+.btn-remove-group-filters {
+    display: block;
+    margin-top: 0.5rem;
+}
+
+
+//
+// Facets (Check/Radio)
+// --------------------------------------------------
+
+.facet-control-ui {
+    position: absolute;
+    display: block;
+    inset-inline-start: 2px;
+    width: $facet-control-size;
+    height: $facet-control-size;
+    line-height: $facet-control-size;
+
+    border: 1px solid rgba(#000, 0.2);
+    border-radius: 2px;
+    box-shadow: none;
+
+    &:after {
+        @include fontawesome("\f00c");
+        display: block;
+        opacity: 0;
+        transition: all 0.2s ease-in;
+        width: $facet-control-size - 1px;
+        height: $facet-control-size - 1px;
+        line-height: $facet-control-size - 1px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 14px;
+        color: $facet-selection-color;
+    }
+
+    *:checked + & {
+        vertical-align: middle;
+        text-align: center;
+        box-shadow: none;
+
+        &:after {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
+
+.facet-item input:checked + .facet-control-ui,
+.facet-item:hover .facet-control-ui {
+    border-color: rgba(#000, 0.35);
+}
+
+.facet-check,
+.facet-radio {
+    position: relative;
+    display: block;
+
+    label {
+        cursor: pointer;
+        padding-bottom: 0.75rem;
+        margin-bottom: 0;
+        min-height: $facet-control-size;
+    }
+
+    &:last-child label {
+        padding-bottom: 0;
+    }
+
+    input[type=checkbox],
+    input[type=radio] {
+        position: absolute;
+        clip: rect(0, 0, 0, 0);
+    }
+}
+
+.facet-check .facet-control-native {
+    + .facet-control-ui {
+        border-radius: 2px;
+    }
+}
+
+.facet-radio .facet-control-native {
+    + .facet-control-ui {
+        border-radius: 50%;
+
+        &:after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: $facet-selection-color;
+            margin: 3px 0 0 3px;
+        }
+    }
+}
+
+
+//
+// Facet Label
+// --------------------------------------------------
+
+.facet-label {
+    position: relative;
+    display: block;
+    padding-inline-start: $facet-control-size + ($facet-control-size / 1.5);
+    padding-inline-end: 8px;
+	padding-top: 1px;
+
+    .facet-control-native:checked ~ & {
+        font-weight: $font-weight-medium;
+    }
+}
+
+.facet-body-rating .rating {
+    vertical-align: sub;
+    margin-inline-end: 3px;
+}
+
+
+//
+// Facets (active filters)
+// --------------------------------------------------
+
+.active-filters-container {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.active-filters {
+    position: relative;
+    font-size: $small-font-size;
+}
+
+.active-filter-link {
+    position: relative;
+    font-weight: $font-weight-normal;
+    max-width: 12rem;
+    //line-height: 1.2; // to prevent cutoff
+
+    &:after {
+        position: relative;
+        display: block;
+        content: '\00d7';
+        inset-inline-start: 4px;
+    }
+}
+
+.active-filter-label {
+    @include text-truncate();
+}
+
+
+//
+// Offcanvas Facet Widget (overrides)
+// --------------------------------------------------
+
+.offcanvas {
+    .facet-toggle,
+    .facet-group-header,
+    .facet-body {
+        padding-inline: var(--offcanvas-padding-x, 1.5rem);
+    }
+
+    .facet-toggle {
+        // TODO: Fix this (+4px) after unifying accordion togglers.
+        --facet-toggle-end: calc(4px + var(--offcanvas-padding-x, 1.5rem));
+
+        &:after {
+            inset-inline-end: var(--facet-toggle-end);
+        }
+    }
+
+    .facet-selection {
+        inset-inline-end: var(--facet-toggle-end);
+    }
+
+    .facet-body-inner {
+        // On touch devices, having multiple scrollable areas is rather unintuitive
+    	max-height: none !important;
+	    overflow-y: visible !important;
+    }
+
+    .facet-label {
+        padding-inline-end: 0;
+    }
+}
+
+
+.has-active-filter .hide-on-active-filter {
+    display: none !important;
+}

@@ -1,0 +1,128 @@
+/// <reference path="../shared/_mixins.scss" />
+/// <reference path="../bootstrap/scss/bootstrap.scss" />
+
+
+/* PNOTIFY
+------------------------------------*/
+
+.alert.ui-pnotify-container {
+    padding-inline-start: 70px !important;
+    padding-inline-end: 1.5rem;
+    box-shadow: 0 6px 12px rgba($black, 0.175) !important;
+    border-width: 1px;
+    min-height: 75px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-color: rgba($white, 0.12) !important;
+    overflow: hidden;
+
+    &:after {
+        visibility: initial;
+        height: auto;
+        clear: none;
+    }
+}
+
+.ui-pnotify-icon {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    bottom: 0;
+    width: 3rem;
+    color: #fff;
+    z-index: 10;
+	float: none;
+	margin: 0;
+
+    @include bubble('right', 'center', 8, var(--alert-icon-bg), var(--alert-icon-bg));
+
+    > span {
+        display: none;
+        position: absolute;
+        inset-inline-start: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 1.25em;
+        line-height: 1.2em;
+        top: 50%;
+        transform: translateY(-50%);
+		float: none;
+		margin: 0;
+    }
+}
+
+.ui-pnotify-text {
+    font-size: $font-size-lg;
+    max-height: 300px;
+    overflow-y: auto;
+
+    > br {
+        display: block;
+        line-height: 2px;
+        content: '';
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .ui-pnotify-icon {
+        @include border-left-radius(0);
+    }
+}
+
+.ui-pnotify-closer, 
+.ui-pnotify-sticker {
+    --action-offset: 5px;
+    @include trailing-action($bg: transparent, $color: rgba(var(--alert-base-rgb), 0.75), $hover-bg: rgba(var(--alert-icon-bg-rgb), 0.75), $active-bg: rgba(var(--alert-icon-bg-rgb), 1));
+
+	margin: 0;
+	position: absolute;
+	top: var(--action-offset);
+	inset-inline-end: var(--action-offset);
+}
+
+.ui-pnotify-sticker {
+    font-size: 10px;
+    top: calc(var(--trailing-action-size) + var(--action-offset));
+}
+
+@media (min-width: 481px) {
+    .ui-pnotify.stack-topcenter,
+    .ui-pnotify.stack-bottomcenter {
+	    inset-inline-start: 50%;
+	    margin-inline-start: -225px;
+    }
+
+    .ui-pnotify.stack-bottomcenter {
+	    top: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .ui-pnotify-mobile-able.ui-pnotify {
+        
+    }
+    .ui-pnotify-mobile-able {
+        margin-top: -80px;
+        font-size: inherit !important;
+    }
+    .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able {
+        margin-top: -85px;
+    }
+    .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able {
+        margin-top: -90px;
+    }
+    .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able {
+        margin-top: -95px;
+    }
+    .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able ~ .ui-pnotify-mobile-able {
+        margin-top: -100px;
+    }
+}
+
+[dir=rtl] {
+	.ui-pnotify-closer, 
+	.ui-pnotify-sticker {
+		float: left;
+	}
+}

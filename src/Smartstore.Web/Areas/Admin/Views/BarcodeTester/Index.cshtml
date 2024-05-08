@@ -1,0 +1,185 @@
+﻿@using Smartstore.Imaging.Barcodes
+
+@{
+    ViewBag.Title = "Barcode Tester";
+    var allTypes = Html.GetEnumSelectList<BarcodeType>();
+    var selectedType = allTypes.Where(x => x.Text == "Ean").First();
+    selectedType.Selected = true;
+}
+
+<style type="text/css" sm-target-zone="stylesheets" data-origin="barcode-tester">
+    #svg-output > img {
+        max-width: 400px;
+    }
+</style>
+
+<form id="barcode-form" method="get">
+    <div class="section-header">
+        <div class="title">
+            <i class="fa fa-barcode d-inline-block"></i>
+            <span>Barcode Tester</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- FORM -->
+        <div class="col-12 col-sm-6 col-lg-8 col-xl-7">
+            <div class="row sm-gutters">
+                <!-- Common -->
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="form-group">
+                        <label for="type">Barcode Type</label>
+                        <select asp-items="@allTypes" id="type" name="type" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="form-group">
+                        <label for="m">Margin</label>
+                        <input class="form-control" type="number" id="m" name="m" placeholder="Leave empty for Type default" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="form-group">
+                        <label for="scale">Scale <span class="text-muted">(image only)</span></label>
+                        <input class="form-control" type="number" id="scale" name="scale" placeholder="3" />
+                    </div>
+                </div>
+
+                <!-- Colors -->
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="form-group">
+                        <label for="bgc">Background Color</label>
+                        <input class="form-control" type="text" id="bgc" name="bgc" placeholder="#fff" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="form-group">
+                        <label for="fc">Barcode Color</label>
+                        <input class="form-control" type="text" id="fc" name="fc" placeholder="#000" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="form-group">
+                        <label for="tc">Text Color</label>
+                        <input class="form-control" type="text" id="tc" name="tc" placeholder="#000" />
+                    </div>
+                </div>
+
+                <!-- More -->
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="form-group">
+                        <label for="h">1D Bar Height <span class="text-muted">(image only)</span></label>
+                        <input class="form-control" type="number" id="h" name="h" placeholder="40" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="form-group">
+                        <label for="ean">Include EAN as Text</label>
+                        <div>
+                            <div class="form-check form-check-solo form-check-warning form-switch form-switch-lg">
+                                <input class="form-check-input" type="checkbox" value="" id="ean" name="ean">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="form-group">
+                        <label for="font">EAN Number Font</label>
+                        <input class="form-control" type="text" id="font" name="font" placeholder="e.g.: Arial" />
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="data">Data</label>
+                        <textarea name="data" id="data" class="form-control" rows="6" placeholder="Paste data here">4912345678904</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREVIEW -->
+        <div class="col-12 col-sm-6 xoffset-2 offset-xl-2 col-lg-4 col-xl-3">
+            <div class="bg-light rounded border p-3">
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <button type="submit" class="btn btn-warning btn-block">Generate</button>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <h4>PNG</h4>
+                        <div id="png-output">
+                            <!-- Lazy -->
+                            <span class="text-muted">Not generated</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <h4>SVG</h4>
+                        <div id="svg-output">
+                            <!-- Lazy -->
+                            <span class="text-muted">Not generated</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script sm-target-zone="scripts" data-origin="barcode-tester">
+    $(function () {
+        var data = $('#data');
+
+        var urlSvg = '@Url.Action("Svg").TrimEnd('/')';
+        var urlPng = '@Url.Action("Image").TrimEnd('/')';
+
+        var svgOutput = $('#svg-output');
+        var pngOutput = $('#png-output');
+
+        $('#barcode-form').on('submit', function (e) {
+            e.preventDefault();
+
+            if (!data.val()) {
+                alert('Data is required');
+                return false;
+            }
+
+            pngOutput.html('<span class="text-muted">Not generated</span>');
+            svgOutput.html('<span class="text-muted">Not generated</span>');
+
+            var params = {
+                type: $('#type').val(),
+                m: $('#m').val(),
+                scale: $('#scale').val(),
+                bgc: $('#bgc').val(),
+                fc: $('#fc').val(),
+                tc: $('#tc').val(),
+                h: $('#h').val(),
+                ean: $('#ean').is(':checked'),
+                font: $('#font').val(),
+                data: data.val()
+            };
+
+            let q = '?' + new URLSearchParams(params).toString();
+
+            let png = $('<img class="img-fluid barcode" src="{0}" />'.format(urlPng + q));
+
+            $(png).on('error', function (e) {
+                pngOutput.html('<span class="text-danger">Invalid input!</span>');
+            });
+
+            pngOutput.html(png);
+            png.on('load', function (e) {
+                // Now fetch SVG image
+                let svg = $('<img class="img-fluid barcode" src="{0}" style="width: {1:D}px" />'.format(urlSvg + q, png.width()));
+
+                $(svg).on('error', function (e) {
+                    svgOutput.html('<span class="text-danger">Invalid input!</span>');
+                });
+
+                svgOutput.html(svg);
+            });
+
+            return false;
+        });
+    });
+</script>

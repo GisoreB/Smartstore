@@ -1,0 +1,343 @@
+﻿@using Smartstore.Admin.Models.Maintenance;
+@using Smartstore.Utilities
+@using Smartstore.Collections
+
+@model SystemInfoModel
+
+@{
+    ViewBag.Title = T("Admin.System.SystemInfo").Value;
+
+    var variables = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process);
+}
+
+<style sm-target-zone="stylesheets" data-origin="SystemInfo">
+    .table-servervars {
+        font-size: 90%;
+        max-width: 100%
+    }
+
+    .table-servervars .sv-key {
+        font-weight: bold;
+    }
+
+    .table-servervars .sv-value {
+        word-break: break-all;
+        word-wrap: break-word;
+        white-space: pre;
+        white-space: pre-wrap;
+    }
+
+    .sysmetric {
+        display: inline-block;
+        min-width: 80px;
+        margin-right: 10px;
+    }
+</style>
+
+<script sm-target-zone="scripts" data-origin="SystemInfo">
+    var refreshMemUsageIntervalToken;
+    
+    $(function () {
+        $(document).on('click', '.toggle-panel', function (e) {
+			let btn = $(this);
+            let fa = btn.find('.fa');
+            let panel = btn.parent().next();
+            let isPressed = btn.is('.active');
+
+            fa.toggleClass('fa-angle-down', !isPressed);
+            fa.toggleClass('fa-angle-up', isPressed);
+            panel.toggleClass('d-none', !isPressed);
+		});
+
+        refreshMemUsageIntervalToken = window.setInterval(refreshMemUsage, 4000);
+	});
+
+    function refreshMemUsage() {
+        let usedRam = $('#used-ram');
+        let usedRamUp = $('#used-ram-up');
+        let usedRamDown = $('#used-ram-down');
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("UsedMemory")',
+            global: false,
+            success: function(result) {
+                if (result.success) {
+                    let prev = parseInt(usedRam.data('raw'));
+                    usedRam.data('raw', result.raw);
+                    usedRam.text(result.pretty);
+                    if (result.raw != prev) {
+                        usedRamUp.toggle(result.raw > prev);
+                        usedRamDown.toggle(result.raw < prev);
+                    }
+                }
+            },
+            error: function() {
+                // Stop refresh on first internal server error.
+                window.clearInterval(refreshMemUsageIntervalToken);
+            }
+        });
+    }
+</script>
+
+<div class="section-header">
+    <div class="title">
+        <i class="fa fa-info-circle"></i>
+        @T("Admin.System.SystemInfo")
+    </div>
+</div>
+
+<div class="adminContent">
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="AppVersion" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                <span class="sysmetric">@Html.DisplayFor(model => model.AppVersion)</span>
+                <a href='@Url.Action("CheckUpdate", new { enforce = true })' class="fwm">@T("Admin.CheckUpdate")</a>
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="AppDate" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                @Model.AppDate.ToString("F")
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="IPAddress" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                @Html.DisplayFor(model => model.IPAddress)
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="ServerTimeZone" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                @Html.DisplayFor(model => model.ServerTimeZone)
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="ServerLocalTime" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                @Model.ServerLocalTime.ToNativeString("F")
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="UtcTime" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                @Model.UtcTime.ToNativeString("F")
+            </div>
+        </div>
+    </div>
+
+    <div class="adminRow">
+        <div class="adminSeparator"><hr></div>
+    </div>
+
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="OperatingSystem" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                @Html.DisplayFor(model => model.OperatingSystem)
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="AspNetInfo" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                @Html.DisplayFor(model => model.AspNetInfo)
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="UsedMemorySize" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                <span class="sysmetric">
+                    <span id="used-ram" data-raw="@Model.UsedMemorySize.ToStringInvariant()">@Model.UsedMemorySizeString.NaIfEmpty()</span>
+                    <i id="used-ram-up" class="fa fa-arrow-up text-danger pl-1" style="display: none"></i>
+                    <i id="used-ram-down" class="fa fa-arrow-down text-success pl-1" style="display: none"></i>
+                </span>
+                <a href='@Url.Action("GarbageCollect")' class="fwm">@T("Admin.System.SystemInfo.GarbageCollect")</a>
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            @Html.SmartLabel("", "HTTP Header")
+        </div>
+        <div class="adminData wide">
+            <div class="toggle-panel-wrapper">
+                <button class="toggle-panel btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false">
+                    <i class="fa fa-angle-down"></i>
+                    <span>@T("Admin.Common.Show")</span>
+                </button>
+            </div>
+            <div class="d-none mt-3">
+                <div class="table-responsive">
+                    <table class="table table-striped table-servervars">
+                        <tbody>
+                            @foreach (var header in Request.Headers)
+                            {
+                                <tr>
+                                    <td class="sv-key" style="min-width: 200px">@(header.Key):</td>
+                                    <td><div class="sv-value">@header.Value</div></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            @Html.SmartLabel("", T("Admin.Common.EnvironmentVariables"))
+        </div>
+        <div class="adminData wide">
+            <div class="toggle-panel-wrapper">
+                <button class="toggle-panel btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false">
+                    <i class="fa fa-angle-down"></i>
+                    <span>@T("Admin.Common.Show")</span>
+                </button>
+            </div>
+            <div class="d-none mt-3">
+                <div class="table-responsive">
+                    <table class="table table-striped table-servervars">
+                        <tbody>
+                            @foreach (var key in variables.Keys.OfType<string>())
+                            {
+                                <tr>
+                                    <td class="sv-key" style="min-width: 200px">@(key):</td>
+                                    <td><div class="sv-value">@variables[key]</div></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="LoadedAssemblies" />
+        </div>
+        <div class="adminData wide">
+            <div class="toggle-panel-wrapper">
+                <button class="toggle-panel btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false">
+                    <i class="fa fa-angle-down"></i>
+                    <span>@T("Admin.Common.Show") (@Model.LoadedAssemblies.Count)</span>
+                </button>
+            </div>
+            <div class="d-none mt-3">
+                <p>Directory: <span class="fwm">@AppDomain.CurrentDomain.BaseDirectory</span></p>
+                @foreach (var assembly in Model.LoadedAssemblies)
+                {
+                    @assembly.FullName
+                    if (!string.IsNullOrEmpty(assembly.Location))
+                    {
+                        <br />
+                        <span class="text-muted small">@assembly.Location</span>
+                    }
+                    <br />
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="adminRow">
+        <div class="adminSeparator"><hr></div>
+    </div>
+
+    <div class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="DataProviderFriendlyName" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                @Model.DataProviderFriendlyName.NaIfEmpty()
+            </div>
+        </div>
+    </div>
+    <div sm-if="Model.DatabaseSize > 0" class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="DatabaseSize" />
+        </div>
+        <div class="adminData">
+            <div class="form-control-plaintext">
+                <span class="sysmetric">@Model.DatabaseSizeString.NaIfEmpty()</span>
+                @if (Model.ShrinkDatabaseEnabled)
+                {
+                    <a href='@Url.Action("ShrinkDatabase")' class="fwm">@T("Common.Shrink")</a>
+                }
+            </div>
+        </div>
+    </div>
+    <div sm-if="Model.DbTableInfos.Count > 0" class="adminRow">
+        <div class="adminTitle">
+            <smart-label asp-for="DbTableInfos" />
+        </div>
+        <div class="adminData">
+            <div class="toggle-panel-wrapper">
+                <button class="toggle-panel btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false">
+                    <i class="fa fa-angle-down"></i>
+                    <span>@T("Admin.Common.Show")</span>
+                </button>
+            </div>
+            <div class="d-none mt-3">
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr>
+                                <th>@T("Admin.System.SystemInfo.DbTableInfo.TableName")</th>
+                                <th class="text-right" nowrap>@T("Admin.System.SystemInfo.DbTableInfo.NumRows")</th>
+                                <th class="text-right" nowrap>@T("Admin.System.SystemInfo.DbTableInfo.TotalSpace")</th>
+                                <th class="text-right" nowrap>@T("Admin.System.SystemInfo.DbTableInfo.UsedSpace")</th>
+                                <th class="text-right" nowrap>@T("Admin.System.SystemInfo.DbTableInfo.UnusedSpace")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var info in Model.DbTableInfos.Where(x => x.UsedSpace > 0))
+                            {
+                                <tr>
+                                    <td style="word-break: break-all">@info.TableName</td>
+                                    <td class="text-right" nowrap>@info.NumRows.ToString("N0")</td>
+                                    <td class="text-right" nowrap>@Prettifier.HumanizeBytes(info.TotalSpace)</td>
+                                    <td class="text-right" nowrap>@Prettifier.HumanizeBytes(info.UsedSpace)</td>
+                                    <td class="text-right" nowrap>@Prettifier.HumanizeBytes(info.TotalSpace - info.UsedSpace)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

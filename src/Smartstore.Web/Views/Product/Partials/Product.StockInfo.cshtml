@@ -1,0 +1,73 @@
+﻿@using Smartstore.Web.Models.Catalog
+@using Smartstore.Core.Common
+
+@model ProductDetailsModel
+
+@{
+    var isBundleItem = Model.IsBundlePart;
+    var displayStock = Model.StockAvailability.HasValue();
+    var deliveryPresentation = Model.DeliveryTimesPresentation;
+    var statusLabel = Model.DisplayDeliveryTimeAccordingToStock ? Model.DeliveryTimeName : Model.StockAvailability;
+    var statusColor = Model.DisplayDeliveryTimeAccordingToStock && !displayStock ? Model.DeliveryTimeHexValue : string.Empty;
+
+    var showStatusLabel = statusLabel.HasValue() &&
+        (deliveryPresentation == DeliveryTimesPresentation.LabelOnly || deliveryPresentation == DeliveryTimesPresentation.LabelAndDate || Model.DeliveryTimeDate.IsEmpty());
+
+    var showDeliveryDate =
+        (deliveryPresentation == DeliveryTimesPresentation.DateOnly || deliveryPresentation == DeliveryTimesPresentation.LabelAndDate) && Model.DeliveryTimeDate.HasValue();
+
+    // Never show delivery time when product is out of stock AND stock is displayed.
+    var showDeliveryInfos =
+        !isBundleItem &&
+        (showStatusLabel || showDeliveryDate) &&
+        (Model.IsShippingEnabled && deliveryPresentation != DeliveryTimesPresentation.None) && 
+        (!displayStock || (displayStock && Model.IsAvailable));
+
+    var showAttributes = showDeliveryInfos || displayStock || Model.DisplayBackInStockSubscription;
+    if (!showAttributes)
+    {
+        return;
+    }
+}
+
+<div class="pd-stock-info" attr-class='(!isBundleItem, "pd-group")' sm-suppress-if-empty="true">
+    @if (displayStock)
+    {
+        <meta sm-if="!isBundleItem" itemprop="availability" content="http://schema.org/@(Model.IsAvailable ? "InStock" : "OutOfStock")" />
+        <div class="pd-stock @(Model.IsAvailable ? "pd-instock" : "pd-outofstock")">@Model.StockAvailability</div>
+    }
+    else 
+    {
+        <meta sm-if="!isBundleItem" itemprop="availability" content="http://schema.org/@(Model.IsAvailable ? "InStock" : "SoldOut")" />
+    }
+
+    @if (showDeliveryInfos)
+    {
+        <div sm-if="showStatusLabel" class="deliverytime-group d-flex">
+            <span class="deliverytime-label">@T("Products.DeliveryTime")</span>
+            <span class="delivery-time" title="@T("Products.DeliveryTime") @statusLabel" attr-style='(statusColor.HasValue(), "color:" + statusColor)'>
+                <i class="fa fa-circle delivery-time-status" style="color: @Model.DeliveryTimeHexValue"></i>
+                @statusLabel
+            </span>
+        </div>
+        <div sm-if="showDeliveryDate" class="deliverytime-group d-flex">
+            <span class="delivery-date-block">
+                <span sm-if="!showStatusLabel">@T("Products.DeliveryDate")</span>
+                <span class="delivery-date">@Html.Raw(Model.DeliveryTimeDate)</span>
+            </span>
+        </div>
+    }
+
+    <div sm-if="Model.DisplayBackInStockSubscription" class="pd-stocksub">
+        @if (!Model.IsCurrentCustomerRegistered)
+        {
+            <a asp-route="Login" asp-route-returnUrl="@Context.Request.RawUrl()" rel="nofollow">@T("BackInStockSubscriptions.NotifyMeWhenAvailable")</a>
+        }
+        else
+        {
+            <a asp-action="BackInStockSubscribe" asp-controller="Product" asp-route-id="@Model.Id" class="stock-subscriber" data-toggle="modal" rel="nofollow">
+                @T("BackInStockSubscriptions.NotifyMeWhenAvailable")
+            </a>
+        }
+    </div>
+</div>

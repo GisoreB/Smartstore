@@ -1,0 +1,114 @@
+﻿@model ProductVariantAttributeCombinationModel
+
+@{
+    Layout = "_AdminPopupLayout";
+    ViewBag.Title = T("Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.EditTitle").Value;
+}
+
+<form asp-action="AttributeCombinationEditPopup" asp-route-btnId="@ViewBag.BtnId" asp-route-formId="@ViewBag.FormId">
+    <div class="section-header">
+        <div class="title">
+            @ViewBag.Title
+        </div>
+        <div class="options">
+            <div class="btn-group">
+                <button type="button"
+                        id="EditPreviousAttributeCombination"
+                        class="btn btn-secondary btn-icon"
+                        title="@T("Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.OpenPreviousCombination")"
+                        data-url="@Url.Action("EditSiblingAttributeCombination", new { productId = Model.ProductId, next = false })">
+                    <i class="fa fa fa-angle-left"></i>
+                </button>
+                <button type="button" id="SaveAttributeCombination" class="btn btn-secondary disabled" disabled title="@T("Admin.Common.SaveContinue")">
+                    <span>@T("Admin.Common.Save")</span>
+                </button>
+                <button type="button"
+                        id="EditNextAttributeCombination"
+                        class="btn btn-secondary btn-icon"
+                        title="@T("Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.OpenNextCombination")"
+                        data-url="@Url.Action("EditSiblingAttributeCombination", new { productId = Model.ProductId, next = true })">
+                    <i class="fa fa fa-angle-right"></i>
+                </button>
+            </div>
+
+            <button type="submit" id="save" name="save" value="save" class="btn btn-secondary btn-to-primary">
+                <i class="fa fa-check"></i>
+                <span>@T("Admin.Common.SaveClose")</span>
+            </button>
+
+        </div>
+    </div>
+    <div id="AttributeCombinationContainer">
+        <partial name="_CreateOrUpdateAttributeCombinationPopup" model="Model" />
+    </div>
+</form>
+
+<script sm-target-zone="Scripts" data-origin="edit-attribute-combination">
+    $(function () {
+        let container = $('#AttributeCombinationContainer');
+
+        $(document).on('click', '#EditPreviousAttributeCombination, #EditNextAttributeCombination', function () {
+            //const command = window.parent.window["attributecombinations-grid"].$children[0].command;
+            let url = $(this).data('url') + '&currentId=' + container.find('input[name=Id]').val();
+
+            $.ajax({
+                cache: false,
+                global: false,
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    container.html(response.partial);
+
+                    Smartstore.media.lazyLoadThumbnails($('#assigned-pictures'));
+                    applyCommonPlugins(container);
+                    setDirty(false);
+                }
+            });
+
+            return false;
+        });
+
+        $(document).on('click', '#SaveAttributeCombination', function () {
+			$.ajax({
+				cache: false,
+				type: 'POST',
+				url: '@Url.Action("SaveAttributeCombination")',
+                data: container.closest('form').serialize(),
+                success: function () {
+                    setDirty(false);
+
+                    // Reload grid if current ID is loaded. Could irritate the user otherwise.
+                    const grid = window.parent.window["attributecombinations-grid"].$children[0];
+                    var currentId = parseInt(container.find('input[name=Id]').val());
+                    var loadedIds = grid.rows.map(x => parseInt(x.Id));
+
+                    if (loadedIds.includes(currentId)) {
+                        grid.read();
+                    }
+				},
+                error: function (objXml) {
+                    if (objXml != null && objXml.responseText != null && objXml.responseText !== '') {
+                        displayNotification(objXml.responseText, 'error');
+                    }
+                }
+			});
+
+            return false;
+        });
+
+        _.delay(function () {
+            container.on('input change propertychange paste', 'input, select, textarea', function () {
+                setDirty(true);
+            });
+        }, 250);
+
+        function setDirty(dirty) {
+            if (dirty) {
+                $('#SaveAttributeCombination').removeClass('disabled').removeAttr('disabled');
+            }
+            else {
+                $('#SaveAttributeCombination').addClass('disabled').attr('disabled', true);
+            }
+        }
+	});
+</script>

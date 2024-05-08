@@ -1,0 +1,22 @@
+/// <reference path="references.scss" />
+
+//
+// Login & Registration Styles
+// --------------------------------------------------
+
+.login-box {
+    background-color: $login-box-bg;
+
+    hr {
+		width: 100%;
+		margin-block: 1.5rem;
+    }
+
+	.form-group:last-child {
+		margin-bottom: 0;
+	}
+
+	.input-group-icon > i {
+		line-height: inherit;
+	}
+}

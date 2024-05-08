@@ -1,0 +1,26 @@
+﻿@model CustomerModel
+
+@{
+    ViewBag.Title = T("Admin.Customers.Customers.AddNew").Value;
+}
+
+<form method="post" asp-action="Create" id="customer-form"> 
+    <div class="section-header">
+        <div class="title">
+            <a sm-backto asp-action="List"></a>
+            <i class="fa fa-user-plus"></i>
+            <span>@T("Admin.Customers.Customers.AddNew")</span>
+        </div>
+        <div class="options">
+            <button type="submit" name="save" value="save" class="btn btn-primary">
+                <i class="fa fa-check"></i>
+                <span>@T("Admin.Common.Save")</span>
+            </button>
+            <button type="submit" name="save" value="save-continue" class="btn btn-secondary">
+                <span>@T("Admin.Common.SaveContinue")</span>
+            </button>
+        </div>
+    </div>
+
+    <partial name="_CreateOrUpdate" model="Model" />
+</form>

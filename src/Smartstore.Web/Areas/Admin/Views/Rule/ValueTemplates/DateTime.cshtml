@@ -1,0 +1,46 @@
+﻿@model IRuleExpression
+
+@{
+    var id = "rule-value-" + Model.Id;
+    var format = (Model.Descriptor.Metadata.Get("DateTimeFormat") as string).NullEmpty() ?? "L LT";
+    var iconClass = format == "LT" ? "fa-clock" : "fa-calendar";
+
+    DateTime? value = null;
+    if (Model.Value != null)
+    {
+        value = Convert.ToDateTime(Model.Value, System.Globalization.CultureInfo.CurrentCulture).ToLocalTime();
+    }
+
+    var strValue = string.Empty;
+    if (value.HasValue && value.Value > DateTime.MinValue)
+    {
+        if (format == "LT")
+        {
+            strValue = value.Value.ToShortTimeString();
+        }
+        else if (format == "L")
+        {
+            strValue = value.Value.ToShortDateString();
+        }
+        else
+        {
+            strValue = value.Value.ToString();
+        }
+    }
+}
+
+<div class="date datetimepicker-group d-flex flex-grow-1 datepicker-rule-value" id="@id-parent" data-date="@strValue" data-target-input="nearest">
+    <input type="text"
+           id="@id"
+           name="@id"
+           value="@strValue"
+           class="form-control datetimepicker-input edit-control"
+           data-editor="date-time"
+           data-target="#@(id)-parent"
+           data-format="@format" />
+    <div class="input-group-append" data-target="#@(id)-parent" data-toggle="datetimepicker">
+        <button type="button" class="btn btn-light">
+            <i class="far @iconClass"></i>
+        </button>
+    </div>
+</div>

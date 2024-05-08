@@ -1,0 +1,13 @@
+﻿@model PurchaseOrderNumberPaymentInfoModel
+
+<input type="hidden" name="OfflinePaymentMethodType" value="PurchaseOrderNumber" />
+
+<div class="opt-form">
+    <div class="form-group row">
+        <label asp-for="PurchaseOrderNumber" class="col-md-3 col-form-label required"></label>
+        <div class="col-md-9">
+            <input asp-for="PurchaseOrderNumber" />
+            <span asp-validation-for="PurchaseOrderNumber"></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,147 @@
+﻿@using Smartstore.Web.Models.Catalog;
+
+@model ProductSummaryItemModel
+
+@{
+    var list = Model.Parent;
+    var image = Model.Image;
+    var hasImage = image?.HasImage() == true;
+
+    var isLinesMode = list.ViewMode == ProductSummaryViewMode.List;
+    var showButtons = list.ShowButtons && (!Model.Price.DisableWishlistButton || list.CompareEnabled || (!Model.Price.DisableBuyButton && list.BuyEnabled));
+    var showVariants = (Model.ColorAttributes != null && Model.ColorAttributes.Any()) || (Model.Attributes != null && Model.Attributes.Any());
+    var showDrop = showButtons || showVariants;
+    var showAttrs = isLinesMode && (list.ShowSku || list.ShowWeight || list.ShowDimensions);
+    var addImageClass = image.File == null ? " no-picture" : "";
+    if (!hasImage)
+    {
+        addImageClass += " no-default-picture";
+    }
+
+    ViewBag.ArtDetailUrl = Model.DetailUrl;
+}
+
+<article class="art" data-id="@Model.Id">
+
+    <div class="art-picture-block">
+        @* TODO: (mc) Let user define one free badge per product in backend *@
+        <div sm-if="Model.Badges.Count > 0" class="art-badges">
+            @foreach (var badge in Model.Badges.OrderBy(x => x.DisplayOrder))
+            {
+                <span class="art-badge badge badge-@badge.Style">@Html.Raw(badge.Label)</span>
+            }
+        </div>
+        @if (image.Title.HasValue())
+        {
+            var linkTitle = T("Media.Product.ImageLinkTitleFormat", Model.Name);
+            <a class="art-picture img-center-container@(addImageClass)" href="@Model.DetailUrl" title="@linkTitle" attr-data-content='(!hasImage, T("Common.NoImageAvail"))'>
+                <img sm-model="image" loading="lazy" />
+            </a>
+        }
+    </div>
+
+    @if (isLinesMode)
+    {
+        @Html.Raw("<div class='art-data-block'><div class='art-info-block'>")
+    }
+
+    @if (list.ShowRatings || list.ShowBrand)
+    {
+        if (isLinesMode)
+        {
+            <div class="art-info-group" attr-class='(list.ShowRatings && list.ShowBrand, "floating")'>
+                @if (list.ShowBrand)
+                {
+                    <partial name="Product.List.Item.Brand" model="Model" />
+                }
+                @if (list.ShowRatings)
+                {
+                    <partial name="Product.List.Item.Rating" model="Model" />
+                }
+            </div>
+        }
+        else
+        {
+            if (list.ShowRatings)
+            {
+                <partial name="Product.List.Item.Rating" model="Model" />
+            }
+            if (list.ShowBrand)
+            {
+                <partial name="Product.List.Item.Brand" model="Model" />
+            }
+        }
+    }
+
+    <h3 class="art-name" sm-language-attributes-for="Model.Name">
+        <a href="@Model.DetailUrl" title="@Model.Name.ToString()">
+            <span>@Model.Name</span>
+        </a>
+    </h3>
+
+    @if (list.ShowDescription)
+    {
+        <div class="art-description" title="@Model.ShortDescription.ToString()" sm-language-attributes-for="Model.ShortDescription">
+            @Html.Raw(Model.ShortDescription.Truncate(160, "..."))
+        </div>
+    }
+
+    <table sm-if="showAttrs" class="art-attrs">
+        <tr sm-if="list.ShowSku && Model.Sku.HasValue()">
+            <td>@T("Products.Sku")</td>
+            <td>@Model.Sku</td>
+        </tr>
+        <tr sm-if="list.ShowWeight && Model.Weight.HasValue()">
+            <td>@T("Products.Weight")</td>
+            <td>@Model.Weight</td>
+        </tr>
+        <tr sm-if="list.ShowDimensions && Model.Dimensions.HasValue()">
+            <td>@T("Products.Dimensions") <span class="lrm">(@Model.DimensionMeasureUnit)</span></td>
+            <td>@Model.Dimensions</td>
+        </tr>
+    </table>
+
+    @if (!isLinesMode)
+    {
+        <partial name="Product.List.Item.Delivery" model="Model" />
+        <partial name="Product.List.Item.Price" model="Model" />
+    }
+
+    @if (isLinesMode && showVariants)
+    {
+        <partial name="Product.List.Item.Variants" model="Model" />
+    }
+
+    <div sm-if="list.ShowLegalInfo" class="art-legalinfo">
+        <span>*</span> <span>@Html.Raw(Model.LegalInfo)</span>
+    </div>
+
+    @if (isLinesMode)
+    {
+        // close div.art-info-block
+        @Html.Raw("</div>")
+
+        <div class="art-actions-block">
+            <partial name="Product.List.Item.Delivery" model="Model" />
+            <partial name="Product.List.Item.Price" model="Model" />
+            @if (showButtons)
+            {
+                <partial name="Product.List.Item.Buttons" model="Model" />
+            }
+        </div>
+
+        // close div.art-data-block
+        @Html.Raw("</div>")
+    }
+
+    <div sm-if="!isLinesMode && showDrop" class="art-drop">
+        @if (showVariants)
+        {
+            <partial name="Product.List.Item.Variants" model="Model" />
+        }
+        @if (showButtons)
+        {
+            <partial name="Product.List.Item.Buttons" model="Model" />
+        }
+    </div>
+</article>

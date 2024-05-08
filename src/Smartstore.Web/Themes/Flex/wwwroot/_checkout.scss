@@ -1,0 +1,357 @@
+﻿/// <reference path="references.scss" />
+
+.costeps {
+    --costep-ring-width: 0px;
+
+    position: relative;
+    margin: 2rem auto;
+    flex-wrap: nowrap;
+    max-width: 720px;
+}
+
+.costep,
+.costep-link,
+.costep-icon {
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.costep {
+    text-align: center;
+    z-index: 1;
+
+    &:before,
+    &:after {
+        display: block;
+        content: ' ';
+        position: absolute;
+        height: 2px;
+        background-color: $costep-border;
+        z-index: 0;
+        top: 5px;
+    }
+
+    // INFO: No logical CSS here.
+    &:before {
+        left: 0;
+        right: 50%;
+    }
+
+    &:after {
+        left: 50%;
+        right: 0;
+    }
+
+    &:first-child:before,
+    &:last-child:after {
+        display: none;
+    }
+}
+
+.costep-link {
+    color: inherit;
+    text-decoration: none !important;
+}
+
+.costep-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid $costep-border;
+    background-color: $costep-bg;
+    color: $costep-color;
+    margin: 0 auto;
+    outline: var(--costep-ring-width) solid var(--body-bg);
+}
+
+.costep-label {
+    overflow: hidden;
+    //white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 85%;
+    display: block;
+    padding: 0.5rem 3px 0 3px;
+    color: $costep-label-color;
+}
+
+.costep.visited {
+    &:before, &:after {
+        background-color: $costep-visited-border;
+    }
+
+    .costep-icon {
+        border-color: $costep-visited-border;
+        background-color: $costep-visited-bg;
+        color: $costep-visited-color;
+    }
+
+    .costep-label {
+        color: $costep-visited-label-color;
+    }
+}
+
+.costep.active {
+    &:before {
+        background-color: $costep-active-border;
+    }
+
+    .costep-icon {
+        border-color: $costep-active-border;
+        background-color: $costep-active-bg;
+        color: $costep-active-color;
+    }
+
+    .costep-label {
+        font-weight: $font-weight-medium;
+        color: $costep-active-label-color;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+    .costeps {
+        --costep-ring-width: 0.25rem;
+    }
+
+    .costep:before,
+    .costep:after {
+        top: 24px;
+    }
+
+    .costep-icon {
+        width: 50px;
+        height: 50px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        &:before {
+            @include fontastic("\e74b", 20px);
+        
+            [data-step=cart] &	    { content: '\e74b' /* icm-bag */; }
+            [data-step=address] &	{ content: '\e600' /* icm-home */; }
+            [data-step=shipping] & 	{ content: '\e857' /* icm-truck */; transform: translateY(-3px); }
+            [data-step=payment] & 	{ content: '\e759' /* icm-credit-card */ }
+            [data-step=confirm] & 	{ content: '\e919' /* icm-thumbs-up */; }
+            [data-step=complete] & 	{ content: '\e934' /* icm-check */ }
+        }
+    }
+
+    .costep-label {
+        font-size: 90%;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .costeps {
+        --costep-ring-width: 0.5rem;
+    }
+}
+
+//
+// Checkout options (payment & shipping)
+// --------------------------------------------------
+
+.checkout-data {
+    .opt-list {
+        margin-bottom: 1.5rem;
+        --opt-offset: 0;
+    }
+
+    .opt-list-item {
+        padding: 1.25rem;
+    }
+
+    .opt-data {
+        display: flex;
+        width: 100%;
+        align-items: center;
+    }
+
+    .opt-control {
+        margin-bottom: 0;
+
+        .form-check-label {
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+    }
+
+    .opt-name {
+        display: block;
+        font-size: $h5-font-size;
+        font-weight: $font-weight-medium;
+        margin-inline-start: 4px;
+        line-height: 1.3;
+    }
+
+    .opt-fee {
+        white-space: nowrap;
+    }
+
+    .opt-info,
+    .opt-info-item {
+        margin-inline-start: var(--opt-offset);
+        margin-top: 0.25rem;
+    }
+
+    .opt-form,
+    .opt-info-embedded {
+        margin-top: 1.5rem;
+
+        &:last-child > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .opt-info {
+        .media-object {
+            max-width: 25%;
+            margin-top: 0.25rem;
+        }
+
+        .media-body {
+            color: $text-muted;
+        }
+
+        p:empty {
+            display: none;
+        }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    @include media-breakpoint-up(sm) {
+        .opt-info .media-object {
+            max-width: 120px;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        .opt-name {
+            margin-inline-start: 12px;
+        }
+
+        .opt-info,
+        .opt-info-item {
+            --opt-offset: 36px;
+        }
+    }
+}
+
+/* Adaptions for payment method page
+================================================ */
+
+.payment-brand {
+    // 4:3 aspect ratio.
+    width: 64px;
+    height: 48px;
+    margin-inline-end: 0.75rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center !important;
+    justify-content: center;
+    background: linear-gradient(to bottom right, var(--gray-100), $white);
+    box-shadow: rgba($black, 0.12) 0px 1px 3px, rgba($black, 0.24) 0px 1px 2px;
+    box-shadow: rgba($black, 0.5) 0px 0px 1px, rgba($black, 0.06) 0px 2px 4px 1px;
+    border-radius: var(--border-radius-lg);
+}
+
+.payment-method-page .opt-list-icons {
+    .payment-selection {
+        display: none;
+    }
+
+    .opt-name,
+    .opt-info,
+    .opt-info-item {
+        margin-inline-start: 4px !important;
+
+        @include media-breakpoint-up(md) {
+            margin-inline-start: ($grid-gutter-width / 2) !important;
+        }
+    }
+
+    .payment-method-item {
+        &:hover:not(.active) {
+            cursor: pointer;
+        }
+
+        &.active {
+            background: $gray-100;
+
+            .payment-brand {
+                background: #fff;
+            }
+        }
+    }
+
+    .opt-info-embedded {
+        margin-inline-start: 0 !important;
+    }
+    /* Bigbrand */
+    .media-object,
+    .opt-name > img {
+        display: none;
+    }
+
+    .checkout-data {
+        .opt-info,
+        .opt-info-item {
+            margin-top: 0.25rem;
+            margin-inline-start: 0;
+        }
+
+        .opt-name {
+            margin-inline-start: 0;
+        }
+    }
+}
+
+.order-summary-page #content-body {
+    margin-top: 0;
+}
+
+/* Order Summary
+================================================ */
+
+.order-summary-content {
+    .productpicture {
+        width: 100px;
+        img {
+            max-width: 100%;
+        }
+    }
+}
+
+
+/* Checkout Data
+================================================ */
+
+.checkout-data .buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* Checkout Confirm
+================================================ */
+
+#terms-of-service-consent-box {
+	background: lighten($gray-100, 1.5%);
+}
+.reward-points.alert,
+#terms-of-service-consent-box {
+    a.read {
+        font-weight: $font-weight-medium;
+        &:hover { cursor: pointer; }
+    }
+}
+#iframe-terms-of-service { 
+    width: 100%;
+}
+.checkout-data .change-checkout-data {
+    padding: 0.25rem 0.5rem;
+}

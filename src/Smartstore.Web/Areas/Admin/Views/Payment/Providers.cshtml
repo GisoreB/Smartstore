@@ -1,0 +1,61 @@
+﻿@using Smartstore.Admin.Models.Payments
+@using Smartstore.Core.Checkout.Payment
+
+@model IEnumerable<PaymentMethodModel>
+
+@{
+    ViewBag.Title = T("Admin.Configuration.Payment.Methods").Value;
+
+    async Task FeatureLabel(bool active, string label)
+    {
+        <div attr-class='(!active, "text-muted")'>
+            @if (active)
+            {
+                <i class="fa fa-fw fa-check text-success"></i>
+            }
+            else
+            {
+                <i class="fa fa-fw fa-minus"></i>
+            }
+            <span class="pl-2">@Html.Raw(label)</span>
+        </div>
+    }
+}
+
+<div class="section-header">
+    <div class="title">
+        <i class="far fa-credit-card"></i>
+        @T("Admin.Configuration.Payment.Methods")
+    </div>
+    <div class="options">
+        <zone name="admin_button_toolbar_before" />
+        <zone name="admin_button_toolbar_after" />
+    </div>
+</div>
+
+<div class="provider-list">
+    @(await Html.ProviderList(Model,
+        infoTemplate: @<div class="d-flex flex-column mt-auto small" style="gap: 2px">
+           @{
+                var active = item.RecurringPaymentTypeEnum != RecurringPaymentType.NotSupported;
+                var label = T("Admin.Configuration.Payment.Methods.Fields.RecurringPaymentType").Value;
+                if (active)
+                {
+                    label += $" ({item.RecurringPaymentType})";
+                }
+                await FeatureLabel(active, label);
+            }
+            @{
+                await FeatureLabel(item.SupportCapture, Html.DisplayNameFor(model => model.SupportCapture));
+            }
+            @{
+                await FeatureLabel(item.SupportRefund, Html.DisplayNameFor(model => model.SupportRefund));
+            }
+            @{
+                await FeatureLabel(item.SupportPartiallyRefund, Html.DisplayNameFor(model => model.SupportPartiallyRefund));
+            }
+            @{
+                await FeatureLabel(item.SupportVoid, Html.DisplayNameFor(model => model.SupportVoid));
+            }
+        </div>))
+</div>

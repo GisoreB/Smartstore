@@ -1,0 +1,576 @@
+/// <reference path="references.scss" />
+
+$btn-wide-padding-x: 1.8rem;
+$btn-wide-padding-x-lg: 2.5rem;
+$btn-wide-padding-x-sm: 1.2rem;
+
+
+// Make icon font-size 14px in small buttons
+// (looks ugly otherwise)
+// -----------------------------------------------------
+
+.btn-sm > .fa {
+    font-size: 14px;
+}
+
+
+// Generic input clear button
+// -----------------------------------------------------
+
+.input-clear {
+    @include trailing-action();
+    --input-clear-size: var(--trailing-action-size);
+}
+
+
+// Button flex, icon margins, colors, nowrap etc.
+// -----------------------------------------------------
+
+.btn {
+    --btn-icon-color: currentcolor;
+    --btn-icon-hover-color: var(--btn-icon-color);
+    --btn-icon-active-color: var(--btn-icon-hover-color);
+    --btn-icon-transition: opacity .15s ease-in-out;
+    --btn-height: calc((var(--btn-line-height) * 1em) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
+
+    display: inline-flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    min-height: var(--btn-height);
+
+    > i, 
+    > svg {
+        color: var(--btn-icon-color);
+        transition: var(--btn-icon-transition);
+    }
+
+    &:hover {
+        > i, 
+        > svg {
+            color: var(--btn-icon-hover-color);
+        }
+    }
+
+    &.disabled,
+    &:disabled,
+    fieldset:disabled & {
+        > i, 
+        > svg {
+            color: var(--btn-icon-color);
+        }
+    }
+
+    &:active,
+    &.active,
+    .show > &.dropdown-toggle {
+        > i, 
+        > svg {
+            color: var(--btn-icon-active-color);
+        }
+    }
+}
+
+.btn-icon-fix {
+    // Quick fix for directional icons not perfectly aligned with button text
+    position: relative;
+    top: 1px;
+}
+
+
+// btn-outline-(secondary|light)
+// looks really shitty in BS, style it decently.
+// -----------------------------------------------------
+
+@if $enable-lightbtn-tweak {
+    .btn-outline-secondary,
+    .btn-outline-light {
+        --btn-color: #{$yiq-text-dark};
+        --btn-border-color: #{$input-border-color};
+        --btn-active-bg: #{darken($secondary, 5%)};
+        --btn-disabled-color: #{$yiq-text-dark};
+        --btn-disabled-border-color: #{$input-border-color};
+    }
+
+    .btn-outline-light {
+        --btn-color: #{$gray-600};
+    }
+}
+
+
+// Input groups
+// Light addon buttons without border looking shitty
+// -----------------------------------------------------
+
+.input-group-append > .btn-secondary,
+.input-group-append > .btn-light,
+.input-group-prepend > .btn-secondary,
+.input-group-prepend > .btn-light { 
+    --btn-border-color: #{rgba($gray-700, 0.15)};
+    --btn-hover-border-color: var(--btn-border-color);
+    --btn-active-border-color: #{rgba($gray-700, 0.2)};
+}
+
+
+// btn-icon
+// --------------------------------------------------
+
+.btn-icon {
+    position: relative;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--btn-height);
+    min-width: var(--btn-height);
+    height: var(--btn-height);
+    line-height: var(--btn-height);
+
+    > span {
+        //display: none;
+    }
+
+    // Move caret to bottom right corner
+    &.dropdown-toggle:after {
+        position: absolute;
+        inset-inline-end: 3px;
+        bottom: 0.5em;
+    }
+}
+
+
+// Social buttons
+// --------------------------------------------------
+
+@if $enable-social-buttons {
+    .btn-brand-facebook,
+    .btn-brand-facebook-f {
+        @include button-variant($clr-brand-facebook, $clr-brand-facebook);
+    }
+
+    .btn-brand-twitter {
+        @include button-variant($clr-brand-twitter, $clr-brand-twitter);
+    }
+
+    .btn-brand-x-twitter {
+        @include button-variant($clr-brand-x-twitter, $clr-brand-x-twitter);
+    }
+
+    .btn-brand-youtube {
+        @include button-variant($clr-brand-youtube, $clr-brand-youtube);
+    }
+
+    .btn-brand-pinterest,
+    .btn-brand-pinterest-p {
+        @include button-variant($clr-brand-pinterest, $clr-brand-pinterest);
+    }
+
+    .btn-brand-google {
+        @include button-variant($clr-brand-google2, $clr-brand-google2);
+    }
+
+    .btn-brand-instagram {
+        @include button-variant($clr-brand-instagram, $clr-brand-instagram);
+    }
+
+    .btn-brand-linkedin {
+        @include button-variant($clr-brand-linkedin, $clr-brand-linkedin);
+    }
+
+    .btn-brand-xing {
+        @include button-variant($clr-brand-xing, $clr-brand-xing);
+    }
+
+    .btn-brand-microsoft {
+        @include button-variant($clr-brand-microsoft, $clr-brand-microsoft);
+    }
+
+    .btn-brand-flickr {
+        @include button-variant($clr-brand-flickr, $clr-brand-flickr);
+    }
+
+    .btn-brand-tiktok {
+        @include button-variant($clr-brand-tiktok, $clr-brand-tiktok);
+    }
+
+    .btn-brand-snapchat {
+        @include button-variant($clr-brand-snapchat, $clr-brand-snapchat);
+    }
+
+    .btn-brand-vimeo {
+        @include button-variant($clr-brand-vimeo, $clr-brand-vimeo);
+    }
+
+    .btn-brand-tumblr {
+        @include button-variant($clr-brand-tumblr, $clr-brand-tumblr);
+    }
+
+    .btn-brand-ello {
+        @include button-variant($clr-brand-ello, $clr-brand-ello);
+    }
+
+    .btn-brand-behance {
+        @include button-variant($clr-brand-behance, $clr-brand-behance);
+    }
+
+    .btn-brand-github {
+        @include button-variant($clr-brand-github, $clr-brand-github);
+    }
+}
+
+
+// btn-clear
+// --------------------------------------------------
+
+.btn-clear {
+    --btn-color: #{$yiq-text-light};
+    --btn-bg: #{rgba(#fff, 0)};
+    --btn-border-color: #{rgba(#fff, 0.6)};
+    --btn-box-shadow: none;
+    --btn-hover-shadow: none;
+    --btn-disabled-color: var(--btn-color);
+    --btn-disabled-bg: var(--btn-bg);
+    --btn-disabled-border-color: var(--btn-border-color);
+    --btn-hover-color: var(--btn-color);
+    --btn-hover-bg: #{rgba(#fff, 0.15)};
+    --btn-hover-border-color: var(--btn-border-color);
+    --btn-hover-shadow: none;
+    --btn-active-color: var(--btn-hover-color);
+    --btn-active-bg: #{rgba(#fff, 0.12)};
+    --btn-active-border-color: #{rgba(#fff, 0.4)};
+    --btn-active-shadow: #{$btn-active-box-shadow};
+
+    &:focus:not(:active):not(.active):not(:focus-visible) {
+        box-shadow: 0 0 4px rgba(#fff, 0.7);
+    }
+}
+
+.btn-clear-dark {
+    --btn-color: #{$yiq-text-dark};
+    --btn-bg: #{rgba(#000, 0)};
+    --btn-border-color: #{rgba(#000, 0.15)};
+    --btn-box-shadow: none;
+    --btn-hover-shadow: none;
+    --btn-disabled-color: var(--btn-color);
+    --btn-disabled-bg: var(--btn-bg);
+    --btn-disabled-border-color: var(--btn-border-color);
+    --btn-hover-color: #{darken($yiq-text-dark, 8%)};
+    --btn-hover-bg: #{rgba(#000, 0.06)};
+    --btn-hover-border-color: #{rgba(#000, 0.2)};
+    --btn-hover-shadow: none;
+    --btn-active-color: var(--btn-hover-color);
+    --btn-active-bg: #{rgba(#000, 0.08)};
+    --btn-active-border-color: var(--btn-hover-border-color);
+    --btn-active-shadow: #{$btn-active-box-shadow};
+
+    &:focus:not(:active):not(.active):not(:focus-visible) {
+        box-shadow: 0 0 4px rgba(#000, 0.125);
+    }
+}
+
+
+// btn-labeled
+// --------------------------------------------------
+
+.btn-labeled {
+    --btn-label-size: calc(#{$input-height} * 0.85);
+    --btn-label-bg: #{rgba(#000, .12)};
+
+    position: relative;
+
+    &.btn-dark {
+        --btn-label-bg: #{rgba(#fff, .12)};
+    }
+
+    > b {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--btn-label-size);
+        top: 0;
+        bottom: 0;
+        background-color: var(--btn-label-bg);
+    }
+
+    &.btn-lg {
+        --btn-label-size: calc(#{$input-height-lg} * 0.85);
+    }
+
+    &.btn-sm {
+        --btn-label-size: calc(#{$input-height-sm} * 0.85);
+    }
+
+    &:not(.icon-right) {
+        padding-inline-start: calc(var(--btn-label-size) + var(--btn-padding-x));
+        > b {
+            inset-inline-start: 0;
+        }
+    }
+
+    &.icon-right {
+        padding-inline-end: calc(var(--btn-label-size) + var(--btn-padding-x));
+        > b {
+            inset-inline-end: 0;
+        }
+    }
+}
+
+
+// btn-animate
+// --------------------------------------------------
+
+.btn-animate {
+    --btn-animate-padding-x: calc(var(--btn-padding-x) * 1.5);
+    --btn-animate-icon-start-pos: 0;
+    --btn-animate-icon-end-pos: auto;
+    --btn-animate-icon-text-align: start;
+    --btn-animate-icon-offset-x: -100%;
+    --btn-animate-icon-offset-y: 0;
+    --btn-animate-icon-width: 1.8em;
+    --btn-animate-icon-font-size: inherit;
+    --btn-animate-offset: 10px;
+
+    position: relative;
+    overflow: hidden;
+    padding-inline: var(--btn-animate-padding-x);
+    transition: all 0.2s ease-out;
+
+    > span {
+        display: block;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.2s ease-out;
+        transform: translate(0, 0);
+
+        > i, > svg {
+            position: absolute;
+            display: inline-block;
+            vertical-align: middle;
+            inset-inline-start: var(--btn-animate-icon-start-pos);
+            inset-inline-end: var(--btn-animate-icon-end-pos);
+            top: 0;
+            bottom: 0;
+            width: var(--btn-animate-icon-width);
+            text-align: var(--btn-animate-icon-text-align);
+            opacity: 0;
+            font-size: var(--btn-animate-icon-font-size);
+            line-height: 1;
+            transition: opacity 0.2s ease-out;
+            transform: translate(var(--btn-animate-icon-offset-x), var(--btn-animate-icon-offset-y));
+
+            &:before {
+                position: absolute;
+                inset-inline-start: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+
+    &:hover > span {
+        transform: translateX(var(--btn-animate-offset));
+        > i, > svg {
+            opacity: 1;
+        }
+    }
+}
+
+.btn-animate.btn-animate-right {
+    --btn-animate-icon-start-pos: auto;
+    --btn-animate-icon-end-pos: 0;
+    --btn-animate-icon-text-align: end;
+    --btn-animate-icon-offset-x: 100%;
+    --btn-animate-offset: -10px;
+}
+
+.btn-animate.btn-animate-down {
+    --btn-animate-icon-start-pos: 0;
+    --btn-animate-icon-end-pos: 0;
+    --btn-animate-icon-text-align: center;
+    --btn-animate-icon-offset-x: 0;
+    --btn-animate-icon-offset-y: -150%;
+    --btn-animate-icon-width: 100%;
+    --btn-animate-offset: 10px;
+
+    &:hover > span {
+        transform: translateY(calc(var(--btn-animate-icon-offset-y) * -1));
+    }
+}
+
+.btn-animate.btn-animate-down.btn-lg {
+    --btn-animate-icon-font-size: 1.5rem;
+}
+
+
+// btn-to-[danger|primary]
+// --------------------------------------------------
+
+.btn-to-danger,
+.btn-to-primary {
+    --btn-transition: none;
+
+    > i, > svg {
+        opacity: 1;
+    }
+}
+
+.btn-to-danger {
+    @include button-active-variant($danger, rgba($gray-700, 0.15));
+}
+
+.btn-to-primary {
+    @include button-active-variant($primary, rgba($gray-700, 0.15));
+}
+
+
+// 3d Buttons (colorized drop shadows)
+// -----------------------------------------------------
+
+.btn-3d {
+    --shadow-color-rgb: 0,0,0;
+    --shadow-intensity: 1;
+    --btn-box-shadow: #{$box-shadow-xs};
+    --btn-hover-shadow: #{$box-shadow};
+    --btn-active-shadow: var(--btn-box-shadow);
+
+    transition-property: transform, box-shadow, color, background-color, border-color, opacity !important;
+    transition-timing-function: $ease-out-quint !important;
+    transition-duration: .35s !important;
+
+    &:hover {
+        transform: translateY(-3px);
+    }
+
+    // PRESSED
+    &:active, 
+    &:active,
+    .show > &.dropdown-toggle {
+        transform: translateY(1px);
+    }
+}
+
+@each $color, $value in $theme-colors {
+    .btn-3d.btn-#{$color},
+    .btn-3d.btn-outline-#{$color} {
+        @if $color != "secondary" and $color != "light" {
+            $c: mix($value, #000, 50%);
+            --shadow-color-rgb: #{to-rgb($c)};
+            --shadow-intensity: 1.8;
+        }
+
+        @if $color == 'secondary' {
+            --btn-hover-bg: #fff;
+            --btn-border-color: #{rgba(#000, 0.1)};
+            --btn-hover-border-color: var(--btn-border-color);
+            --btn-active-bg: #{$gray-200};
+            --btn-active-border-color: var(--btn-border-color);
+        }
+    }
+}
+
+
+// btn-flat
+// --------------------------------------------------
+
+.btn-toolbar .btn,
+.btn-flat {
+    @include button-flat();
+}
+
+.btn-flat-light {
+    --btn-color: #{rgba(#fff, 0.8)};
+    --btn-hover-border-color: #{rgba(#fff, 0.5)};
+    --btn-active-border-color: var(--btn-hover-border-color);
+    --btn-hover-shadow: none;
+}
+
+
+// btn-no-border
+// --------------------------------------------------
+
+.btn-no-border {
+    --btn-border-color: transparent;
+    --btn-hover-border-color: transparent;
+    --btn-box-shadow: none;
+    --btn-hover-shadow: none;
+    --btn-disabled-border-color: transparent;
+}
+
+
+// .mf-dropdown (Mobile Friendly dropdown)
+// --------------------------------------------------
+
+.mf-dropdown {
+    display: inline-block;
+    position: relative;
+
+    .btn {
+        position: relative;
+    }
+
+    .btn > em {
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        color: $text-muted;
+        font-size: $font-size-sm;
+        font-size: 0.85em; // make it smaller
+    }
+
+    .btn > em > span {
+        font-weight: $font-weight-medium;
+        font-size: 1.166666em; // make it regular again
+        color: $body-color;
+    }
+
+    .btn.has-caret {
+        text-align: start;
+        padding-inline-end: $input-btn-padding-x * 2;
+
+        &.btn-sm {
+            padding-inline-end: $input-btn-padding-x-sm * 2;
+        }
+
+        &.btn-lg {
+            padding-inline-end: $input-btn-padding-x-lg * 2;
+        }
+
+        > em,
+        > span {
+            display: block;
+            margin-bottom: 1px; // equalizes button heights
+            @include text-truncate();
+        }
+    }
+
+    .btn.has-caret:after {
+        @include fontawesome("\f0d7");
+        position: absolute;
+        display: block;
+        inset-inline-end: $input-btn-padding-x;
+        line-height: 1;
+        top: 50%;
+        transform: translate3d(50%, -50%, 0);
+    }
+
+    .btn-sm.has-caret:after {
+        inset-inline-end: $input-btn-padding-x-sm;
+    }
+
+    .btn-lg.has-caret:after {
+        inset-inline-end: $input-btn-padding-x-lg;
+    }
+
+    select {
+        position: absolute;
+        opacity: 0;
+        inset-inline-start: 0;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        cursor: pointer;
+    }
+}

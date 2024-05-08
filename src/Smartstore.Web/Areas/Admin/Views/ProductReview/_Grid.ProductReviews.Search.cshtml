@@ -1,0 +1,26 @@
+﻿@model ProductReviewListModel
+
+<div class="form-group">
+    <smart-label asp-for="ProductName" />
+    <editor asp-for="ProductName" asp-template="SearchExpression" />
+</div>
+<div class="form-group">
+    <smart-label asp-for="CreatedOnFrom" />
+    <editor asp-for="CreatedOnFrom" />
+</div>
+<div class="form-group">
+    <smart-label asp-for="CreatedOnTo" />
+    <editor asp-for="CreatedOnTo" />
+</div>
+<div class="form-group">
+    <smart-label asp-for="Ratings" />
+    <select asp-for="Ratings" asp-items="ViewBag.Ratings" multiple="multiple"></select>
+</div>
+<div class="form-group">
+    <smart-label asp-for="IsVerifiedPurchase" />
+    <editor asp-for="IsVerifiedPurchase" data-placeholder="@T("Common.Auto")" />
+</div>
+<div class="form-group">
+    <smart-label asp-for="IsApproved" />
+    <editor asp-for="IsApproved" />
+</div>

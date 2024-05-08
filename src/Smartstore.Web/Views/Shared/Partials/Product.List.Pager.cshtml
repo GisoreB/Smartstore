@@ -1,0 +1,76 @@
+﻿@using Smartstore.Web.Models.Catalog;
+@using Smartstore.Collections;
+
+@model IListActions
+
+@{
+    var pageable = Model.PagedList;
+    var hasPrev = pageable.PageNumber > 1;
+    var hasNext = pageable.PageNumber < pageable.TotalPages;
+}
+
+@functions
+{
+    private int GetFirstPageIndex(IPageable list)
+    {
+        int maxPagesToDisplay = 100;
+        if ((list.TotalPages < maxPagesToDisplay) ||
+            ((list.PageIndex - (maxPagesToDisplay / 2)) < 0))
+        {
+            return 0;
+        }
+        if ((list.PageIndex + (maxPagesToDisplay / 2)) >= list.TotalPages)
+        {
+            return (list.TotalPages - maxPagesToDisplay);
+        }
+        return (list.PageIndex - (maxPagesToDisplay / 2));
+    }
+
+    private int GetLastPageIndex(IPageable list)
+    {
+        int maxPagesToDisplay = 100;
+        int num = maxPagesToDisplay / 2;
+        if ((maxPagesToDisplay % 2) == 0)
+        {
+            num--;
+        }
+        if ((list.TotalPages < maxPagesToDisplay) ||
+            ((list.PageIndex + num) >= list.TotalPages))
+        {
+            return (list.TotalPages - 1);
+        }
+        if ((list.PageIndex - (maxPagesToDisplay / 2)) < 0)
+        {
+            return (maxPagesToDisplay - 1);
+        }
+        return (list.PageIndex + num);
+    }
+}
+
+@if (Model.AvailablePageSizes != null && Model.AvailablePageSizes.Count() > 1)
+{
+    <div class="artlist-action--pagesize d-none d-sm-block">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle d-inline-block fwn" data-toggle="dropdown">
+                @Html.Raw(T("Pager.XPerPage", $"<span class='fwm'>{pageable.PageSize}</span>"))
+            </button>
+            <div class="dropdown-menu">
+                @foreach (var size in Model.AvailablePageSizes)
+                {
+                    <a href="@Display.ModifyQueryString(null, $"?s={size}", removeParamName: "i")" class="dropdown-item">@size</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="vr text-body-tertiary d-none d-sm-block mx-2"></div>
+}
+
+<pagination
+    class="flex-grow-1"
+    sm-content-class="justify-content-sm-start"
+    sm-list-items="Model.PagedList" 
+    sm-query-param="i" 
+    sm-size="Medium" 
+    sm-alignment="Centered" 
+    sm-show-nav-label="true" />

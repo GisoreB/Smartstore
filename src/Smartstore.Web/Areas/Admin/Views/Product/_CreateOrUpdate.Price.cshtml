@@ -1,0 +1,256 @@
+﻿@model ProductModel
+
+<div id="group-prices">
+    <div class="adminContent">
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="Price" />
+            </div>
+            <div class="adminData">
+                <editor asp-for="Price" sm-postfix="@Model.PrimaryStoreCurrencyCode" />
+                <span asp-validation-for="Price"></span>
+            </div>
+        </div>
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="ComparePrice" />
+            </div>
+            <div class="adminData">
+                <div class="row xs-gutters">
+                    <div class="col-auto" style="width: 200px">
+                        <editor asp-for="ComparePrice" sm-postfix="@Model.PrimaryStoreCurrencyCode" />
+                    </div>
+                    <div class="col">
+                        
+                        <select asp-for="ComparePriceLabelId" asp-items="ViewBag.PriceLabels" asp-placeholder="@ViewBag.DefaultComparePriceLabelName"></select>
+                    </div>
+                </div>
+
+                <span asp-validation-for="ComparePrice"></span>
+            </div>
+        </div>
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="SpecialPrice" />
+            </div>
+            <div class="adminData">
+                <div class="row xs-gutters">
+                    <div class="col-auto" style="width: 200px">
+                        <editor asp-for="SpecialPrice" sm-postfix="@Model.PrimaryStoreCurrencyCode" />
+                        <span asp-validation-for="SpecialPrice"></span>
+                    </div>
+                    <div class="col">
+                        <div class="row xs-gutters align-items-center">
+                            <div class="col">
+                                <editor asp-for="SpecialPriceStartDateTimeUtc" placeholder="@T("Common.From")" />
+                                <span asp-validation-for="SpecialPriceStartDateTimeUtc"></span>
+                            </div>
+                            <div class="col">
+                                <editor asp-for="SpecialPriceEndDateTimeUtc" placeholder="@T("Common.To")" />
+                                <span asp-validation-for="SpecialPriceEndDateTimeUtc"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pnlPriceDiscounts" class="adminRow" attr-class='(Model.IsBundleWithItemPricing, "d-none")'>
+            <div class="adminTitle">
+                <smart-label asp-for="SelectedDiscountIds" />
+            </div>
+            <div class="adminData">
+                <editor asp-for="SelectedDiscountIds" />
+                <span asp-validation-for="SelectedDiscountIds"></span>
+            </div>
+        </div>
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="ProductCost" />
+            </div>
+            <div class="adminData">
+                <editor asp-for="ProductCost" sm-postfix="@Model.PrimaryStoreCurrencyCode" />
+                <span asp-validation-for="ProductCost"></span>
+            </div>
+        </div>
+        <div class="adminSeparator">
+            <hr />
+        </div>
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="DisableBuyButton" />
+            </div>
+            <div class="adminData">
+                <input asp-for="DisableBuyButton" />
+                <span asp-validation-for="DisableBuyButton"></span>
+            </div>
+        </div>
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="DisableWishlistButton" />
+            </div>
+            <div class="adminData">
+                <input asp-for="DisableWishlistButton" />
+                <span asp-validation-for="DisableWishlistButton"></span>
+            </div>
+        </div>
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="AvailableForPreOrder" />
+            </div>
+            <div class="adminData">
+                <input asp-for="AvailableForPreOrder" />
+                <span asp-validation-for="AvailableForPreOrder"></span>
+            </div>
+        </div>
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="CallForPrice" />
+            </div>
+            <div class="adminData">
+                <input asp-for="CallForPrice" />
+                <span asp-validation-for="CallForPrice"></span>
+            </div>
+        </div>
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="CustomerEntersPrice" />
+            </div>
+            <div class="adminData">
+                <input asp-for="CustomerEntersPrice" data-toggler-for="#pnlCustomerEntersPrice" />
+                <span asp-validation-for="CustomerEntersPrice"></span>
+            </div>
+        </div>
+        <div id="pnlCustomerEntersPrice">
+            <div class="adminRow">
+                <div class="adminTitle">
+                    <smart-label asp-for="MinimumCustomerEnteredPrice" />
+                </div>
+                <div class="adminData">
+                    <editor asp-for="MinimumCustomerEnteredPrice" sm-postfix="@Model.PrimaryStoreCurrencyCode" />
+                    <span asp-validation-for="MinimumCustomerEnteredPrice"></span>
+                </div>
+            </div>
+            <div class="adminRow">
+                <div class="adminTitle">
+                    <smart-label asp-for="MaximumCustomerEnteredPrice" />
+                </div>
+                <div class="adminData">
+                    <editor asp-for="MaximumCustomerEnteredPrice" sm-postfix="@Model.PrimaryStoreCurrencyCode" />
+                    <span asp-validation-for="MaximumCustomerEnteredPrice"></span>
+                </div>
+            </div>
+        </div>
+        <div class="adminSeparator">
+            <hr />
+        </div>
+        <!-- PAnGV -->
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="BasePriceEnabled" />
+            </div>
+            <div class="adminData">
+                <input asp-for="BasePriceEnabled" data-toggler-for="#pnlBasePriceEnabled" />
+                <span asp-validation-for="BasePriceEnabled"></span>
+            </div>
+        </div>
+        <div id="pnlBasePriceEnabled">
+            <div class="adminRow">
+                <div class="adminTitle">
+                    <smart-label asp-for="BasePriceBaseAmount" />
+                </div>
+                <div class="adminData">
+                    <div class="form-row">
+                        <div class="col">
+                            <editor asp-for="BasePriceBaseAmount" />
+                        </div>
+                        <div class="col-auto" style="width: 120px">
+                            <select asp-for="BasePriceMeasureUnit" asp-items="ViewBag.AvailableMeasureUnits"></select>
+                        </div>
+                    </div>
+                    <span asp-validation-for="BasePriceBaseAmount"></span>
+                    <span asp-validation-for="BasePriceMeasureUnit"></span>
+                </div>
+            </div>
+            <div class="adminRow">
+                <div class="adminTitle">
+                    <smart-label asp-for="BasePriceAmount" />
+                </div>
+                <div class="adminData">
+                    <editor asp-for="BasePriceAmount" />
+                    <span asp-validation-for="BasePriceAmount"></span>
+                    <span id="BasePriceAmountInfo" class="d-inline-block text-muted pt-2"></span>
+                </div>
+            </div>
+            <div class="adminRow">
+                <div class="adminTitle">
+                    &nbsp;
+                </div>
+                <div class="adminData">
+                    <div class="alert alert-info">
+                        @T("Admin.Products.BasePrice.Hint")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pnlTierPrices" class="mt-3" attr-class='(Model.IsBundleWithItemPricing, "d-none")'>
+        <h5 class="mb-4 text-muted">@T("Admin.Catalog.Products.TierPrices")</h5>
+
+        @if (Model.Id > 0)
+        {
+            var gridViewData = new ViewDataDictionary(this.ViewData);
+            gridViewData["Parent"] = Model;
+
+            <partial name="Grids/_Grid.TierPrices" model="null" view-data="gridViewData" />
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                @T("Admin.Catalog.Products.TierPrices.SaveBeforeEdit")
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+		var fieldBasePriceMeasureUnit = $("#@Html.IdFor(model => model.BasePriceMeasureUnit)");
+        var fieldBasePriceAmount = $("#@Html.IdFor(model => model.BasePriceAmount)");
+        var fieldBasePriceBaseAmount = $("#@Html.IdFor(model => model.BasePriceBaseAmount)");
+
+		fieldBasePriceMeasureUnit.on("change", getCurrentBasePrice);
+		fieldBasePriceAmount.on("blur", getCurrentBasePrice);
+		fieldBasePriceBaseAmount.on("blur", getCurrentBasePrice);
+
+		getCurrentBasePrice();
+
+		function getCurrentBasePrice() {
+			var basePriceAmount = Smartstore.globalization.parseFloat(fieldBasePriceAmount.val());
+			var basePriceBaseAmount = Smartstore.globalization.parseInt(fieldBasePriceBaseAmount.val());
+			if (basePriceAmount > 0 && basePriceBaseAmount > 0) {
+				$.ajax({
+					cache: false,
+					global: false,
+					type: "POST",
+					url: "@(Url.Action("GetBasePrice", "Product"))",
+					data: {
+						"productId" : @Model.Id,
+						"basePriceMeasureUnit": fieldBasePriceMeasureUnit.val(),
+						"basePriceAmount": fieldBasePriceAmount.val(),
+						"basePriceBaseAmount": fieldBasePriceBaseAmount.val()
+					},
+					success: function (data) {
+						$("#BasePriceAmountInfo").html(data.BasePrice);
+					},
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(thrownError);
+					}
+				});
+			}
+			return false;
+		}
+	})
+</script>

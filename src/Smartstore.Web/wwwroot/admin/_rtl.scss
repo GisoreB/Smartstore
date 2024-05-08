@@ -1,0 +1,113 @@
+/// <reference path="references.scss" />
+
+// RTL support (right to left)
+// --------------------------------------------------
+
+[dir=rtl] {
+
+    // Forms
+    // -----
+    .ctl-label {
+        padding-left: 2.5rem;
+        padding-right: initial;
+
+        > label {
+            padding-left: 0;
+            padding-right: initial;
+        }
+
+        > .hint {
+            left: 0;
+            right: auto;
+        }
+    }
+    // Form Grid
+    // ---------
+    .adminContent {
+        &:not(.adminContent-vertical) > tbody > tr:not(.wide),
+        &:not(.adminContent-vertical) > tr:not(.wide),
+        &:not(.adminContent-vertical) .adminRow:not(.wide) {
+            @include media-breakpoint-up(md) {
+                > .adminTitle {
+                    text-align: left;
+                    //padding-right: $grid-gutter-width/2 !important;
+                    padding-left: 0 !important;
+                }
+
+                > .adminData {
+                    //padding-left: $grid-gutter-width/2 !important;
+                    padding-right: 0 !important;
+
+                    &:not(.wide) {
+                        //padding-right: $grid-gutter-width/2 !important;
+                        padding-left: 0 !important;
+                    }
+                }
+            }
+        }
+    }
+    // Themes
+    // ------
+    #theme-list .theme-broken-badge {
+        left: 0;
+        right: auto;
+    }
+
+    .theme-editor .themevar-chain-info {
+        margin-right: 0.75rem;
+        margin-left: initial;
+    }
+
+    //
+    // Navs
+    // -------------
+
+    .locale-editor-content[data-rtl="false"] {
+        input,
+        textarea,
+        select,
+        .locale-editor-control,
+        .note-editable,
+        .note-editor-preview:not(.empty) {
+            direction: ltr;
+            text-align: left;
+        }
+    }
+    // Plugins & Providers
+    // -------------------
+    .module-icon {
+        padding-right: $content-padding-x;
+        padding-left: initial;
+    }
+
+    .module-actions {
+        margin-right: auto;
+        margin-left: initial;
+    }
+
+    .module-info .attr-value {
+        padding-right: 0.15rem;
+        padding-left: initial;
+    }
+
+    .plugin-configuration > div:last-child {
+        padding-right: 2rem;
+        padding-left: initial;
+    }
+    // Misc
+    // ----
+    .color-container {
+        padding-left: 0.5rem;
+        padding-right: initial;
+    }
+
+    .admin-config-group[data-toggle=collapse] {
+        &.collapsed:after {
+            transform: rotate(90deg);
+        }
+        // TODO: Remove after Bootstrap update which contains logical CSS
+        .ml-auto {
+            margin-inline-end: 1rem !important;
+        }
+    }
+}

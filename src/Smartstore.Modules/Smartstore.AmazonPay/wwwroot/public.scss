@@ -1,0 +1,19 @@
+﻿#amazonpay-button {
+    height: 55px;
+}
+
+/* Media query for mobile viewport */
+@include media-breakpoint-down(sm) {
+    .cnt-amazonpay-button {
+        width: 100%;
+    }
+}
+
+.addon-buttons {
+    .cnt-amazonpay-button {
+        margin: 0 !important;
+        #amazonpay-button {
+            margin: auto;
+        }
+    }
+}

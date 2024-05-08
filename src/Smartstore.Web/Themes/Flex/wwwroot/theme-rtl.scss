@@ -1,0 +1,44 @@
+//
+// Theme: FLEX (RTL overrides)
+// --------------------------------------------------
+
+// Bootstrap functions
+@import "/lib/bootstrap/scss/functions";
+
+// Shared Smartstore functions 
+@import '/shared/functions';
+
+// Shared Bootstrap variables
+@import '/shared/variables-shared-bootstrap';
+
+// Virtual file that fetches all theme variables 
+// from the database. We use these variables to 
+// override bootstrap defaults.
+@import '/.app/themevars.scss'; 
+
+// Contains theme specific variable defaults
+// and bootstrap variable overrides.
+@import 'variables-custom';
+@import 'variables';
+
+// Bootstrap head: vars, mixins, maps etc.
+@import "/lib/bootstrap/scss/bootstrap-head";
+
+// Shared Smartstore variables
+@import '/shared/variables-shared';
+
+
+//
+// Shared styles RTL overrides
+// --------------------------------------------------
+
+@import "/shared/rtl-bootstrap";
+@import "/shared/rtl";
+@import "/skinning/rtl";
+
+
+//
+// Theme specific RTL overrides
+// --------------------------------------------------
+
+@import 'rtl';

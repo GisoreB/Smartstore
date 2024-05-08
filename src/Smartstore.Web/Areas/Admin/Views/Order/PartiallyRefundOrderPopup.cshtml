@@ -1,0 +1,59 @@
+﻿@model OrderModel.RefundModel
+
+@{
+    Layout = "_AdminPopupLayout";
+    ViewBag.Title = T("Admin.Orders.Fields.PartialRefund").Value;
+}
+
+<form id="PartiallyRefundForm" asp-action="PartiallyRefundOrder" asp-route-id="@Model.Id" asp-route-online="@ViewBag.Online">
+    <div class="section-header">
+        <div class="title">
+            @T("Admin.Orders.Fields.PartialRefund.OrderInfo", Model.Id)
+        </div>
+    </div>
+
+    <div asp-validation-summary="All"></div>
+
+    <div class="adminContent">
+        <div class="adminRow">
+            <div class="adminTitle">
+                <smart-label asp-for="AmountToRefund" />
+            </div>
+            <div class="adminData">
+                <editor asp-for="AmountToRefund" sm-postfix="@ViewBag.PrimaryStoreCurrencyCode" />
+                <div class="alert alert-info mb-1 mt-2">
+                    @T("Admin.Orders.Fields.PartialRefund.AmountToRefund.Max", Model.MaxAmountToRefundString, string.Empty)
+                </div>
+            </div>
+        </div>
+        <div class="adminRow">
+            <div class="adminTitle">
+            </div>
+            <div class="adminData">
+                <button type="submit" id="partialrefundorder" class="btn btn-warning">
+                    <i class="fa fa-check"></i>
+                    <span>@T("Admin.Orders.Fields.Refund")</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script sm-target-zone="scripts" data-origin="partially-refund">
+    $(function () {
+        $('#PartiallyRefundForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $('#PartiallyRefundForm').ajax({
+                buttonIcon: '#partialrefundorder',
+	            success: function (resp) {
+                    if (resp.success) {
+                        window.parent.document.getElementById('btnRefreshPage').click();
+                    }
+	            }
+	        });
+
+            return false;
+        });
+    });
+</script>

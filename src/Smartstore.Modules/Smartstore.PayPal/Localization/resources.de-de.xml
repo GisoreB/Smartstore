@@ -1,0 +1,584 @@
+﻿<Language Name="Deutsch" IsDefault="true" IsRightToLeft="false">
+
+    <!-- Friendly plugin backend name & description (e.g. in payment configuration list) -->
+    <LocaleResource Name="Plugins.FriendlyName.Smartstore.PayPal" AppendRootKey="false">
+        <Value>PayPal</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Smartstore.PayPal" AppendRootKey="false">
+        <Value>Erweitert den Shop um die Zahlungsfunktionen von PayPal.</Value>
+    </LocaleResource>
+
+    <!-- Friendly provider name & description -->
+    <!-- Frontend payment option & backend -->
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalStandard" AppendRootKey="false">
+        <Value>PayPal Checkout</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalPayUponInvoice" AppendRootKey="false">
+        <Value>Kauf auf Rechnung</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalSepa" AppendRootKey="false">
+        <Value>PayPal Sepa</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalPayLater" AppendRootKey="false">
+        <Value>PayPal später zahlen</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalCreditCard" AppendRootKey="false">
+        <Value>PayPal Kreditkarte</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalGiroPay" AppendRootKey="false">
+        <Value>Giropay</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalSofort" AppendRootKey="false">
+        <Value>Sofortüberweisung</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalBancontact" AppendRootKey="false">
+        <Value>Bancontact</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalBlik" AppendRootKey="false">
+        <Value>BLIK</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalEps" AppendRootKey="false">
+        <Value>eps</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalIdeal" AppendRootKey="false">
+        <Value>iDEAL</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalMyBank" AppendRootKey="false">
+        <Value>MyBank</Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.FriendlyName.Payments.PayPalPrzelewy24" AppendRootKey="false">
+        <Value>Przelewy24</Value>
+    </LocaleResource>
+    
+    <!-- Backend provider description -->
+    <LocaleResource Name="Plugins.Description.Payments.PayPalStandard" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Öffnet ein sicheres Zahlungsfenster, in dem die Zahlung direkt bei PayPal durchgeführt wird.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalPayUponInvoice" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+				Diese Zahlungsmethode ermöglicht es dem Käufer eine Bestellung aufzugeben, 
+                die Ware in Empfang zu nehmen, sie auszuprobieren, zu prüfen, ob sie in Ordnung ist, 
+                und dann die Rechnung innerhalb von 30 Tagen zu bezahlen.
+              ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalSepa" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Öffnet ein sicheres Zahlungsfenster, in dem die Zahlung direkt bei PayPal durchgeführt wird.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalPayLater" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Öffnet ein sicheres Zahlungsfenster, in dem die Zahlung direkt bei PayPal durchgeführt wird.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalCreditCard" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Bietet die Möglichkeit, mit Kreditkarte zu bezahlen.
+                Die Felder für die Eingabe der Kreditkartendaten sind über Iframes, die direkt von PayPal angeboten werden, in den Checkout integriert. 
+                Die Kreditkartendaten kommen somit nicht mit dem Shop in Berührung.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalGiroPay" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Nach Abschluss der Bestellung wird der Kunde direkt zu GiroPay weitergeleitet, um den Bezahlvorgang abzuschließen.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalSofort" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Nach Abschluss der Bestellung wird der Kunde direkt zu Sofortüberweisung weitergeleitet, um den Bezahlvorgang abzuschließen.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalBancontact" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Nach Abschluss der Bestellung wird der Kunde direkt zu Bancontact weitergeleitet, um den Bezahlvorgang abzuschließen.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalBlik" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Nach Abschluss der Bestellung wird der Kunde direkt zu BLIK weitergeleitet, um den Bezahlvorgang abzuschließen.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalEps" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Nach Abschluss der Bestellung wird der Kunde direkt zu eps-Überweisung weitergeleitet, um den Bezahlvorgang abzuschließen.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalIdeal" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Nach Abschluss der Bestellung wird der Kunde direkt zu iDEAL weitergeleitet, um den Bezahlvorgang abzuschließen.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalMyBank" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Nach Abschluss der Bestellung wird der Kunde direkt zu MyBank weitergeleitet, um den Bezahlvorgang abzuschließen.
+            ]]>
+        </Value>
+    </LocaleResource>
+    <LocaleResource Name="Plugins.Description.Payments.PayPalPrzelewy24" AppendRootKey="false">
+        <Value>
+            <![CDATA[
+			    Nach Abschluss der Bestellung wird der Kunde direkt zu Przelewy24 weitergeleitet, um den Bezahlvorgang abzuschließen.
+            ]]>
+        </Value>
+    </LocaleResource>
+    
+    <!-- Should be rendered in frontend by default. As long as the shop admin doesn't enter a FullDescription for the PaymentMethod -->
+    <LocaleResource Name="Plugins.PaymentInfo.Payments" AppendRootKey="false">
+        <Children>
+            <LocaleResource Name="PayPalStandard" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+				        Führen Sie die Zahlung in einem sicheren Browserfenster direkt bei PayPal durch. 
+				        Nach der Rückleitung in den Shop können Sie die Bestellung mit wenigen Klicks abschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalPayUponInvoice" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Sie geben die Bestellung auf, erhalten die Ware und bezahlen dann die Rechnung innerhalb von 30 Tagen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalSepa" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+				        Führen Sie die Zahlung in einem sicheren Browserfenster direkt bei PayPal durch. 
+				        Nach der Rückleitung in den Shop können Sie die Bestellung mit wenigen Klicks abschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalPayLater" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+				        Führen Sie die Zahlung in einem sicheren Browserfenster direkt bei PayPal durch. 
+				        Nach der Rückleitung in den Shop können Sie die Bestellung mit wenigen Klicks abschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalCreditCard" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Ihre Kreditkartendaten werden direkt auf dem PayPal-Server erfasst.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalGiroPay" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Sie werden auf die Website von Giropay weitergeleitet, um die Zahlung abzuschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalSofort" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Sie werden auf die Website von Sofortüberweisung weitergeleitet, um die Zahlung abzuschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalBancontact" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Sie werden auf die Website von Bancontact weitergeleitet, um die Zahlung abzuschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalBlik" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Sie werden auf die Website von BLIK weitergeleitet, um die Zahlung abzuschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalEps" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Sie werden auf die Website von eps-Überweisung weitergeleitet, um die Zahlung abzuschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalIdeal" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Sie werden auf die Website von iDEAL weitergeleitet, um die Zahlung abzuschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalMyBank" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Sie werden auf die Website von MyBank weitergeleitet, um die Zahlung abzuschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="PayPalPrzelewy24" AppendRootKey="false">
+                <Value>
+                    <![CDATA[
+                        Sie werden auf die Website von Przelewy24 weitergeleitet, um die Zahlung abzuschließen.
+                      ]]>
+                </Value>
+            </LocaleResource>
+        </Children>
+    </LocaleResource>
+    
+    <LocaleResource Name="Plugins.Smartstore.PayPal" AppendRootKey="false">
+        <Children>
+            <LocaleResource Name="AdminInstruction">
+                <Value>
+                    <![CDATA[
+                        <p>
+                            Mit diesem Plugin nutzen Sie PayPal Checkout und profitieren von mehr Zahlarten, optimierter Nutzerfreundlichkeit und zukunftssicherer Technologie.
+                        </p>
+                        <ul>
+                            <li>Neben Zahlung via PayPal, Lastschrift, Kredit-und Debitkarte und Rechnung ermöglicht PayPal Checkout 
+                                jetzt mehr als zehn weitere lokale Zahlarten, die Ihren Online-Shop in Deutschland und im Ausland attraktiver machen können.</li>
+                            <li>Mit dynamischen Bannern und dem <i>Später Bezahlen</i> Button machen Sie Ihre Kunden auf die PayPal Ratenzahlung aufmerksam.</li>
+                            <li>Mit dem PayPal Express Checkout Button verkürzen Sie den Bezahlvorgang und optimieren damit das Kauferlebnis.</li>
+                        </ul>
+                        <p>
+							Um PayPal in Ihrem Shop einzurichten, nutzen Sie den Button <b>Account verknüpfen</b> oder befolgen Sie alternativ die Schritte der folgenden Anleitung.
+						</p>
+						<ul>
+							<li>Melden Sie sich mit Ihren PayPal-Kontodaten <a href="https://developer.paypal.com/developer/applications" target="_blank" class="alert-link">im Entwickler-Dashboard</a> an.</li>
+							<li>Erstellen Sie eine neue App, indem Sie auf denn Button <b>Create App</b> klicken.</li>
+							<li>Tragen Sie nun den Account, die Client ID und den Secret in die dafür vorgesehenen Felder weiter unten auf dieser Seite ein.</li>
+							<li>Erstellen Sie einen Webhook und hinterlegen die unten aufgeführte URL in Ihrer PayPal App als Webhook URL.</li>
+							<li>Aktivieren Sie Benachrichtigungen für alle Events.</li>
+						</ul>
+                      ]]>
+                </Value>
+            </LocaleResource>
+
+            <LocaleResource Name="CookieInfo">
+                <Value>PayPal nutzt Cookies zur Darstellung und Abwicklung des Zahlungsvorgangs.</Value>
+            </LocaleResource>
+
+            <LocaleResource Name="OrderUpdateFailed">
+                <Value>
+                    Der Gesamtbetrag der Bestellung konnte nach Berechnung der Versandkosten bei PayPal nicht aktualisiert werden.
+                    Bitte bestätigen Sie den Gesamtbetrag erneut bei PayPal.
+                </Value>
+            </LocaleResource>
+
+            <LocaleResource Name="UseSandbox">
+                <Value>Sandbox nutzen</Value>
+            </LocaleResource>
+            <LocaleResource Name="UseSandbox.Hint">
+                <Value>Bestimmt, ob die Zahlungen in der PayPal Sandbox ausgeführt werden.</Value>
+            </LocaleResource>
+            <LocaleResource Name="Account">
+                <Value>Account</Value>
+            </LocaleResource>
+            <LocaleResource Name="Account.Hint">
+                <Value>Geben Sie hier Ihren Account an.</Value>
+            </LocaleResource>
+            <LocaleResource Name="ClientId">
+                <Value>Client ID</Value>
+            </LocaleResource>
+            <LocaleResource Name="ClientId.Hint">
+                <Value>Geben Sie hier die Client ID der eingerichteten App an.</Value>
+            </LocaleResource>
+            <LocaleResource Name="PayerId">
+                <Value>PayPal-Händler-ID</Value>
+            </LocaleResource>
+            <LocaleResource Name="PayerId.Hint">
+                <Value>Die PayPal-Händler-ID finden Sie in Ihrem PayPal-Konto unter Kontoeinstellungen / Geschäftsangaben.</Value>
+            </LocaleResource>
+            <LocaleResource Name="MerchantName">
+                <Value>Händlername</Value>
+            </LocaleResource>
+            <LocaleResource Name="MerchantName.Hint">
+                <Value>Wird für die Zahlart Kauf auf Rechnung benötigt, um einen eindeutigen Identifikationsschlüßel zu erzeugen. Darf keine Leerzeichen enthalten.</Value>
+            </LocaleResource>
+            <LocaleResource Name="Secret">
+                <Value>Geheimschlüssel (Secret)</Value>
+            </LocaleResource>
+            <LocaleResource Name="Secret.Hint">
+                <Value>Geben Sie hier den Geheimschlüssel (Secret) der eingerichteten App an.</Value>
+            </LocaleResource>
+            <LocaleResource Name="WebhookId">
+                <Value>Webhook ID</Value>
+            </LocaleResource>
+            <LocaleResource Name="WebhookId.Hint">
+                <Value>Geben Sie hier die ID an, die PayPal für Ihren Webhook erzeugt hat.</Value>
+            </LocaleResource>
+            <LocaleResource Name="WebhookUrl">
+                <Value>Webhook URL</Value>
+            </LocaleResource>
+            <LocaleResource Name="WebhookUrl.Hint">
+                <Value>Hinterlegen Sie diese URL in Ihrer PayPal App als Webhook URL.</Value>
+            </LocaleResource>
+            <LocaleResource Name="DisplayProductDetailPayLaterWidget">
+                <Value>Ratenzahlungs-Widget anzeigen</Value>
+            </LocaleResource>
+            <LocaleResource Name="DisplayProductDetailPayLaterWidget.Hint">
+                <Value>
+                    Legt fest, ob das Widget zur Zahlung in Raten auf der Produktdetailseite angezeigt werden soll. 
+                    Bitte beachten Sie, dass das Widget beim Sprachwechsel duch den Kunden nicht in der gewählten Sprache dargestellt wird.
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="CustomerServiceInstructions">
+                <Value>Kundendienst Hinweis</Value>
+            </LocaleResource>
+            <LocaleResource Name="CustomerServiceInstructions.Hint">
+                <Value>Geben Sie hier einen Hinweistext zur Erreichbarkeit des Kundendienstes an.</Value>
+            </LocaleResource>
+            <LocaleResource Name="CustomerServiceInstructions.Placeholder">
+                <Value>Sie erreichen den Kundendienst unter +49 1234567890</Value>
+            </LocaleResource>
+            <LocaleResource Name="Intent">
+                <Value>Transaktionsmodus</Value>
+            </LocaleResource>
+            <LocaleResource Name="Intent.Hint">
+                <Value>Legt fest, ob die Zahlung sofort ausgeführt wird oder erst durch Interaktion des Händlers.</Value>
+            </LocaleResource>
+            <LocaleResource Name="Intent.Alert">
+                <Value>
+                    Bitte beachten Sie, dass die Reservierung von Zahlungen nur mit den PayPal Zahlarten
+                    PayPal Checkout, Kauf auf Rechnung, Später Zahlen, Kreditkarte und Lastschrifteinzug unterstützt wird.
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="FundingsOffCanvasCart">
+                <Value>Zahlungsoptionen Miniwarenkorb</Value>
+            </LocaleResource>
+            <LocaleResource Name="FundingsOffCanvasCart.Hint">
+                <Value>Legt fest, welche Zahlungsoptionen im Miniwarenkorb angezeigt werden sollen.</Value>
+            </LocaleResource>
+            <LocaleResource Name="FundingsCart">
+                <Value>Zahlungsoptionen Warenkorbseite</Value>
+            </LocaleResource>
+            <LocaleResource Name="FundingsCart.Hint">
+                <Value>Legt fest, welche Zahlungsoptionen auf der Warenkorbseite angezeigt werden sollen.</Value>
+            </LocaleResource>
+
+            <LocaleResource Name="PayUponInvoiceLimit">
+                <Value>Obergrenze für Zahlungen auf Rechnung</Value>
+            </LocaleResource>
+            <LocaleResource Name="PayUponInvoiceLimit.Hint">
+                <Value>
+                    Legt die Obergrenze fest, bis zu der Zahlungen auf Rechnung angeboten werden.
+                    Derzeit liegt diese Grenze bei 2.500 €, kann aber in Einzelfällen davon abweichen.
+                </Value>
+            </LocaleResource>
+            
+            <LocaleResource Name="Capture">
+                <Value>Sofort abbuchen</Value>
+            </LocaleResource>
+            <LocaleResource Name="Auth">
+                <Value>Autorisierung sofort, Abbuchung später</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonShape">
+                <Value>Button-Form</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonShape.Hint">
+                <Value>Legt die Form des PayPal-Buttons fest.</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonShape.Rect">
+                <Value>Rechteckig</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonShape.Pill">
+                <Value>Abgerundet</Value>
+            </LocaleResource>
+
+            <LocaleResource Name="ButtonColor">
+                <Value>Button-Farbe</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonColor.Hint">
+                <Value>Legt die Farbe des PayPal-Buttons fest.</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonColor.Gold">
+                <Value>Gold</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonColor.Blue">
+                <Value>Blau</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonColor.Silver">
+                <Value>Silber</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonColor.White">
+                <Value>Weiß</Value>
+            </LocaleResource>
+            <LocaleResource Name="ButtonColor.Black">
+                <Value>Schwarz</Value>
+            </LocaleResource>
+
+            <LocaleResource Name="BillingPlanName">
+                <Value>Zahlungsplan für {1}</Value>
+            </LocaleResource>
+            <LocaleResource Name="Credentials">
+                <Value>Anmeldeinformationen</Value>
+            </LocaleResource>
+            <LocaleResource Name="PaymentSettings">
+                <Value>Zahlarteinstellungen</Value>
+            </LocaleResource>
+            <LocaleResource Name="Misc">
+                <Value>Verschiedenes</Value>
+            </LocaleResource>
+            <LocaleResource Name="Onboarding">
+                <Value>Account verknüpfen</Value>
+            </LocaleResource>
+            <LocaleResource Name="Onboarding.Success">
+                <Value>Ihr Shop wurde erfolgreich mit Ihrem PayPal-Konto verknüpft.</Value>
+            </LocaleResource>
+            <LocaleResource Name="Error.PaymentsReceivable">
+                <Value>Mit diesem PayPal-Konto können keine Zahlungen empfangen werden. Bitte kontaktieren Sie PayPal.</Value>
+            </LocaleResource>
+            <LocaleResource Name="Error.PrimaryEmailConfirmed">
+                <Value>Die E-Mail-Adresse für dieses PayPal-Konto wurde noch nicht bestätigt. Bitte kontaktieren Sie PayPal oder überprüfen Sie Ihren Posteingang.</Value>
+            </LocaleResource>
+            <LocaleResource Name="Error.Refund.NoTransactionId">
+                <Value>Für diese Bestellung wurde keine Transaktions-ID hinterlegt. Bitte prüfen Sie die Anbindung Ihres Webhooks.</Value>
+            </LocaleResource>
+            <LocaleResource Name="HasCredentials.True">
+                <Value>Die Zugangsdaten wurden hinterlegt.</Value>
+            </LocaleResource>
+            <LocaleResource Name="HasCredentials.False">
+                <Value>Die Zugangsdaten wurden nicht hinterlegt.</Value>
+            </LocaleResource>
+            <LocaleResource Name="PrimaryEmailConfirmed.True">
+                <Value>Die bei PayPal hinterlegte primäre E-Mail-Adresse ist bestätigt.</Value>
+            </LocaleResource>
+            <LocaleResource Name="PrimaryEmailConfirmed.False">
+                <Value>Die bei PayPal hinterlegte primäre E-Mail-Adresse wurde noch nicht bestätigt.</Value>
+            </LocaleResource>
+            <LocaleResource Name="PaymentsReceivable.True">
+                <Value>Mit dem hinterlegten PayPal-Konto können Zahlungen empfangen werden.</Value>
+            </LocaleResource>
+            <LocaleResource Name="PaymentsReceivable.False">
+                <Value>Mit dem hinterlegten PayPal-Konto können keine Zahlungen empfangen werden. Bitten wenden Sie sich an PayPal.</Value>
+            </LocaleResource>
+            <LocaleResource Name="WebHookCreated.True">
+                <Value>Es wurde ein Webhook angelegt.</Value>
+            </LocaleResource>
+            <LocaleResource Name="WebHookCreated.False">
+                <Value>Es wurde noch kein Webhook angelegt.</Value>
+            </LocaleResource>
+            <LocaleResource Name="CreateWebhook">
+                <Value>Webhook erstellen.</Value>
+            </LocaleResource>
+            <LocaleResource Name="RatePayLegalHint">
+                <Value>
+                    <![CDATA[
+                        Mit der Nutzung dieser Zahlart akzeptieren Sie die <a href="https://www.ratepay.com/legal-payment-terms" target="_blank">Ratepay Zahlungsbedingungen</a> 
+                        und erklären sich mit der Durchführung einer <a href="https://www.ratepay.com/legal-payment-dataprivacy" target="_blank">Risikoprüfung durch Ratepay</a>, 
+                        unseren Partner,  einverstanden. Sie akzeptieren auch PayPals <a href="https://www.paypal.com/de/webapps/mpp/ua/privacy-full?locale.x=de_DE" target="_blank">Datenschutzerklärung</a>. 
+                        Falls Ihre Transaktion per Kauf auf Rechnung erfolgreich abgewickelt werden kann, wird der Kaufpreis an Ratepay abgetreten 
+                        und Sie dürfen nur an Ratepay überweisen, nicht an den Händler.
+                      ]]>
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="NoWhitespace">
+                <Value>Leerzeichen sind nicht erlaubt.</Value>
+            </LocaleResource>
+            <LocaleResource Name="PhoneNumber.Invalid">
+                <Value>Bitte geben Sie eine gültige Telefonnummer ohne Leerzeichen an.</Value>
+            </LocaleResource>
+            
+            <LocaleResource Name="FullName">
+                <Value>Vollständiger Name</Value>
+            </LocaleResource>
+            <LocaleResource Name="FullName.NotEmpty">
+                <Value>Bitte geben Sie Ihren vollständigen Namen an.</Value>
+            </LocaleResource>
+            <LocaleResource Name="BIC">
+                <Value>BIC</Value>
+            </LocaleResource>
+            <LocaleResource Name="Error.CreditCardData">
+                <Value>Bitte überprüfen Sie Ihre Kreditkartendaten.</Value>
+            </LocaleResource>
+            <LocaleResource Name="Error.3DSecure">
+                <Value>Bei der Bestätigung Ihrer Karte durch Ihren Kartenanbieter ist ein Fehler aufgetreten.</Value>
+            </LocaleResource>
+            <LocaleResource Name="CartHasChanged">
+                <Value>Ihr Warenkorb hat sich nach dem Login geändert. Bitte bestätigen Sie Ihren aktuellen Warenkorb bei PayPal.</Value>
+            </LocaleResource>
+            <LocaleResource Name="NoScriptsLoaded">
+                <Value>Für Zahlungen mit PayPal wurden die notwendigen Skripte nicht geladen.</Value>
+            </LocaleResource>
+            <LocaleResource Name="NoClientToken">
+                <Value>Die Zahlungsart Kreditkarte über PayPal ist derzeit nicht verfügbar. Bitte versuchen Sie es später noch einmal.</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools">
+                <Value>Support-Tools</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.Intro">
+                <Value>
+                    Die angezeigten Werte wurden durch Übergabe der hier hinterlegten Client-ID an die PayPal API ermittelt.
+                    Sie stammen direkt von PayPal.
+                </Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.OnboardingHint">
+                <Value>Bitte führen Sie zunächst das Onboarding durch oder hinterlegen Sie Ihre Zugangsdaten in den dafür vorgesehenen Konfigurationsfeldern.</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.Products">
+                <Value>Produkte</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.Products.Name">
+                <Value>Name</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.Capabilities">
+                <Value>Funktionen</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.VettingStatus">
+                <Value>Überprüfungsstatus</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.Limits">
+                <Value>Beschränkungen</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.Status">
+                <Value>Status</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.AccountInformation">
+                <Value>Account Informationen</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.Requirement">
+                <Value>Voraussetzung</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.Result">
+                <Value>Ergebnis der Prüfung</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.PrimaryEmailConfirmed">
+                <Value>Primäre E-Mail Bestätigt</Value>
+            </LocaleResource>
+            <LocaleResource Name="SupportTools.PaymentsReceivable">
+                <Value>Empfang von Zahlungen</Value>
+            </LocaleResource>
+        </Children>
+    </LocaleResource>
+
+    <LocaleResource Name="Enums.FundingOptions.PayPal" AppendRootKey="false">
+        <Value>PayPal</Value>
+    </LocaleResource>
+    <LocaleResource Name="Enums.FundingOptions.PayLater" AppendRootKey="false">
+        <Value>Pay Later</Value>
+    </LocaleResource>
+    <LocaleResource Name="Enums.FundingOptions.Sepa" AppendRootKey="false">
+        <Value>Sepa</Value>
+    </LocaleResource>
+</Language>

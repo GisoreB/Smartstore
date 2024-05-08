@@ -1,0 +1,91 @@
+/// <reference path="references.scss" />
+
+.alert > *:last-child {
+    margin-bottom: 0;
+}
+
+.alert a {
+    @extend .link-duu;
+    @extend .link-transition;
+}
+
+.alert-info,
+.alert-danger,
+.alert-success,
+.alert-warning {
+    --alert-icon-bg: rgba(var(--alert-base-rgb), 1);
+    --alert-icon-bg-rgb: var(--alert-base-rgb);
+    --alert-icon-color: var(--alert-bg);
+    --alert-icon-content: "\f129"; // info
+
+	padding-inline-start: 4rem;
+	line-height: 1.5;
+	border-width: 0;
+
+    // Left icon box
+	&:before {
+		display: block;
+		position: absolute;
+		content: ' ';
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 3rem;
+		z-index: 1;
+        background-color: var(--alert-icon-bg);
+        @include border-left-radius(var(--border-radius, var(--alert-border-radius)));
+	}
+
+    // Icon
+	&:after {
+		display: block;
+		position: absolute;
+		color: var(--alert-icon-color);
+        @include fontawesome-font(var(--alert-icon-content), regular);
+		inset-inline-start: 0;
+		top: 50%;
+		font-size: 24px;
+		width: 3rem;
+		text-align: center;
+		transform: translateY(-50%);
+		z-index: 2;
+	}
+}
+
+.alert-info {
+    --alert-icon-content: "\f129"; // info
+
+    @if $alert-info-is-primary {
+        // info should have primary color
+        --alert-base-rgb: var(--primary-rgb);
+        --alert-color: var(--primary-text-emphasis);
+        --alert-bg: var(--primary-bg-subtle);
+        --alert-border-color: var(--primary-border-subtle);
+        --alert-link-color: var(--primary-text-emphasis);
+    }
+}
+
+.alert-danger {
+    --alert-icon-content: "\f071"; // exclamation-triangle
+}
+
+.alert-success {
+    --alert-icon-content: "\f00c"; // check
+}
+
+.alert-warning {
+    --alert-icon-content: "\f12a"; // exclamation
+}
+
+
+.alert > ul {
+	padding-inline-start: 1.2rem;
+}
+
+.alert > *:first-child {
+	margin-top: 0 !important;
+}
+
+.alert > *:last-child {
+	margin-bottom: 0 !important;
+}

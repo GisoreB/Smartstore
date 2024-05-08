@@ -1,0 +1,231 @@
+/// <reference path="references.scss" />
+
+
+// Font Sizes
+// ==============================================================
+
+@each $index, $size in $font-sizes {
+    .fs-h#{$index} {
+         @extend .fs-#{$index};
+    }
+}
+
+@each $index, $size in $display-font-sizes {
+    .fs-display-#{$index} {
+         @include font-size($size !important);
+    }
+}
+
+.fs-lead        { @include font-size($lead-font-size); }
+
+.fs-sm, 
+.fs-sm a        { font-size: $font-size-sm !important; }
+.fs-xs,
+.fs-xs a        { font-size: $font-size-xs !important; }
+
+@include media-breakpoint-only(xs) {
+    .rfs {
+        font-size: 14px;
+    } 
+}
+
+@include media-breakpoint-only(sm) {
+    .rfs {
+        font-size: 15px;
+    } 
+}
+
+@include media-breakpoint-down(md) {
+    .rfs {
+        word-break: break-word;
+    } 
+}
+
+
+// Font weight Helpers
+// ======================================
+
+h1, .h1, h2, .h2 {
+    font-weight: $headings-lg-font-weight;
+}
+
+h6, .h6 {
+	font-weight: $headings-sm-font-weight;
+}
+
+@each $weight, $var in (unset, 100, 200, 300, 400, 500, 600, 700, 800, 900) {
+    .font-weight-#{$weight},
+    .fw-#{$weight} {
+        font-weight: $weight !important;
+    }
+}
+
+.font-weight-medium, .fwm {
+    @extend .fw-medium;
+}
+
+.fwb { @extend .fw-bold; }
+.fwn { @extend .fw-normal; }
+.fwl { @extend .fw-light; }
+
+
+// Heading & Title
+// ======================================
+
+.heading {
+    position: relative;
+
+    &:before {
+        position: absolute;
+        display: block;
+        content: ' ';
+        width: 100%;
+        height: 1px;
+        top: 50%;
+        z-index: 0;
+        background: radial-gradient(ellipse at left, $body-bg 25%, rgba(#000, 0.25) 100%);
+    }
+
+    .heading-title {
+        position: relative;
+        display: inline-block;
+        background: var(--body-bg, #fff);
+        padding-right: 1rem;
+        font-weight: $font-weight-normal;
+    }
+}
+
+.heading-center {
+    text-align: center;
+
+    &:before {
+        background: radial-gradient(ellipse at center, $body-bg 25%, rgba(#000, 0.25) 100%) !important;
+    }
+
+    .heading-title {
+        padding-left: 1rem;
+    }
+}
+
+.page-title {
+    margin-bottom: 1.5rem;
+}
+
+
+// Links
+// ======================================
+
+.link-dnn {
+    text-decoration: none !important;
+}
+
+.link-duu {
+    text-decoration: underline !important;
+}
+
+.link-dnu {
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.link-transition {
+    transition: $link-transition;
+}
+
+a.pretty-link {
+    @extend .link-body;
+    @extend .link-transition;
+    @extend .link-dnn;
+
+    font-weight: $font-weight-medium;
+
+    > i { padding-inline-end: 1.2rem; }
+    > span {
+        color: var(--gray-600);
+        &:hover, &:active { color: inherit; }
+    }
+}
+
+
+// Bidi
+// ======================================
+
+.rlm:after {
+	content: '\200F';
+}
+
+.ltr {
+	direction: ltr;
+	unicode-bidi: isolate;
+}
+
+.rtl {
+	direction: rtl;
+	unicode-bidi: isolate;
+}
+
+
+// Long text
+// ======================================
+
+.long-text {
+    font-size: 1rem;
+
+    @include media-breakpoint-up(lg) {
+        font-size: 1.0625rem;
+        line-height: 1.75rem;
+        letter-spacing: .015625rem;
+    }
+
+    h2, h3, h4 {
+        font-weight: $font-weight-bold;
+    }
+
+    h5, h6 {
+        font-weight: $font-weight-medium;
+    }
+
+    h2:not(:first-of-type) {
+        @include margin-top(4rem);
+    }
+
+    h2 {
+        @include font-size($h3-font-size);
+        @include margin-bottom(2rem);
+    }
+
+    h3 {
+        font-size: $h4-font-size;
+        @include margin-top(3rem);
+        margin-bottom: 1.5rem;
+    }
+
+    h4, h5, h6 {
+        font-size: inherit;
+        @include margin-top(2rem);
+    }
+
+    h3, h6 {
+        color: $gray-700;
+    }
+}
+
+
+// Misc typo stuff
+// ======================================
+
+.text-wrap {
+    white-space: normal !important;
+}
+
+code {
+    padding-inline: 0.25rem;
+    background-color: rgba($black, 0.035);
+    border-radius: var(--border-radius-sm); 
+}
+
+.html-editor-content {
+	margin-bottom: 1.5rem;
+}

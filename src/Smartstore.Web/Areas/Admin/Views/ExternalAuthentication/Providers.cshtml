@@ -1,0 +1,18 @@
+﻿@using Smartstore.Admin.Models.Modularity
+
+@model IEnumerable<AuthenticationMethodModel>
+
+@{
+    ViewBag.Title = T("Admin.Configuration.ExternalAuthenticationMethods").Value;
+}
+
+<div class="section-header">
+    <div class="title">
+        <i class="fa fa-right-to-bracket"></i>
+        @T("Admin.Configuration.ExternalAuthenticationMethods")
+    </div>
+</div>
+
+<div class="provider-list">
+    @(await Html.ProviderList(Model))
+</div>

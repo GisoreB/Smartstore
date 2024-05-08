@@ -1,0 +1,61 @@
+﻿@using Smartstore.Core.Web
+
+@model IUserAgent
+
+@{
+    ViewBag.Title = "User Agent Tester";
+    var ua = Model;
+}
+
+@functions {
+    bool IsKnown(string name)
+    {
+        return name.HasValue() && name != "Unknown";
+    }
+}
+
+<div class="section-header">
+    <div class="title">
+        <i class="fa fa-mobile-screen-button"></i>
+        <span>User Agent Tester</span>
+    </div>
+</div>
+
+<div style="max-width: 800px">
+    <form method="get">
+        <div>
+            <textarea name="ua" id="ua" class="form-control">@ua.UserAgent</textarea>
+            <button type="submit" class="btn btn-secondary mt-3">Test</button>
+        </div>
+
+        <div class="mt-4">
+            <div>
+                User Agent: 
+                <span attr-class='(IsKnown(ua.Name), "fwb")'>@ua.Name</span> 
+                <span sm-if="ua.Version != null">@ua.Version.ToString()</span> 
+                <span sm-if="ua.Type != UserAgentType.Unknown">(Type: @ua.Type.ToString())</span>
+            </div>
+            <div>
+                Device: 
+                <span attr-class='(IsKnown(ua.Device.Name), "fwb")'>@ua.Device.Name</span> 
+                <span sm-if="ua.Device.Type != UserAgentDeviceType.Unknown">(Type: @ua.Device.Type.ToString())</span>
+            </div>
+            <div>
+                Platform:
+                <span attr-class='(IsKnown(ua.Platform.Name), "fwb")'>@ua.Platform.Name</span>
+                <span sm-if="ua.Platform.Family != UserAgentPlatformFamily.Unknown">(Family: @ua.Platform.Family.ToString())</span>
+            </div>
+            <div>Supports WebP: <span attr-class='(ua.SupportsWebP(), "fwb")'>@ua.SupportsWebP()</span></div>
+            <br />
+            <div>IsBot: <span attr-class='(ua.IsBot(), "fwb")'>@ua.IsBot()</span></div>
+            <div>IsMobileDevice: <span attr-class='(ua.IsMobileDevice(), "fwb")'>@ua.IsMobileDevice()</span></div>
+            <div>IsTablet: <span attr-class='(ua.IsTablet(), "fwb")'>@ua.IsTablet()</span></div>
+            <div>IsPdfConverter: <span attr-class='(ua.IsPdfConverter(), "fwb")'>@ua.IsPdfConverter()</span></div>
+        </div>
+    </form>
+</div>
+
+
+
+
+

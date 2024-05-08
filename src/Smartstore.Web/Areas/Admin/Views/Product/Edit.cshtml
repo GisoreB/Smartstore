@@ -1,0 +1,71 @@
+﻿@using Smartstore.Core.Catalog.Products
+
+@model ProductModel
+
+@{
+    ViewBag.Title = @Model.Name.Truncate(45, "...") + " / " + T("Admin.Common.Edit").Value;
+}
+
+<form asp-action="Edit" method="post" id="product-form">
+    <div class="section-header">
+        <div class="title">
+            <a sm-backto asp-action="List"></a>
+            @if (Model.PictureThumbnailUrl.HasValue())
+            {
+                <img src="@Url.Content(Model.PictureThumbnailUrl)" />
+            }
+            <span title="@Model.Name">@ViewBag.Title </span>
+        </div>
+        <div class="options">
+            <zone name="admin_button_toolbar_before"></zone>
+
+            <button type="submit" name="preview" value="preview" onclick="javascript:openWindow('@Model.ProductUrl', 1000, 600, true); return false;" class="btn btn-secondary">
+                <i class="far fa-eye"></i>
+                <span>@T("Admin.Common.Preview")</span>
+            </button>
+            <button type="submit" value="save" class="btn btn-warning entity-commit-trigger" data-commit-type="product" data-commit-action="update" data-commit-id="@Model.Id">
+                <i class="fa fa-check"></i>
+                <span>@T("Admin.Common.Save")</span>
+            </button>
+            <button type="submit" value="save-continue" class="btn btn-secondary entity-commit-trigger" data-commit-type="product" data-commit-action="update" data-commit-id="@Model.Id">
+                @T("Admin.Common.SaveContinue")
+            </button>
+            <a href="#copyproduct-window" data-toggle="modal" class="btn btn-secondary">
+                <i class="far fa-copy"></i>
+                <span>@T("Admin.Catalog.Products.Copy")</span>
+            </a>
+            <button type="submit" id="product-delete" class="btn btn-danger">
+                <i class="far fa-trash-can"></i>
+                <span>@T("Admin.Common.Delete")</span>
+            </button>
+            <confirm button-id="product-delete" />
+
+            <zone name="admin_button_toolbar_after"></zone>
+        </div>
+    </div>
+
+    <partial name="_CreateOrUpdate" model="Model" />
+</form>
+
+@if (Model.Id != 0 && Model.NumberOfAvailableProductAttributes > 0)
+{
+    <partial name="_CopyAttributeOptionsDialog" />
+}
+
+<partial name="_CopyProductDialog" model="Model" />
+
+<script sm-target-zone="Scripts" data-origin="product-edit">
+    $(function () {
+		// Bundle per item pricing.
+        $(document).on('change', '#@Html.IdFor(model => model.BundlePerItemPricing)', function () {
+            var isActive = $(this).is(':checked');
+            $('#pnlTierPrices').toggleClass('d-none', isActive);
+            $('#pnlPriceDiscounts').toggleClass('d-none', isActive);
+        }).trigger('change');
+
+        // Bundle per item in shopping cart.
+        $(document).on('change', '#@Html.IdFor(model => model.BundlePerItemShoppingCart)', function () {
+            $('a[data-tab-name="Inventory"]').parent().toggleClass('d-none', $(this).is(':checked'));
+        }).trigger('change');
+    });
+</script>

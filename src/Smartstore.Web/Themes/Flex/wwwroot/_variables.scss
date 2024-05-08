@@ -1,0 +1,258 @@
+/// <reference path="../../../wwwroot/lib/bootstrap/scss/_functions.scss" />
+/// <reference path="../../../wwwroot/shared/_functions.scss" />
+/// <reference path="../../../wwwroot/shared/_variables-shared-bootstrap.scss" />
+/// <reference path="_variables-configured.scss" />
+/// <reference path="_variables-custom.scss" />
+
+// Theme specific (non-bootstrap) variables
+// ========================================
+
+$btn-secondary-border:			rgba($gray-700, 0.15);  //$btn-border-color-default !default;
+
+$header-hover-bg:               rgba($black, 0.04) !default;
+$header-border-color:           #ddd !default; 
+$header-inverse-color:          $white !default;
+$header-inverse-color-muted:    rgba($white, 0.5) !default;
+$header-inverse-hover-bg:       rgba($white, 0.15) !default;
+$header-inverse-border-color:   rgba($white, 0.15) !default;
+$header-selected-color:         $warning !default;
+$header-inverse-selected-color: $header-selected-color !default;
+
+$megamenu-navlink-font-size:    1rem !default;
+
+$shopbar-color-muted:           rgba($shopbar-color, 0.5);
+$shopbar-inverse-color-muted:   rgba($shopbar-inverse-color, 0.5);
+
+$facet-control-size:			20px !default;
+
+$enable-rfs:                    true; // declared in _rfs.scss
+$font-size-root-md:             16px !default;
+$font-size-root-sm:             16px !default;
+
+//
+// Checkout Steps
+// --------------------------------------------------
+
+$costep-border:                 #f2f2f2;
+$costep-bg:                     $white; 
+$costep-color:                  #ccc;
+$costep-label-color:            $body-color;
+
+$costep-visited-border:         $costep-progress-color;
+$costep-visited-bg:             $costep-progress-color;
+$costep-visited-color:          rgba($white, 0.85);
+$costep-visited-label-color:    $costep-label-color;
+
+$costep-active-border:          $costep-visited-border;
+$costep-active-bg:              $white;
+$costep-active-color:           $body-color;
+$costep-active-label-color:     $costep-label-color;
+
+
+// Bootstrap variable overrides
+// ========================================
+
+$yiq-contrasted-threshold:	    164;
+$color-contrast-dark:           $yiq-text-dark;
+$color-contrast-light:          $yiq-text-light;
+
+$gray-150:                      mix($gray-100, $gray-200) !default;
+$gray-650:                      mix($gray-600, $gray-700) !default;
+
+$body-secondary-color:          $gray-600;
+$body-tertiary-color:           $gray-500;
+
+$grays:  ( 
+    "150": $gray-150,
+    "650": $gray-650
+);
+
+$spacer: 1.25rem;
+$spacers: ( 
+	6: ($spacer * 4.5)
+);
+
+$theme-colors: ( 
+    "gray": $gray-700 
+);
+
+$theme-colors-text: ( 
+    "gray": $gray-800 
+);
+
+$theme-colors-bg-subtle: ( 
+    "gray": $gray-400 
+);
+
+$theme-colors-border-subtle: ( 
+    "gray": $gray-500 
+);
+
+$line-height-base:              1.4; // --> 21px
+$line-height-sm:                1.429; // --> 20px
+$line-height-lg:                1.375; // --> 22px
+
+$font-weight-base:              $font-weight-normal;
+
+$lead-font-size:                1.125rem;
+$lead-font-weight:              $font-weight-light;
+$small-font-size:               90%;
+
+$display1-size:                 5.5rem;
+$display2-size:                 5rem;
+$display3-size:                 4.5rem;
+$display4-size:                 3rem;
+
+$display1-weight:               $font-weight-light;
+$display2-weight:               $font-weight-light;
+$display3-weight:               $font-weight-light;
+$display4-weight:               $font-weight-light;
+
+
+// Buttons + Forms
+
+$input-btn-font-size:           $font-size-base;
+$input-btn-line-height:         1.6;        // --> 24px - 42px
+$input-btn-line-height-sm:      22 / 14;    // --> 22px - 36px
+$input-btn-line-height-lg:      1.625;      // --> 26px - 48px
+$input-btn-focus-color:			rgba($primary, .25);
+$input-btn-font-size-sm:        $font-size-sm; // --> 14px
+$input-btn-border-width:        $border-width;
+$input-border-radius:           $border-radius;
+$input-border-radius-lg:        $border-radius;
+$input-border-radius-sm:        $border-radius;
+$input-focus-border-color:		lighten($primary, 30%);
+$input-group-addon-bg:		    $gray-100;
+$input-border-color:            $gray-300;
+$input-disabled-bg:             $gray-100;
+
+
+// Buttons
+
+$btn-font-weight:               $font-weight-medium;
+$btn-focus-width:               $input-btn-focus-width;
+$btn-box-shadow:                0 1px 0 rgba($gray-900, 0.04), inset 0 1px 0 rgba($white, 0.25);
+$btn-focus-box-shadow:          inset 0 0 0 $btn-focus-width $white;
+$btn-border-radius:             $input-border-radius;
+$btn-border-radius-lg:          $input-border-radius-lg;
+$btn-border-radius-sm:          $input-border-radius-sm;
+
+
+// Badge
+
+$badge-font-size:               (12 / 15) * 1em !default;
+$badge-font-weight:             $font-weight-medium;
+$badge-border-radius:           $border-radius-sm;
+
+// Dropdown
+
+$dropdown-padding-x:            .5rem;
+$dropdown-padding-y:            .5rem;
+$dropdown-spacer:               .125rem;
+$dropdown-font-size:            14px;
+$dropdown-font-weight:          $font-weight-normal;
+$dropdown-divider-margin-y:     $dropdown-padding-y;
+$dropdown-shadow-intensity:     0.64;
+
+$dropdown-link-active-color:    $dropdown-link-hover-color;
+$dropdown-link-active-bg:       darken($dropdown-link-hover-bg, 3%);
+
+$dropdown-item-padding-y:       0.5rem;
+$dropdown-item-padding-x:       1rem;
+
+
+// Modal
+
+//$modal-content-box-shadow-xs:       $box-shadow;
+//$modal-content-box-shadow-sm-up:    $box-shadow-lg;
+//$modal-content-border-radius:		$border-radius-lg;
+
+
+// Popover
+
+$popover-box-shadow:			    $dropdown-box-shadow;
+$popover-border-color:			    $dropdown-border-color;
+
+
+// Pagination
+
+$pagination-padding-y:              0;
+$pagination-padding-x:              0.75rem;
+$pagination-padding-y-sm:           0;
+$pagination-padding-x-sm:           0.5rem;
+$pagination-padding-y-lg:           0;
+$pagination-padding-x-lg:           1rem;
+
+$pagination-line-height:            1.5;
+
+$pagination-focus-box-shadow:       none;
+$pagination-focus-outline:          0;
+
+$pagination-color:					$body-color;
+$pagination-bg:						$gray-100;
+$pagination-border-width:           1px;
+$pagination-border-color:			transparent;
+
+$pagination-hover-color:			$pagination-color;
+$pagination-hover-bg:				$gray-200;
+$pagination-hover-border-color:		transparent;
+
+$pagination-active-color:			var(--info-text-emphasis);
+$pagination-active-bg:				var(--info-bg-subtle);
+$pagination-active-border-color:	var(--info-border-subtle);
+
+$pagination-disabled-color:         $gray-400;
+$pagination-disabled-bg:            $pagination-bg;
+$pagination-disabled-border-color:  $pagination-border-color;
+
+
+// Cards
+
+//$card-spacer-y:                     1rem !default;
+$card-border-color:                 rgba($black, .1) !default;
+
+// List Group
+
+$list-group-bg:						$white;
+$list-group-border-color:			rgba($black, .1);
+
+$list-group-item-padding-y:         1rem !default;
+
+$list-group-hover-bg:               $gray-100;
+$list-group-active-color:			$body-color;
+$list-group-active-bg:				$list-group-bg;
+$list-group-active-border-color:	$list-group-border-color;
+
+$list-group-disabled-color:         $gray-500;
+$list-group-disabled-bg:            $list-group-bg;
+
+$list-group-action-color:			$gray-700;
+$list-group-action-hover-color:     $list-group-action-color;
+
+$list-group-action-active-color:	$body-color;
+$list-group-action-active-bg:       $gray-200;
+
+
+// Nav
+
+//$nav-link-font-weight:            $font-weight-medium;    
+$nav-tabs-border-color:             $gray-300;
+$nav-tabs-link-active-color:        $gray-900;
+
+$nav-pills-link-active-color:       $white;
+$nav-pills-link-active-bg:          $primary;
+
+
+// Breadcrumb
+
+$breadcrumb-padding-x:              0;
+$breadcrumb-padding-y:              0;
+$breadcrumb-bg:                     transparent;
+$breadcrumb-border-radius:          0;
+
+
+// Misc
+
+$card-deck-margin:                  10px;
+$alert-border-radius:               $border-radius;
+$alert-link-font-weight:            $font-weight-medium;

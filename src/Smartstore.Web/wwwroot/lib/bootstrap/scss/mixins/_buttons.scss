@@ -1,0 +1,125 @@
+/// <reference path="../_variables.scss" />
+/// <reference path="../_functions.scss" />
+/// <reference path="../_mixins.scss" />
+
+// Button variants
+//
+// Easily pump out default styles, as well as :hover, :focus, :active,
+// and disabled options for all buttons
+
+@mixin button-variant(
+  $background,
+  $border,
+  $color: color-contrast($background),
+  $hover-background: shade-color($background, $btn-hover-bg-shade-amount),
+  $hover-border: shade-color($border, $btn-hover-border-shade-amount),
+  $hover-color: color-contrast($hover-background),
+  $active-background: shade-color($background, $btn-active-bg-shade-amount),
+  $active-border: shade-color($border, $btn-active-border-shade-amount),
+  $active-color: color-contrast($active-background),
+  $disabled-background: $background,
+  $disabled-border: $border,
+  $disabled-color: color-contrast($disabled-background)
+) {
+  @include button-inactive-variant(
+    $background,
+    $border,
+    $color: $color,
+    $disabled-background: $disabled-background,
+    $disabled-border: $disabled-border,
+    $disabled-color: $disabled-color);
+  @include button-active-variant(
+    $background,
+    $border,
+    $color: $color,
+    $hover-background: $hover-background,
+    $hover-border: $hover-border,
+    $hover-color: $hover-color,
+    $active-background: $active-background,
+    $active-border: $active-border,
+    $active-color: $active-color);
+}
+
+@mixin button-inactive-variant(
+  $background,
+  $border,
+  $color: color-contrast($background),
+  $disabled-background: $background,
+  $disabled-border: $border,
+  $disabled-color: color-contrast($disabled-background)
+) {
+  --btn-color: #{$color};
+  --btn-bg: #{$background};
+  // INFO: translucent color set on .btn level
+  //--btn-border-color: #{$border};
+  --btn-disabled-color: #{$disabled-color};
+  --btn-disabled-bg: #{$disabled-background};
+  --btn-disabled-border-color: #{$disabled-border};
+}
+
+@mixin button-active-variant(
+  $background,
+  $border,
+  $color: color-contrast($background),
+  $hover-background: shade-color($background, $btn-hover-bg-shade-amount),
+  $hover-border: shade-color($border, $btn-hover-border-shade-amount),
+  $hover-color: color-contrast($hover-background),
+  $active-background: shade-color($background, $btn-active-bg-shade-amount),
+  $active-border: shade-color($border, $btn-active-border-shade-amount),
+  $active-color: color-contrast($active-background)
+) {
+  --btn-hover-color: #{$hover-color};
+  --btn-hover-bg: #{$hover-background};
+  // INFO: translucent color set on .btn level
+  //--btn-hover-border-color: #{$hover-border};
+  --btn-hover-shadow: #{$btn-box-shadow};
+  --btn-focus-shadow-rgb: #{to-rgb(mix($color, $border, 15%))};
+  --btn-active-color: #{$active-color};
+  --btn-active-bg: #{$active-background};
+  // INFO: translucent color set on .btn level
+  //--btn-active-border-color: #{$active-border};
+  --btn-active-shadow: #{$btn-active-box-shadow};
+}
+
+@mixin button-inactive-outline-variant($color) {
+  --btn-color: #{$color};
+  --btn-border-color: #{$color};
+  --btn-box-shadow: none;
+  --btn-disabled-color: #{$color};
+  --btn-disabled-bg: transparent;
+  --btn-disabled-border-color: #{$color};
+  --gradient: none;
+}
+
+@mixin button-outline-variant(
+  $color,
+  $color-hover: color-yiq($color),
+  $active-background: $color,
+  $active-border: $color,
+  $active-color: color-yiq($active-background)) {
+  --btn-color: #{$color};
+  --btn-border-color: #{$color};
+  --btn-box-shadow: none;
+  --btn-hover-color: #{$color-hover};
+  --btn-hover-bg: #{$active-background};
+  --btn-hover-border-color: #{$active-border};
+  --btn-hover-shadow: #{$btn-box-shadow};
+  --btn-focus-shadow-rgb: #{to-rgb($color)};
+  --btn-active-color: #{$active-color};
+  --btn-active-bg: #{$active-background};
+  --btn-active-border-color: #{$active-border};
+  --btn-active-shadow: #{$btn-active-box-shadow};
+  --btn-disabled-color: #{$color};
+  --btn-disabled-bg: transparent;
+  --btn-disabled-border-color: #{$color};
+  --gradient: none;
+}
+
+// Button sizes
+@mixin button-size($padding-y, $padding-x, $font-size, $line-height, $border-radius) {
+  --btn-padding-y: #{$padding-y};
+  --btn-padding-x: #{$padding-x};
+  --btn-line-height: #{$line-height};
+  --btn-border-radius: #{$border-radius};
+  @include rfs($font-size, --btn-font-size);
+}

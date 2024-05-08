@@ -1,0 +1,27 @@
+// stylelint-disable declaration-no-important
+
+//
+// Text
+//
+
+.text-monospace { @extend .font-monospace; }
+
+// Alignment
+
+.text-justify  { text-align: justify !important; }
+.text-truncate { @include text-truncate(); }
+
+// Weight and italics
+
+.font-weight-light   { @extend .fw-light; }
+.font-weight-lighter { @extend .fw-lighter; }
+.font-weight-normal  { @extend .fw-normal; }
+.font-weight-bold    { @extend .fw-bold; }
+.font-weight-bolder  { @extend .fw-bolder; }
+.font-italic         { @extend .fst-italic; }
+
+// Contextual colors
+
+@each $color, $value in $theme-colors {
+  @include text-emphasis-variant(".text-#{$color}", $value, true);
+}

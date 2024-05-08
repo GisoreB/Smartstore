@@ -1,0 +1,28 @@
+/// <reference path="references.scss" />
+
+// RTL overrides for Bootstrap 4
+// ==============================================================
+
+[dir=rtl] {
+
+	// Custom controls
+	// ----------------------------------------------
+
+	.custom-select {
+	  &[multiple],
+	  &[size]:not([size="1"]) {
+		padding-left: $custom-select-padding-x;
+		padding-right: 0;
+	  }
+	}
+	
+	.custom-file-label { 
+	  &::after {
+		left: 0;
+		right: initial;
+	
+		border-right: $custom-file-border-width solid $custom-file-border-color;
+		border-left: none;
+	  }
+	}
+}

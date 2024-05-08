@@ -1,0 +1,18 @@
+﻿@model ShopBarModel
+
+<div class="shopbar">
+    <div class="shopbar-col-group shopbar-col-group-brand">
+        <div class="shopbar-col shop-logo">
+            @await Component.InvokeAsync("ShopLogo")
+        </div>
+        <div class="shopbar-col shopbar-search">
+            <zone name="searchbox" replace-content="true">
+                @await Component.InvokeAsync("SearchBox")
+            </zone>
+        </div>
+    </div>
+
+    <div class="shopbar-col-group shopbar-col-group-tools">
+        <partial name="ShopBar.Tools" model="Model" />
+    </div>
+</div>
